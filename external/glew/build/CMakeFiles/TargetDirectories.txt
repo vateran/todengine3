@@ -1,0 +1,10 @@
+/Users/vateran/project/todengine3/external/glew/build/CMakeFiles/rebuild_cache.dir
+/Users/vateran/project/todengine3/external/glew/build/CMakeFiles/list_install_components.dir
+/Users/vateran/project/todengine3/external/glew/build/CMakeFiles/install.dir
+/Users/vateran/project/todengine3/external/glew/build/CMakeFiles/install/strip.dir
+/Users/vateran/project/todengine3/external/glew/build/CMakeFiles/install/local.dir
+/Users/vateran/project/todengine3/external/glew/build/CMakeFiles/visualinfo.dir
+/Users/vateran/project/todengine3/external/glew/build/CMakeFiles/glewinfo.dir
+/Users/vateran/project/todengine3/external/glew/build/CMakeFiles/glew_s.dir
+/Users/vateran/project/todengine3/external/glew/build/CMakeFiles/edit_cache.dir
+/Users/vateran/project/todengine3/external/glew/build/CMakeFiles/glew.dir
