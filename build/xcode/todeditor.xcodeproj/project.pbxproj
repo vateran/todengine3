@@ -1,0 +1,422 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0956905B1EDF1A8A00A9AF92 /* libwx_osx_cocoa_static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0956905A1EDF1A8A00A9AF92 /* libwx_osx_cocoa_static.a */; };
+		0956905D1EDF1A9E00A9AF92 /* libtodcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0956905C1EDF1A9E00A9AF92 /* libtodcore.a */; };
+		0956905F1EE03CEF00A9AF92 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0956905E1EE03CEF00A9AF92 /* libcurl.dylib */; };
+		095690801EE17B6E00A9AF92 /* libtodgraphics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0956907F1EE17B6E00A9AF92 /* libtodgraphics.a */; };
+		098E6BFE1EDDC07300F32BB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 098E6BFD1EDDC07300F32BB0 /* Assets.xcassets */; };
+		099D48721EDDC0FF00A8874A /* wx.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 099D486D1EDDC0FF00A8874A /* wx.xcconfig */; };
+		099D48731EDDC0FF00A8874A /* wxcocoa.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 099D486E1EDDC0FF00A8874A /* wxcocoa.xcconfig */; };
+		099D48741EDDC0FF00A8874A /* wxdebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 099D486F1EDDC0FF00A8874A /* wxdebug.xcconfig */; };
+		099D48751EDDC0FF00A8874A /* wxrelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 099D48701EDDC0FF00A8874A /* wxrelease.xcconfig */; };
+		099D48761EDDC0FF00A8874A /* wxvers.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 099D48711EDDC0FF00A8874A /* wxvers.xcconfig */; };
+		099D487B1EDDC17600A8874A /* todeditor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 099D487A1EDDC17600A8874A /* todeditor.mm */; };
+		09AC2B791EE1C38E00291654 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AC2B781EE1C38E00291654 /* CoreVideo.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0956905A1EDF1A8A00A9AF92 /* libwx_osx_cocoa_static.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwx_osx_cocoa_static.a; path = ../../external/wxWidgets/lib/libwx_osx_cocoa_static.a; sourceTree = "<group>"; };
+		0956905C1EDF1A9E00A9AF92 /* libtodcore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtodcore.a; path = ../../bin/Debug/libtodcore.a; sourceTree = "<group>"; };
+		0956905E1EE03CEF00A9AF92 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = ../../external/curl/lib/libcurl.dylib; sourceTree = "<group>"; };
+		0956907F1EE17B6E00A9AF92 /* libtodgraphics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtodgraphics.a; path = build/Debug/libtodgraphics.a; sourceTree = "<group>"; };
+		098E6BE61EDDC00000F32BB0 /* TodEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		098E6BF71EDDC00000F32BB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		098E6BFD1EDDC07300F32BB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		099D486D1EDDC0FF00A8874A /* wx.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = wx.xcconfig; sourceTree = SOURCE_ROOT; };
+		099D486E1EDDC0FF00A8874A /* wxcocoa.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = wxcocoa.xcconfig; sourceTree = SOURCE_ROOT; };
+		099D486F1EDDC0FF00A8874A /* wxdebug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = wxdebug.xcconfig; sourceTree = SOURCE_ROOT; };
+		099D48701EDDC0FF00A8874A /* wxrelease.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = wxrelease.xcconfig; sourceTree = SOURCE_ROOT; };
+		099D48711EDDC0FF00A8874A /* wxvers.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = wxvers.xcconfig; sourceTree = SOURCE_ROOT; };
+		099D487A1EDDC17600A8874A /* todeditor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = todeditor.mm; path = ../../todeditor/todeditor.mm; sourceTree = "<group>"; };
+		09AC2B781EE1C38E00291654 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		098E6BE31EDDC00000F32BB0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09AC2B791EE1C38E00291654 /* CoreVideo.framework in Frameworks */,
+				095690801EE17B6E00A9AF92 /* libtodgraphics.a in Frameworks */,
+				0956905F1EE03CEF00A9AF92 /* libcurl.dylib in Frameworks */,
+				0956905D1EDF1A9E00A9AF92 /* libtodcore.a in Frameworks */,
+				0956905B1EDF1A8A00A9AF92 /* libwx_osx_cocoa_static.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		098E6BDD1EDDC00000F32BB0 = {
+			isa = PBXGroup;
+			children = (
+				098E6BE81EDDC00000F32BB0 /* Build */,
+				098E6BE71EDDC00000F32BB0 /* Products */,
+				099D487A1EDDC17600A8874A /* todeditor.mm */,
+				099D487C1EDDC27A00A8874A /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		098E6BE71EDDC00000F32BB0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				098E6BE61EDDC00000F32BB0 /* TodEditor.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		098E6BE81EDDC00000F32BB0 /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				099D486D1EDDC0FF00A8874A /* wx.xcconfig */,
+				099D486E1EDDC0FF00A8874A /* wxcocoa.xcconfig */,
+				099D486F1EDDC0FF00A8874A /* wxdebug.xcconfig */,
+				099D48701EDDC0FF00A8874A /* wxrelease.xcconfig */,
+				099D48711EDDC0FF00A8874A /* wxvers.xcconfig */,
+				098E6BF71EDDC00000F32BB0 /* Info.plist */,
+				098E6BFD1EDDC07300F32BB0 /* Assets.xcassets */,
+			);
+			name = Build;
+			path = todeditor;
+			sourceTree = "<group>";
+		};
+		099D487C1EDDC27A00A8874A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				09AC2B781EE1C38E00291654 /* CoreVideo.framework */,
+				0956907F1EE17B6E00A9AF92 /* libtodgraphics.a */,
+				0956905E1EE03CEF00A9AF92 /* libcurl.dylib */,
+				0956905C1EDF1A9E00A9AF92 /* libtodcore.a */,
+				0956905A1EDF1A8A00A9AF92 /* libwx_osx_cocoa_static.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		098E6BE51EDDC00000F32BB0 /* todeditor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 098E6BFA1EDDC00000F32BB0 /* Build configuration list for PBXNativeTarget "todeditor" */;
+			buildPhases = (
+				098E6BE21EDDC00000F32BB0 /* Sources */,
+				098E6BE31EDDC00000F32BB0 /* Frameworks */,
+				098E6BE41EDDC00000F32BB0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = todeditor;
+			productName = todeditor;
+			productReference = 098E6BE61EDDC00000F32BB0 /* TodEditor.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		098E6BDE1EDDC00000F32BB0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = vateran.net;
+				TargetAttributes = {
+					098E6BE51EDDC00000F32BB0 = {
+						CreatedOnToolsVersion = 8.3.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 098E6BE11EDDC00000F32BB0 /* Build configuration list for PBXProject "todeditor" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 098E6BDD1EDDC00000F32BB0;
+			productRefGroup = 098E6BE71EDDC00000F32BB0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				098E6BE51EDDC00000F32BB0 /* todeditor */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		098E6BE41EDDC00000F32BB0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				098E6BFE1EDDC07300F32BB0 /* Assets.xcassets in Resources */,
+				099D48741EDDC0FF00A8874A /* wxdebug.xcconfig in Resources */,
+				099D48721EDDC0FF00A8874A /* wx.xcconfig in Resources */,
+				099D48761EDDC0FF00A8874A /* wxvers.xcconfig in Resources */,
+				099D48731EDDC0FF00A8874A /* wxcocoa.xcconfig in Resources */,
+				099D48751EDDC0FF00A8874A /* wxrelease.xcconfig in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		098E6BE21EDDC00000F32BB0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				099D487B1EDDC17600A8874A /* todeditor.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		098E6BF81EDDC00000F32BB0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 099D486F1EDDC0FF00A8874A /* wxdebug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREFIX_HEADER = "$(WXROOT)/include/wx/wxprec.h";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(WXROOT)/build/osx/setup/cocoa/include",
+					"$(WXROOT)/include",
+					"$(SRCROOT)/../../todcore/include",
+					"$(SRCROOT)/../../todgraphics",
+					"$(SRCROOT)/../../external/rapidjson/include",
+				);
+				INFOPLIST_FILE = Info.plist;
+				LIBRARY_SEARCH_PATHS = "$(WXROOT)/lib";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"-lz",
+				);
+				PRODUCT_NAME = TodEditor;
+				SDKROOT = macosx;
+				WXPLATFORM = "__WXOSX_$(WXTOOLKITUPPER)__";
+				WXROOT = "$(SRCROOT)/../../external/wxWidgets";
+			};
+			name = Debug;
+		};
+		098E6BF91EDDC00000F32BB0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 099D48701EDDC0FF00A8874A /* wxrelease.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = "$(WXROOT)/include/wx/wxprec.h";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(WXROOT)/build/osx/setup/cocoa/include",
+					"$(WXROOT)/include",
+					"$(SRCROOT)/../../todcore/include",
+					"$(SRCROOT)/../../todgraphics",
+					"$(SRCROOT)/../../external/rapidjson/include",
+				);
+				INFOPLIST_FILE = Info.plist;
+				LIBRARY_SEARCH_PATHS = "$(WXROOT)/lib";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"$(OTHER_LDFLAGS)",
+					"-lz",
+				);
+				PRODUCT_NAME = TodEditor;
+				SDKROOT = macosx;
+				WXPLATFORM = "__WXOSX_$(WXTOOLKITUPPER)__";
+				WXROOT = "$(SRCROOT)/../../external/wxWidgets";
+			};
+			name = Release;
+		};
+		098E6BFB1EDDC00000F32BB0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 099D486E1EDDC0FF00A8874A /* wxcocoa.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LIBRARY = "libc++";
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(WX_PREPROCESSOR_DEFINITIONS)",
+					WXBUILDING,
+					"$(WXPLATFORM)",
+					__WX__,
+					"wxUSE_BASE=1",
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					MACOS_CLASSIC,
+					"__WXMAC_XCODE__=1",
+					SCI_LEXER,
+					"WX_PRECOMP=1",
+					"wxUSE_UNICODE_UTF8=0",
+					"wxUSE_UNICODE_WCHAR=1",
+				);
+				HEADER_SEARCH_PATHS = (
+					"\"$(WXROOT)/src/tiff/libtiff\"",
+					"\"$(WXROOT)/src/regex\"",
+					"$(SRCROOT)/../../todcore/include",
+					"$(SRCROOT)/../../todgraphics",
+					"$(SRCROOT)/../../external/rapidjson/include",
+					"$(SRCROOT)/../../external/glew/include",
+					"$(SRCROOT)/../../external/glfw/include",
+					"$(SRCROOT)/../../external/glm",
+				);
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = vateran.net.todeditor;
+				PRODUCT_NAME = TodEditor;
+				USER_HEADER_SEARCH_PATHS = "\"$(WXROOT)/include\" \"$(WXROOT)/build/osx/setup/$(WXTOOLKIT)/include\" \"$(WXROOT)/src/zlib\" \"$(WXROOT)/src/jpeg\" \"$(WXROOT)/src/png\" \"$(WXROOT)/src/expat/lib\" \"$(WXROOT)/src/tiff/libtiff\" \"$(WXROOT)/src/stc/scintilla/src\" \"$(WXROOT)/src/stc/scintilla/include\" \"$(WXROOT)/src/stc/scintilla/lexlib\"";
+			};
+			name = Debug;
+		};
+		098E6BFC1EDDC00000F32BB0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 099D486E1EDDC0FF00A8874A /* wxcocoa.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LIBRARY = "libc++";
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(WX_PREPROCESSOR_DEFINITIONS)",
+					WXBUILDING,
+					"$(WXPLATFORM)",
+					__WX__,
+					"wxUSE_BASE=1",
+					"_FILE_OFFSET_BITS=64",
+					_LARGE_FILES,
+					MACOS_CLASSIC,
+					"__WXMAC_XCODE__=1",
+					SCI_LEXER,
+					"WX_PRECOMP=1",
+					"wxUSE_UNICODE_UTF8=0",
+					"wxUSE_UNICODE_WCHAR=1",
+				);
+				HEADER_SEARCH_PATHS = (
+					"\"$(WXROOT)/src/tiff/libtiff\"",
+					"\"$(WXROOT)/src/regex\"",
+					"$(SRCROOT)/../../todcore/include",
+					"$(SRCROOT)/../../todgraphics",
+					"$(SRCROOT)/../../external/rapidjson/include",
+					"$(SRCROOT)/../../external/glew/include",
+					"$(SRCROOT)/../../external/glfw/include",
+					"$(SRCROOT)/../../external/glm",
+				);
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = vateran.net.todeditor;
+				PRODUCT_NAME = TodEditor;
+				USER_HEADER_SEARCH_PATHS = "\"$(WXROOT)/include\" \"$(WXROOT)/build/osx/setup/$(WXTOOLKIT)/include\" \"$(WXROOT)/src/zlib\" \"$(WXROOT)/src/jpeg\" \"$(WXROOT)/src/png\" \"$(WXROOT)/src/expat/lib\" \"$(WXROOT)/src/tiff/libtiff\" \"$(WXROOT)/src/stc/scintilla/src\" \"$(WXROOT)/src/stc/scintilla/include\" \"$(WXROOT)/src/stc/scintilla/lexlib\"";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		098E6BE11EDDC00000F32BB0 /* Build configuration list for PBXProject "todeditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				098E6BF81EDDC00000F32BB0 /* Debug */,
+				098E6BF91EDDC00000F32BB0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		098E6BFA1EDDC00000F32BB0 /* Build configuration list for PBXNativeTarget "todeditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				098E6BFB1EDDC00000F32BB0 /* Debug */,
+				098E6BFC1EDDC00000F32BB0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 098E6BDE1EDDC00000F32BB0 /* Project object */;
+}

@@ -1,0 +1,326 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		095D18E61EE77BB500B5FE92 /* todmath.cc in Sources */ = {isa = PBXBuildFile; fileRef = 095D18E41EE77BB500B5FE92 /* todmath.cc */; };
+		095D18E71EE77BB500B5FE92 /* todmath.h in Headers */ = {isa = PBXBuildFile; fileRef = 095D18E51EE77BB500B5FE92 /* todmath.h */; };
+		09AC2B671EE1B52E00291654 /* openglrenderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 09AC2B631EE1B52E00291654 /* openglrenderer.cc */; };
+		09AC2B681EE1B52E00291654 /* openglrenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09AC2B641EE1B52E00291654 /* openglrenderer.h */; };
+		09AC2B691EE1B52E00291654 /* renderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 09AC2B651EE1B52E00291654 /* renderer.cc */; };
+		09AC2B6A1EE1B52E00291654 /* renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09AC2B661EE1B52E00291654 /* renderer.h */; };
+		09AC2B731EE1BBFE00291654 /* libGLEW.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AC2B721EE1BBFE00291654 /* libGLEW.a */; };
+		09AC2B751EE1C19900291654 /* libglfw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AC2B741EE1C19900291654 /* libglfw3.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		095690691EE1771F00A9AF92 /* libtodgraphics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libtodgraphics.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		095D18DE1EE6E34800B5FE92 /* matrix44.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = matrix44.h; path = ../../todgraphics/tod/graphics/matrix44.h; sourceTree = "<group>"; };
+		095D18DF1EE6E3A000B5FE92 /* vector3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = vector3.h; path = ../../todgraphics/tod/graphics/vector3.h; sourceTree = "<group>"; };
+		095D18E21EE6F1B700B5FE92 /* libVc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVc.a; path = ../../external/libvc/lib/libVc.a; sourceTree = "<group>"; };
+		095D18E41EE77BB500B5FE92 /* todmath.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = todmath.cc; path = ../../todgraphics/tod/graphics/todmath.cc; sourceTree = "<group>"; };
+		095D18E51EE77BB500B5FE92 /* todmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = todmath.h; path = ../../todgraphics/tod/graphics/todmath.h; sourceTree = "<group>"; };
+		09AC2B631EE1B52E00291654 /* openglrenderer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = openglrenderer.cc; path = ../../todgraphics/tod/graphics/openglrenderer.cc; sourceTree = "<group>"; };
+		09AC2B641EE1B52E00291654 /* openglrenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = openglrenderer.h; path = ../../todgraphics/tod/graphics/openglrenderer.h; sourceTree = "<group>"; };
+		09AC2B651EE1B52E00291654 /* renderer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = renderer.cc; path = ../../todgraphics/tod/graphics/renderer.cc; sourceTree = "<group>"; };
+		09AC2B661EE1B52E00291654 /* renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = renderer.h; path = ../../todgraphics/tod/graphics/renderer.h; sourceTree = "<group>"; };
+		09AC2B721EE1BBFE00291654 /* libGLEW.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGLEW.a; path = ../../external/glew/lib/libGLEW.a; sourceTree = "<group>"; };
+		09AC2B741EE1C19900291654 /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libglfw3.a; path = ../../external/glfw/lib/libglfw3.a; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		095690661EE1771F00A9AF92 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09AC2B751EE1C19900291654 /* libglfw3.a in Frameworks */,
+				09AC2B731EE1BBFE00291654 /* libGLEW.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		095690601EE1771E00A9AF92 = {
+			isa = PBXGroup;
+			children = (
+				0956907A1EE177CE00A9AF92 /* Source */,
+				0956906A1EE1771F00A9AF92 /* Products */,
+				09AC2B711EE1BBFD00291654 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		0956906A1EE1771F00A9AF92 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				095690691EE1771F00A9AF92 /* libtodgraphics.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0956907A1EE177CE00A9AF92 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				09AC2B631EE1B52E00291654 /* openglrenderer.cc */,
+				09AC2B641EE1B52E00291654 /* openglrenderer.h */,
+				09AC2B651EE1B52E00291654 /* renderer.cc */,
+				09AC2B661EE1B52E00291654 /* renderer.h */,
+				095D18DE1EE6E34800B5FE92 /* matrix44.h */,
+				095D18DF1EE6E3A000B5FE92 /* vector3.h */,
+				095D18E41EE77BB500B5FE92 /* todmath.cc */,
+				095D18E51EE77BB500B5FE92 /* todmath.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		09AC2B711EE1BBFD00291654 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				095D18E21EE6F1B700B5FE92 /* libVc.a */,
+				09AC2B741EE1C19900291654 /* libglfw3.a */,
+				09AC2B721EE1BBFE00291654 /* libGLEW.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		095690671EE1771F00A9AF92 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				095D18E71EE77BB500B5FE92 /* todmath.h in Headers */,
+				09AC2B681EE1B52E00291654 /* openglrenderer.h in Headers */,
+				09AC2B6A1EE1B52E00291654 /* renderer.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		095690681EE1771F00A9AF92 /* todgraphics */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0956906D1EE1771F00A9AF92 /* Build configuration list for PBXNativeTarget "todgraphics" */;
+			buildPhases = (
+				095690651EE1771F00A9AF92 /* Sources */,
+				095690661EE1771F00A9AF92 /* Frameworks */,
+				095690671EE1771F00A9AF92 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = todgraphics;
+			productName = tod3dengine;
+			productReference = 095690691EE1771F00A9AF92 /* libtodgraphics.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		095690611EE1771E00A9AF92 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = vateran.net;
+				TargetAttributes = {
+					095690681EE1771F00A9AF92 = {
+						CreatedOnToolsVersion = 8.3.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 095690641EE1771E00A9AF92 /* Build configuration list for PBXProject "todgraphics" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 095690601EE1771E00A9AF92;
+			productRefGroup = 0956906A1EE1771F00A9AF92 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				095690681EE1771F00A9AF92 /* todgraphics */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		095690651EE1771F00A9AF92 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				09AC2B691EE1B52E00291654 /* renderer.cc in Sources */,
+				09AC2B671EE1B52E00291654 /* openglrenderer.cc in Sources */,
+				095D18E61EE77BB500B5FE92 /* todmath.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0956906B1EE1771F00A9AF92 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../todcore/include",
+					"$(SRCROOT)/../../todgraphics",
+					"$(SRCROOT)/../../external",
+					"$(SRCROOT)/../../external/curl/include",
+					"$(SRCROOT)/../../external/rapidjson/include",
+					"$(SRCROOT)/../../external/glew/include",
+					"$(SRCROOT)/../../external/glfw/include",
+					"$(SRCROOT)/../../external/glm",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/../../external/glew/lib",
+					"$(SRCROOT)/../../external/glfw/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		0956906C1EE1771F00A9AF92 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../todcore/include",
+					"$(SRCROOT)/../../todgraphics",
+					"$(SRCROOT)/../../external",
+					"$(SRCROOT)/../../external/curl/include",
+					"$(SRCROOT)/../../external/rapidjson/include",
+					"$(SRCROOT)/../../external/glew/include",
+					"$(SRCROOT)/../../external/glfw/include",
+					"$(SRCROOT)/../../external/glm",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SRCROOT)/../../external/glew/lib",
+					"$(SRCROOT)/../../external/glfw/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		0956906E1EE1771F00A9AF92 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		0956906F1EE1771F00A9AF92 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		095690641EE1771E00A9AF92 /* Build configuration list for PBXProject "todgraphics" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0956906B1EE1771F00A9AF92 /* Debug */,
+				0956906C1EE1771F00A9AF92 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0956906D1EE1771F00A9AF92 /* Build configuration list for PBXNativeTarget "todgraphics" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0956906E1EE1771F00A9AF92 /* Debug */,
+				0956906F1EE1771F00A9AF92 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 095690611EE1771E00A9AF92 /* Project object */;
+}
