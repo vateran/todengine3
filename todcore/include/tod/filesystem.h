@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <functional>
 #include <unordered_map>
 #include "tod/singleton.h"

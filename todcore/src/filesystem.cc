@@ -1,4 +1,4 @@
-#include <vector>
+﻿#include <vector>
 #include <thread>
 #ifdef _WIN32
 #include <direct.h>

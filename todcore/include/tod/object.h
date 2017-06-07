@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "tod/string.h"
 #include "tod/uuid.h"
 #include "tod/derive.h"

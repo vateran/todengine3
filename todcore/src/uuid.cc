@@ -18,8 +18,7 @@ Uuid::Uuid()
 Uuid::Uuid(const char* uuid_str)
 {
     #ifdef WIN32
-    UUID uuid;
-    UuidFromStringA(uuid_str, (UUID*)this->array);
+    UuidFromStringA((RPC_CSTR)(uuid_str), (UUID*)this->array);
     #else
     uuid_parse(uuid_str, this->array);
     #endif
@@ -45,7 +44,7 @@ String Uuid::toString()
     #ifdef WIN32
     unsigned char* str;
     UuidToStringA((UUID*)this->array, &str);
-    ret.assign(str);
+    ret.assign(reinterpret_cast<char*>(str));
     RpcStringFreeA(&str);
     #else
     char str[37];

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "tod/string.h"
 namespace tod
 {

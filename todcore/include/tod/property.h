@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "tod/stringconv.h"
 namespace tod
 {

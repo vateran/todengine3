@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "tod/type.h"
 #include "tod/singleton.h"
 namespace tod

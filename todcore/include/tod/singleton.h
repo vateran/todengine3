@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include "tod/platformdef.h"
 #include "tod/type.h"

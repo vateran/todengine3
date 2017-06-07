@@ -1,9 +1,11 @@
-#pragma once
-#include <string>
+﻿#pragma once
+#include <algorithm>
+#include <cctype>
 #include <bitset>
 #include <functional>
 #include <iostream>
 #include <memory>
+#include <string>
 #include <stdlib.h>
 #include "tod/platformdef.h"
 namespace tod
@@ -99,8 +101,7 @@ void String::split(const char* delims, OUT_T& ret, bool drop_empty) const
         }
     }
     if (in_token)
-        output.push_back(
-                         typename OUT_T::value_type(beg, this->end()));
+        output.push_back(typename OUT_T::value_type(beg, this->end()));
     output.swap(ret);
 }
 
