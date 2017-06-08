@@ -4,12 +4,7 @@ namespace tod::graphics
 
 bool Renderer::initialize()
 {
-    Vector3 v;
-    v = { 1, 2, 3 };
-    v /= 2;
-    v.normalize();
-    auto ll = v.length();
-    //v += { 1, 2, 3 };
+    Matrix44 m;
     
     Kernel::instance()->init();
     std::list<String> paths;
