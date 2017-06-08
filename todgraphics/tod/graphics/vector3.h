@@ -130,6 +130,7 @@ typename Vector3Base<T>::type& Vector3Base<T>::operator += (const type& rhs)
     this->x += rhs.x;
     this->y += rhs.y;
     this->z += rhs.z;
+    return *this;
 }
     
     
@@ -139,6 +140,7 @@ typename Vector3Base<T>::type& Vector3Base<T>::operator -= (const type& rhs)
     this->x -= rhs.x;
     this->y -= rhs.y;
     this->z -= rhs.z;
+    return *this;
 }
     
 

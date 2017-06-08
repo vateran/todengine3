@@ -3,11 +3,50 @@
 namespace tod::graphics
 {
     
-template <typename T>
+class MatrixRowMajor
+{
+public:
+    template <typename T>
+    static inline void setElement(T* array, int row, int column, T value)
+    {
+        array[(row << 2) + column] = value;
+    }
+    template <typename T>
+    static inline T getElement(T* array, int row, int column)
+    {
+        return array[(row << 2) + column];
+    }
+    template <typename T>
+    static inline void add(T* array, int row, int column, T value)
+    {
+        array[(row << 2) + column] += value;
+    }
+};
+class MatrixColumnMajor
+{
+public:
+    template <typename T>
+    static inline void setElement(T* array, int row, int column, T value)
+    {
+        array[(column << 2) + row] = value;
+    }
+    template <typename T>
+    static inline T getElement(T* array, int row, int column)
+    {
+        return array[(column << 2) + row];
+    }
+    template <typename T>
+    static inline void add(T* array, int row, int column, T value)
+    {
+        array[(column << 2) + row] += value;
+    }
+};
+    
+template <typename T, typename MAJOR=MatrixColumnMajor>
 class Matrix44Base
 {
 public:
-    typedef Matrix44Base<T> type;
+    typedef Matrix44Base<T, MAJOR> type;
     
 public:
     Matrix44Base();
@@ -38,54 +77,53 @@ public:
 };
 
     
-template <typename T>
-Matrix44Base<T>::Matrix44Base()
+template <typename T, typename MAJOR>
+Matrix44Base<T, MAJOR>::Matrix44Base()
 {
     this->clear();
 }
 
 
-template <typename T>
-void Matrix44Base<T>::clear()
+template <typename T, typename MAJOR>
+void Matrix44Base<T, MAJOR>::clear()
 {
     memset(this->d, 0, sizeof(type));
 }
 
 
-template <typename T>
-void Matrix44Base<T>::identity()
+template <typename T, typename MAJOR>
+void Matrix44Base<T, MAJOR>::identity()
 {
     this->clear();
     for (int i=0;i<4;++i) d[i][i] = 1;
 }
     
 
-
-template <typename T>
-void Matrix44Base<T>::setTranslation(const Vector3& t)
+template <typename T, typename MAJOR>
+void Matrix44Base<T, MAJOR>::setTranslation(const Vector3& t)
 {
-    d[3][0] = t.x;
-    d[3][1] = t.y;
-    d[3][2] = t.z;
+    MAJOR::setElement(this->array, 3, 0, t.x);
+    MAJOR::setElement(this->array, 3, 1, t.y);
+    MAJOR::setElement(this->array, 3, 2, t.z);
 }
 
     
-template <typename T>
-void Matrix44Base<T>::setEulerRotation(const Vector3& r)
-{
-    
-}
-
-
-template <typename T>
-void Matrix44Base<T>::setScaling(const Vector3& s)
+template <typename T, typename MAJOR>
+void Matrix44Base<T, MAJOR>::setEulerRotation(const Vector3& r)
 {
     
 }
 
 
-template <typename T>
-float Matrix44Base<T>::determinent()
+template <typename T, typename MAJOR>
+void Matrix44Base<T, MAJOR>::setScaling(const Vector3& s)
+{
+    
+}
+
+
+template <typename T, typename MAJOR>
+float Matrix44Base<T, MAJOR>::determinent()
 {
     T inv[4];
     
@@ -124,8 +162,8 @@ float Matrix44Base<T>::determinent()
 }
 
     
-template <typename T>
-bool Matrix44Base<T>::inverse()
+template <typename T, typename MAJOR>
+bool Matrix44Base<T, MAJOR>::inverse()
 {
     T inv[16];
     
@@ -255,8 +293,8 @@ bool Matrix44Base<T>::inverse()
 }
     
 
-template <typename T>
-void Matrix44Base<T>::transpose()
+template <typename T, typename MAJOR>
+void Matrix44Base<T, MAJOR>::transpose()
 {
     std::swap(this->d[1], this->d[4]);
     std::swap(this->d[2], this->d[8]);
@@ -267,8 +305,8 @@ void Matrix44Base<T>::transpose()
 }
     
 
-template <typename T>
-void Matrix44Base<T>::lookAt(const Vector3& target)
+template <typename T, typename MAJOR>
+void Matrix44Base<T, MAJOR>::lookAt(const Vector3& target)
 {
     Vector3 position { this->getPosition() };
     Vector3 forward { target };
@@ -299,8 +337,8 @@ void Matrix44Base<T>::lookAt(const Vector3& target)
 }
     
 
-template <typename T>
-void Matrix44Base<T>::lookAt(const Vector3& target, const Vector3& up)
+template <typename T, typename MAJOR>
+void Matrix44Base<T, MAJOR>::lookAt(const Vector3& target, const Vector3& up)
 {
     Vector3 position { this->getPosition() };
     Vector3 forward { target };
@@ -319,8 +357,8 @@ void Matrix44Base<T>::lookAt(const Vector3& target, const Vector3& up)
 }
 
 
-template <typename T>
-Vector3 Matrix44Base<T>::getAngle()
+template <typename T, typename MAJOR>
+Vector3 Matrix44Base<T, MAJOR>::getAngle()
 {
     float yaw = Math::rad2deg(Math::asin(this->array[8]));
     if(this->array[10] < 0)
@@ -345,8 +383,8 @@ Vector3 Matrix44Base<T>::getAngle()
 }
 
 
-template <typename T>
-typename Matrix44Base<T>::type& Matrix44Base<T>::operator *= (const type& other)
+template <typename T, typename MAJOR>
+typename Matrix44Base<T, MAJOR>::type& Matrix44Base<T, MAJOR>::operator *= (const type& other)
 {
     type output;
     output.clear();
@@ -356,7 +394,9 @@ typename Matrix44Base<T>::type& Matrix44Base<T>::operator *= (const type& other)
         {
             for(int k=0; k<4; ++k)
             {
-                output.d[i][j] += this->d[i][k] * other.d[k][j];
+                MAJOR::add(output.array, i, j,
+                    MAJOR::getElement(this->array, i, k) +
+                    MAJOR::getElement(other.array, k, j));
             }
         }
     }
@@ -364,8 +404,8 @@ typename Matrix44Base<T>::type& Matrix44Base<T>::operator *= (const type& other)
 }
 
 
-template <typename T>
-typename Matrix44Base<T>::type& Matrix44Base<T>::operator += (const type& other)
+template <typename T, typename MAJOR>
+typename Matrix44Base<T, MAJOR>::type& Matrix44Base<T, MAJOR>::operator += (const type& other)
 {
     for(int i = 0; i < 16; ++i)
     {
@@ -375,8 +415,8 @@ typename Matrix44Base<T>::type& Matrix44Base<T>::operator += (const type& other)
 }
 
 
-template <typename T>
-typename Matrix44Base<T>::type& Matrix44Base<T>::operator -= (const type& other)
+template <typename T, typename MAJOR>
+typename Matrix44Base<T, MAJOR>::type& Matrix44Base<T, MAJOR>::operator -= (const type& other)
 {
     for(int i = 0; i < 16; ++i)
     {
