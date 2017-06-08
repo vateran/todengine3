@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <type_traits>
 #include "tod/graphics/todmath.h"
 namespace tod::graphics

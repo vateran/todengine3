@@ -1,6 +1,9 @@
-﻿#include <vector>
+﻿#include "tod/platformdef.h"
+#include <vector>
 #include <thread>
-#ifdef _WIN32
+#include <fstream>
+#ifdef PLATFORM_WINDOWS
+#include <WinSock2.h>
 #include <direct.h>
 #define GetCurrentDir _getcwd
 #else
@@ -119,9 +122,9 @@ private:
         
         Data data;
         int responseCode;
-        int recvBlockSize;
-        int recvSize;
-        int totalSize;
+        size_t recvBlockSize;
+		size_t recvSize;
+		size_t totalSize;
     };
     static size_t write_data_callback
     (void *ptr, size_t size, size_t nmemb, void *userdata)
@@ -252,18 +255,17 @@ bool PosixLoader::load
     for (auto& spath : FileSystem::instance()->getSearchPaths())
     {
         String full_path { spath + S("/") + path };
-        FILE* fp = fopen(full_path.c_str(), "rb");
-        if (nullptr == fp) continue;
+		std::ifstream file(full_path.c_str(), std::ios::binary);
+        if (!file) continue;
         
         //data buffer 준비
         Data data;
-        fseek(fp, 0, SEEK_END);
-        data.resize(ftell(fp) + (option.isString()?1:0));
-        if (option.isString()) data[data.size() - 1] = 0;
-        fseek(fp, 0, SEEK_SET);
-        fread(&data[0], data.size(), 1, fp);
-        
-        fclose(fp);
+		file.seekg(0, file.end);
+		data.resize(static_cast<size_t>(file.tellg()) + (option.isString() ? 1 : 0));
+        if (option.isString()) data[data.size() - 1] = 0;        
+		file.seekg(0, file.beg);
+		file.read(&data[0], data.size());
+		file.close();
         
         callback(data);
         

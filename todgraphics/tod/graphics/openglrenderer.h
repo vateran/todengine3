@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "tod/graphics/renderer.h"
 namespace tod::graphics
 {

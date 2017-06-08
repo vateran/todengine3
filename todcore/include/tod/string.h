@@ -110,7 +110,7 @@ void String::split(const char* delims, OUT_T& ret, bool drop_empty) const
 void String::ltrim()
 {
     this->erase(this->begin(), std::find_if(this->begin(), this->end(),
-        std::not1(std::ptr_fun<int, int>(std::isspace))));
+		[](value_type ch) { return !std::isspace(ch); }));
 }
 
 
@@ -118,7 +118,7 @@ void String::ltrim()
 void String::rtrim()
 {
     this->erase(std::find_if(this->rbegin(), this->rend(),
-        std::not1(std::ptr_fun<int, int>(std::isspace))).base(), this->end());
+		[](value_type ch) { return !std::isspace(ch); }).base(), this->end());
 }
     
     
@@ -129,87 +129,10 @@ void String::trim()
     this->rtrim();
 }
 
+
 //-----------------------------------------------------------------------------
 template <typename T>
-T String::atof(const char* str)
-{
-    #define white_space(c) ((c) == ' ' || (c) == '\t')
-    #define valid_digit(c) ((c) >= '0' && (c) <= '9')
-    
-    int frac;
-    T sign, value, scale;
-    
-    // Skip leading white space, if any.
-    
-    while (white_space(*str) ) {
-        str += 1;
-    }
-    
-    // Get sign, if any.
-    
-    sign = 1.0;
-    if (*str == '-') {
-        sign = -1.0;
-        str += 1;
-        
-    } else if (*str == '+') {
-        ++str;
-    }
-    
-    // Get digits before decimal point or exponent, if any.
-    
-    for (value = 0.0; valid_digit(*str); ++str) {
-        value = value * 10.0 + (*str - '0');
-    }
-    
-    // Get digits after decimal point, if any.
-    
-    if (*str == '.') {
-        T pow10 = 10.0;
-        ++str;
-        while (valid_digit(*str)) {
-            value += (*str - '0') / pow10;
-            pow10 *= 10.0;
-            ++str;
-        }
-    }
-    
-    // Handle exponent, if any.
-    
-    frac = 0;
-    scale = 1.0;
-    if ((*str == 'e') || (*str == 'E')) {
-        unsigned int expon;
-        
-        // Get sign of exponent, if any.
-        
-        ++str;
-        if (*str == '-') {
-            frac = 1;
-            ++str;
-            
-        } else if (*str == '+') {
-            ++str;
-        }
-        
-        // Get digits of exponent, if any.
-        
-        for (expon = 0; valid_digit(*str); ++str) {
-            expon = expon * 10 + (*str - '0');
-        }
-        if (expon > 308) expon = 308;
-        
-        // Calculate scaling factor.
-        
-        while (expon >= 50) { scale *= 1E50; expon -= 50; }
-        while (expon >=  8) { scale *= 1E8;  expon -=  8; }
-        while (expon >   0) { scale *= 10.0; expon -=  1; }
-    }
-    
-    // Return signed and scaled floating point result.
-    
-    return sign * (frac ? (value / scale) : (value * scale));
-}
+T String::atof(const char* str) {}
 
 
 //-----------------------------------------------------------------------------
@@ -225,7 +148,7 @@ String String::fromFormat(const char* format, ARGS ... args)
 //-----------------------------------------------------------------------------
 int64 String::atoi64(const char* str)
 {
-    #ifdef WIN32
+    #ifdef PLATFORM_WINDOWS
     return _atoi64(str);
     #else
     return atoll(str);
@@ -236,7 +159,7 @@ int64 String::atoi64(const char* str)
 //-----------------------------------------------------------------------------
 uint64 String::atoui64(const char* str)
 {
-    #ifdef WIN32
+    #ifdef PLATFORM_WINDOWS
     return _strtoui64(str, NULL, 10);
     #else
     return strtoull(str, NULL, 10);
