@@ -24,6 +24,7 @@
 		094E2F051ED44A8000FBAC64 /* node.cc in Sources */ = {isa = PBXBuildFile; fileRef = 094E2F041ED44A8000FBAC64 /* node.cc */; };
 		094E2F0B1ED548EC00FBAC64 /* serializer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 094E2F0A1ED548EC00FBAC64 /* serializer.cc */; };
 		094E2F101ED5BAB800FBAC64 /* pool.h in Headers */ = {isa = PBXBuildFile; fileRef = 094E2F0E1ED5BAB800FBAC64 /* pool.h */; };
+		0959A9971EE99DBF0018BB99 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0959A9961EE99DBF0018BB99 /* libcurl.dylib */; };
 		09A24DD71EC82071003969B6 /* type.cc in Sources */ = {isa = PBXBuildFile; fileRef = 09A24DD51EC82071003969B6 /* type.cc */; };
 		09A24DDA1EC82093003969B6 /* type.h in Headers */ = {isa = PBXBuildFile; fileRef = 09A24DD91EC82093003969B6 /* type.h */; };
 		09AC2B7B1EE3C7D100291654 /* object.h in Headers */ = {isa = PBXBuildFile; fileRef = 09AC2B7A1EE3C7D100291654 /* object.h */; };
@@ -37,7 +38,6 @@
 		09EAFF391ED9582F007E4841 /* filesystem.cc in Sources */ = {isa = PBXBuildFile; fileRef = 09EAFF371ED9582F007E4841 /* filesystem.cc */; };
 		09EAFF3C1ED95855007E4841 /* filesystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 09EAFF3B1ED95855007E4841 /* filesystem.h */; };
 		09EAFF401ED99431007E4841 /* test.txt in Headers */ = {isa = PBXBuildFile; fileRef = 09EAFF3E1ED99431007E4841 /* test.txt */; };
-		09EAFF431ED9AEE4007E4841 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 09EAFF421ED9AEE4007E4841 /* libcurl.dylib */; };
 		09EAFF441ED9BAF8007E4841 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 09EAFF421ED9AEE4007E4841 /* libcurl.dylib */; };
 /* End PBXBuildFile section */
 
@@ -91,6 +91,7 @@
 		094E2F0A1ED548EC00FBAC64 /* serializer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = serializer.cc; path = ../../todcore/src/serializer.cc; sourceTree = "<group>"; };
 		094E2F0E1ED5BAB800FBAC64 /* pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pool.h; path = ../../todcore/include/tod/pool.h; sourceTree = "<group>"; };
 		09510B951EDD95C80017F3E4 /* component.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = component.h; path = ../../todcore/include/tod/component.h; sourceTree = "<group>"; };
+		0959A9961EE99DBF0018BB99 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = ../../external/curl/xcode/lib/libcurl.dylib; sourceTree = "<group>"; };
 		09A24DD51EC82071003969B6 /* type.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = type.cc; path = ../../todcore/src/type.cc; sourceTree = "<group>"; };
 		09A24DD91EC82093003969B6 /* type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = type.h; path = ../../todcore/include/tod/type.h; sourceTree = "<group>"; };
 		09AC2B7A1EE3C7D100291654 /* object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = object.h; path = ../../todcore/include/tod/object.h; sourceTree = "<group>"; };
@@ -127,7 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09EAFF431ED9AEE4007E4841 /* libcurl.dylib in Frameworks */,
+				0959A9971EE99DBF0018BB99 /* libcurl.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,6 +168,7 @@
 		09EAFF411ED9AEE4007E4841 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0959A9961EE99DBF0018BB99 /* libcurl.dylib */,
 				09EAFF421ED9AEE4007E4841 /* libcurl.dylib */,
 			);
 			name = Frameworks;
@@ -427,7 +429,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../../todcore/include",
 					"$(SRCROOT)/../../external",
-					"$(SRCROOT)/../../external/curl/include",
+					"$(SRCROOT)/../../external/curl/xcode/include",
 					"$(SRCROOT)/../../external/rapidjson/include",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
@@ -475,7 +477,7 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/../../todcore/include",
 					"$(SRCROOT)/../../external",
-					"$(SRCROOT)/../../external/curl/include",
+					"$(SRCROOT)/../../external/curl/xcode/include",
 					"$(SRCROOT)/../../external/rapidjson/include",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
