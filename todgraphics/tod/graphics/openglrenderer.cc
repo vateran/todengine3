@@ -1,4 +1,4 @@
-#include "tod/graphics/openglrenderer.h"
+﻿#include "tod/graphics/openglrenderer.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -181,7 +181,7 @@ namespace tod::graphics
         glVertexAttribPointer(0, 9, GL_FLOAT, 0, 0, NULL);
         
         // 정점을 그림
-        glDrawArrays(GL_TRIANGLES, 0, gVertices.size());
+        glDrawArrays(GL_TRIANGLES, 0, (GLsizei)gVertices.size());
         
         // 바인딩 해제
         glBindBuffer(GL_ARRAY_BUFFER, 0);

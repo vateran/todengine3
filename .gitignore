@@ -32,3 +32,8 @@
 /bin/Debug/x86/todcore.pdb
 /bin/Debug/x86/todcore.idb
 /build/msvc/.vs/todengine/v14/.suo
+/bin/Debug/x64/todcore.pdb
+/bin/Debug/x64/todgraphics.pdb
+/bin/Debug/x64/todgraphics.lib
+/bin/Debug/x64/todcore.lib
+/build/msvc/x64/Debug

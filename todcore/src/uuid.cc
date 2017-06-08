@@ -1,5 +1,5 @@
 #include "tod/uuid.h"
-#ifdef WIN32
+#ifdef _MSC_VER
 #include <Rpc.h>
 #else
 #include <uuid/uuid.h>
@@ -17,7 +17,7 @@ Uuid::Uuid()
 //-----------------------------------------------------------------------------
 Uuid::Uuid(const char* uuid_str)
 {
-    #ifdef WIN32
+    #ifdef _MSC_VER
     UuidFromStringA((RPC_CSTR)(uuid_str), (UUID*)this->array);
     #else
     uuid_parse(uuid_str, this->array);
@@ -28,7 +28,7 @@ Uuid::Uuid(const char* uuid_str)
 //-----------------------------------------------------------------------------
 void Uuid::generate()
 {
-    #ifdef WIN32
+    #ifdef PLATFORM_WINDOWS
     UuidCreate((UUID*)this->array);
     #else
     uuid_generate_random(this->array);
@@ -41,7 +41,7 @@ String Uuid::toString()
 {
     String ret;
     
-    #ifdef WIN32
+    #ifdef PLATFORM_WINDOWS
     unsigned char* str;
     UuidToStringA((UUID*)this->array, &str);
     ret.assign(reinterpret_cast<char*>(str));

@@ -30,9 +30,6 @@
     <ClCompile Include="..\..\todcore\src\uuid.cc">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\todcore\src\autoreleasepool.cc">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\todcore\src\exception.cc">
       <Filter>Source</Filter>
     </ClCompile>
@@ -102,9 +99,6 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\any.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\todcore\include\tod\autoreleasepool.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\component.h">

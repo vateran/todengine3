@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "tod/graphics/vector3.h"
 namespace tod::graphics
 {
