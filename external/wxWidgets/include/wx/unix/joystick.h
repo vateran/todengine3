@@ -17,8 +17,8 @@ class WXDLLIMPEXP_FWD_CORE wxJoystickThread;
 
 class WXDLLIMPEXP_ADV wxJoystick: public wxObject
 {
-    wxDECLARE_DYNAMIC_CLASS(wxJoystick);
-public:
+    DECLARE_DYNAMIC_CLASS(wxJoystick)
+        public:
     /*
      * Public interface
      */

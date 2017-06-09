@@ -17,9 +17,7 @@
 class WXDLLIMPEXP_ADV wxDataViewCustomRenderer : public wxDataViewCustomRendererBase
 {
 public:
-    static wxString GetDefaultType() { return wxS("string"); }
-
-    wxDataViewCustomRenderer(const wxString& varianttype = GetDefaultType(),
+    wxDataViewCustomRenderer(const wxString& varianttype = "string",
                              wxDataViewCellMode mode = wxDATAVIEW_CELL_INERT,
                              int align = wxDVR_DEFAULT_ALIGNMENT);
 
@@ -31,6 +29,10 @@ public:
 
     virtual bool MacRender();
 
+#if wxOSX_USE_COCOA
+    virtual void OSXApplyAttr(const wxDataViewItemAttr& attr);
+#endif // Cocoa
+
     virtual wxDC* GetDC(); // creates a device context and keeps it
     void SetDC(wxDC* newDCPtr); // this method takes ownership of the pointer
 
@@ -39,7 +41,7 @@ private:
 
     wxDC* m_DCPtr;
 
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewCustomRenderer);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewCustomRenderer)
 };
 
 // ---------------------------------------------------------
@@ -49,9 +51,7 @@ private:
 class WXDLLIMPEXP_ADV wxDataViewTextRenderer: public wxDataViewRenderer
 {
 public:
-    static wxString GetDefaultType() { return wxS("string"); }
-
-    wxDataViewTextRenderer(const wxString& varianttype = GetDefaultType(),
+    wxDataViewTextRenderer(const wxString& varianttype = "string",
                            wxDataViewCellMode mode = wxDATAVIEW_CELL_INERT,
                            int align = wxDVR_DEFAULT_ALIGNMENT);
 
@@ -64,7 +64,7 @@ public:
 #endif // Cocoa
 
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewTextRenderer);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewTextRenderer)
 };
 
 // ---------------------------------------------------------
@@ -74,16 +74,14 @@ private:
 class WXDLLIMPEXP_ADV wxDataViewBitmapRenderer: public wxDataViewRenderer
 {
 public:
-    static wxString GetDefaultType() { return wxS("wxBitmap"); }
-
-    wxDataViewBitmapRenderer(const wxString& varianttype = GetDefaultType(),
+    wxDataViewBitmapRenderer(const wxString& varianttype = "wxBitmap",
                              wxDataViewCellMode mode = wxDATAVIEW_CELL_INERT,
                              int align = wxDVR_DEFAULT_ALIGNMENT);
 
     virtual bool MacRender();
 
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewBitmapRenderer);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewBitmapRenderer)
 };
 
 #if wxOSX_USE_COCOA
@@ -113,7 +111,7 @@ public:
 private:
     wxArrayString m_choices;
 
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewChoiceRenderer);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewChoiceRenderer)
 };
 
 #endif // wxOSX_USE_COCOA
@@ -124,9 +122,7 @@ private:
 class WXDLLIMPEXP_ADV wxDataViewIconTextRenderer: public wxDataViewRenderer
 {
 public:
-    static wxString GetDefaultType() { return wxS("wxDataViewIconText"); }
-
-    wxDataViewIconTextRenderer(const wxString& varianttype = GetDefaultType(),
+    wxDataViewIconTextRenderer(const wxString& varianttype = "wxDataViewIconText",
                                wxDataViewCellMode mode = wxDATAVIEW_CELL_INERT,
                                int align = wxDVR_DEFAULT_ALIGNMENT);
 
@@ -139,7 +135,7 @@ public:
 #endif // Cocoa
 
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewIconTextRenderer);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewIconTextRenderer)
 };
 
 // ---------------------------------------------------------
@@ -149,9 +145,7 @@ private:
 class WXDLLIMPEXP_ADV wxDataViewToggleRenderer: public wxDataViewRenderer
 {
 public:
-    static wxString GetDefaultType() { return wxS("bool"); }
-
-    wxDataViewToggleRenderer(const wxString& varianttype = GetDefaultType(),
+    wxDataViewToggleRenderer(const wxString& varianttype = "bool",
                              wxDataViewCellMode mode = wxDATAVIEW_CELL_INERT,
                              int align = wxDVR_DEFAULT_ALIGNMENT);
 
@@ -164,7 +158,7 @@ public:
 #endif // Cocoa
 
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewToggleRenderer);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewToggleRenderer)
 };
 
 // ---------------------------------------------------------
@@ -174,10 +168,8 @@ private:
 class WXDLLIMPEXP_ADV wxDataViewProgressRenderer: public wxDataViewRenderer
 {
 public:
-    static wxString GetDefaultType() { return wxS("long"); }
-
     wxDataViewProgressRenderer(const wxString& label = wxEmptyString,
-                               const wxString& varianttype = GetDefaultType(),
+                               const wxString& varianttype = "long",
                                wxDataViewCellMode mode = wxDATAVIEW_CELL_INERT,
                                int align = wxDVR_DEFAULT_ALIGNMENT);
 
@@ -190,7 +182,7 @@ public:
 #endif // Cocoa
 
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewProgressRenderer);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewProgressRenderer)
 };
 
 // ---------------------------------------------------------
@@ -200,9 +192,7 @@ private:
 class WXDLLIMPEXP_ADV wxDataViewDateRenderer: public wxDataViewRenderer
 {
 public:
-    static wxString GetDefaultType() { return wxS("datetime"); }
-
-    wxDataViewDateRenderer(const wxString& varianttype = GetDefaultType(),
+    wxDataViewDateRenderer(const wxString& varianttype = "datetime",
                            wxDataViewCellMode mode = wxDATAVIEW_CELL_ACTIVATABLE,
                            int align = wxDVR_DEFAULT_ALIGNMENT);
 
@@ -215,7 +205,7 @@ public:
 #endif // Cocoa
 
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewDateRenderer);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewDateRenderer)
 };
 
 #endif // _WX_OSX_DVRENDERERS_H_

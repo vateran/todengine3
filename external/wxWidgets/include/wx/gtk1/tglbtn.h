@@ -75,7 +75,7 @@ public:
     virtual wxSize DoGetBestSize() const;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxToggleBitmapButton);
+    DECLARE_DYNAMIC_CLASS(wxToggleBitmapButton)
 };
 
 //-----------------------------------------------------------------------------
@@ -129,7 +129,7 @@ public:
     virtual wxSize DoGetBestSize() const;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxToggleButton);
+    DECLARE_DYNAMIC_CLASS(wxToggleButton)
 };
 
 #endif // _WX_GTK_TOGGLEBUTTON_H_

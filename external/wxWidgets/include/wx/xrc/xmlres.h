@@ -416,12 +416,12 @@ private:
 // e.g. <menuitem id="my_menu">...</menuitem>) to integer id that is needed by
 // wxWidgets event tables.
 // Example:
-//    wxBEGIN_EVENT_TABLE(MyFrame, wxFrame)
+//    BEGIN_EVENT_TABLE(MyFrame, wxFrame)
 //       EVT_MENU(XRCID("quit"), MyFrame::OnQuit)
 //       EVT_MENU(XRCID("about"), MyFrame::OnAbout)
 //       EVT_MENU(XRCID("new"), MyFrame::OnNew)
 //       EVT_MENU(XRCID("open"), MyFrame::OnOpen)
-//    wxEND_EVENT_TABLE()
+//    END_EVENT_TABLE()
 
 #define XRCID(str_id) \
     wxXmlResource::DoGetXRCID(str_id)
@@ -472,146 +472,139 @@ public:
     // If instance is non-NULL it should not create a new instance via 'new' but
     // should rather use this one, and call its Create method.
     wxObject *CreateResource(wxXmlNode *node, wxObject *parent,
-                             wxObject *instance) wxOVERRIDE;
+                             wxObject *instance);
 
 
     // --- Handy methods:
 
     // Returns true if the node has a property class equal to classname,
     // e.g. <object class="wxDialog">.
-    bool IsOfClass(wxXmlNode *node, const wxString& classname) const wxOVERRIDE;
+    bool IsOfClass(wxXmlNode *node, const wxString& classname) const;
 
-    bool IsObjectNode(const wxXmlNode *node) const wxOVERRIDE;
     // Gets node content from wxXML_ENTITY_NODE
     // The problem is, <tag>content<tag> is represented as
     // wxXML_ENTITY_NODE name="tag", content=""
     //    |-- wxXML_TEXT_NODE or
     //        wxXML_CDATA_SECTION_NODE name="" content="content"
-    wxString GetNodeContent(const wxXmlNode *node) wxOVERRIDE;
-
-    wxXmlNode *GetNodeParent(const wxXmlNode *node) const wxOVERRIDE;
-    wxXmlNode *GetNodeNext(const wxXmlNode *node) const wxOVERRIDE;
-    wxXmlNode *GetNodeChildren(const wxXmlNode *node) const wxOVERRIDE;
+    wxString GetNodeContent(const wxXmlNode *node);
 
     // Check to see if a parameter exists.
-    bool HasParam(const wxString& param) wxOVERRIDE;
+    bool HasParam(const wxString& param);
 
     // Finds the node or returns NULL.
-    wxXmlNode *GetParamNode(const wxString& param) wxOVERRIDE;
+    wxXmlNode *GetParamNode(const wxString& param);
 
     // Finds the parameter value or returns the empty string.
-    wxString GetParamValue(const wxString& param) wxOVERRIDE;
+    wxString GetParamValue(const wxString& param);
 
     // Returns the parameter value from given node.
-    wxString GetParamValue(const wxXmlNode* node) wxOVERRIDE;
+    wxString GetParamValue(const wxXmlNode* node);
 
     // Gets style flags from text in form "flag | flag2| flag3 |..."
     // Only understands flags added with AddStyle
-    int GetStyle(const wxString& param = wxT("style"), int defaults = 0) wxOVERRIDE;
+    int GetStyle(const wxString& param = wxT("style"), int defaults = 0);
 
     // Gets text from param and does some conversions:
     // - replaces \n, \r, \t by respective chars (according to C syntax)
     // - replaces _ by & and __ by _ (needed for _File => &File because of XML)
     // - calls wxGetTranslations (unless disabled in wxXmlResource)
-    wxString GetText(const wxString& param, bool translate = true) wxOVERRIDE;
+    wxString GetText(const wxString& param, bool translate = true);
 
     // Returns the XRCID.
-    int GetID() wxOVERRIDE;
+    int GetID();
 
     // Returns the resource name.
-    wxString GetName() wxOVERRIDE;
+    wxString GetName();
 
     // Gets a bool flag (1, t, yes, on, true are true, everything else is false).
-    bool GetBool(const wxString& param, bool defaultv = false) wxOVERRIDE;
+    bool GetBool(const wxString& param, bool defaultv = false);
 
     // Gets an integer value from the parameter.
-    long GetLong(const wxString& param, long defaultv = 0) wxOVERRIDE;
+    long GetLong(const wxString& param, long defaultv = 0);
 
     // Gets a float value from the parameter.
-    float GetFloat(const wxString& param, float defaultv = 0) wxOVERRIDE;
+    float GetFloat(const wxString& param, float defaultv = 0);
 
     // Gets colour in HTML syntax (#RRGGBB).
-    wxColour GetColour(const wxString& param, const wxColour& defaultv = wxNullColour) wxOVERRIDE;
+    wxColour GetColour(const wxString& param, const wxColour& defaultv = wxNullColour);
 
     // Gets the size (may be in dialog units).
     wxSize GetSize(const wxString& param = wxT("size"),
-                   wxWindow *windowToUse = NULL) wxOVERRIDE;
+                   wxWindow *windowToUse = NULL);
 
     // Gets the position (may be in dialog units).
-    wxPoint GetPosition(const wxString& param = wxT("pos")) wxOVERRIDE;
+    wxPoint GetPosition(const wxString& param = wxT("pos"));
 
     // Gets a dimension (may be in dialog units).
     wxCoord GetDimension(const wxString& param, wxCoord defaultv = 0,
-                         wxWindow *windowToUse = NULL) wxOVERRIDE;
+                         wxWindow *windowToUse = NULL);
 
     // Gets a direction, complains if the value is invalid.
-    wxDirection GetDirection(const wxString& param, wxDirection dirDefault = wxLEFT) wxOVERRIDE;
+    wxDirection GetDirection(const wxString& param, wxDirection dirDefault = wxLEFT);
 
     // Gets a bitmap.
     wxBitmap GetBitmap(const wxString& param = wxT("bitmap"),
                        const wxArtClient& defaultArtClient = wxART_OTHER,
-                       wxSize size = wxDefaultSize) wxOVERRIDE;
+                       wxSize size = wxDefaultSize);
 
     // Gets a bitmap from an XmlNode.
     wxBitmap GetBitmap(const wxXmlNode* node,
                        const wxArtClient& defaultArtClient = wxART_OTHER,
-                       wxSize size = wxDefaultSize) wxOVERRIDE;
+                       wxSize size = wxDefaultSize);
 
     // Gets an icon.
     wxIcon GetIcon(const wxString& param = wxT("icon"),
                    const wxArtClient& defaultArtClient = wxART_OTHER,
-                   wxSize size = wxDefaultSize) wxOVERRIDE;
+                   wxSize size = wxDefaultSize);
 
     // Gets an icon from an XmlNode.
     wxIcon GetIcon(const wxXmlNode* node,
                    const wxArtClient& defaultArtClient = wxART_OTHER,
-                   wxSize size = wxDefaultSize) wxOVERRIDE;
+                   wxSize size = wxDefaultSize);
 
     // Gets an icon bundle.
     wxIconBundle GetIconBundle(const wxString& param,
-                               const wxArtClient& defaultArtClient = wxART_OTHER) wxOVERRIDE;
+                               const wxArtClient& defaultArtClient = wxART_OTHER);
 
     // Gets an image list.
-    wxImageList *GetImageList(const wxString& param = wxT("imagelist")) wxOVERRIDE;
+    wxImageList *GetImageList(const wxString& param = wxT("imagelist"));
 
 #if wxUSE_ANIMATIONCTRL
     // Gets an animation.
-    wxAnimation* GetAnimation(const wxString& param = wxT("animation")) wxOVERRIDE;
+    wxAnimation* GetAnimation(const wxString& param = wxT("animation"));
 #endif
 
     // Gets a font.
-    wxFont GetFont(const wxString& param = wxT("font"), wxWindow* parent = NULL) wxOVERRIDE;
+    wxFont GetFont(const wxString& param = wxT("font"), wxWindow* parent = NULL);
 
     // Gets the value of a boolean attribute (only "0" and "1" are valid values)
-    bool GetBoolAttr(const wxString& attr, bool defaultv) wxOVERRIDE;
+    bool GetBoolAttr(const wxString& attr, bool defaultv);
 
-    // Returns the window associated with the handler (may be NULL).
-    wxWindow* GetParentAsWindow() const { return m_handler->GetParentAsWindow(); }
 
     // Sets common window options.
-    void SetupWindow(wxWindow *wnd) wxOVERRIDE;
+    void SetupWindow(wxWindow *wnd);
 
     // Creates children.
-    void CreateChildren(wxObject *parent, bool this_hnd_only = false) wxOVERRIDE;
+    void CreateChildren(wxObject *parent, bool this_hnd_only = false);
 
     // Helper function.
-    void CreateChildrenPrivately(wxObject *parent, wxXmlNode *rootnode = NULL) wxOVERRIDE;
+    void CreateChildrenPrivately(wxObject *parent, wxXmlNode *rootnode = NULL);
 
     // Creates a resource from a node.
     wxObject *CreateResFromNode(wxXmlNode *node,
-                                wxObject *parent, wxObject *instance = NULL) wxOVERRIDE;
+                                wxObject *parent, wxObject *instance = NULL);
 
     // helper
 #if wxUSE_FILESYSTEM
-    wxFileSystem& GetCurFileSystem() wxOVERRIDE;
+    wxFileSystem& GetCurFileSystem();
 #endif
 
     // reports input error at position 'context'
-    void ReportError(wxXmlNode *context, const wxString& message) wxOVERRIDE;
+    void ReportError(wxXmlNode *context, const wxString& message);
     // reports input error at m_node
-    void ReportError(const wxString& message) wxOVERRIDE;
+    void ReportError(const wxString& message);
     // reports input error when parsing parameter with given name
-    void ReportParamError(const wxString& param, const wxString& message) wxOVERRIDE;
+    void ReportParamError(const wxString& param, const wxString& message);
 };
 
 
@@ -622,9 +615,7 @@ public:
    if (m_instance) \
        variable = wxStaticCast(m_instance, classname); \
    if (!variable) \
-       variable = new classname; \
-   if (GetBool(wxT("hidden"), 0) == 1) \
-       variable->Hide();
+       variable = new classname;
 
 
 // FIXME -- remove this $%^#$%#$@# as soon as Ron checks his changes in!!

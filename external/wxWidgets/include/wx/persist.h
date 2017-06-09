@@ -55,6 +55,8 @@ public:
     static wxPersistenceManager& Get();
 
     // trivial but virtual dtor
+    //
+    // FIXME-VC6: this only needs to be public because of VC6 bug
     virtual ~wxPersistenceManager();
 
 
@@ -229,8 +231,15 @@ private:
     wxDECLARE_NO_COPY_CLASS(wxPersistentObject);
 };
 
-// Helper function calling RegisterAndRestore() on the global persistence
-// manager object.
+// FIXME-VC6: VC6 has troubles with template methods of DLL-exported classes,
+//            apparently it believes they should be defined in the DLL (which
+//            is, of course, impossible as the DLL doesn't know for which types
+//            will they be instantiated) instead of compiling them when
+//            building the main application itself. Because of this problem
+//            (which only arises in debug build!) we can't use the usual
+//            RegisterAndRestore(obj) with it and need to explicitly create the
+//            persistence adapter. To hide this ugliness we define a global
+//            function which does it for us.
 template <typename T>
 inline bool wxPersistentRegisterAndRestore(T *obj)
 {

@@ -63,16 +63,16 @@ public:
             const wxValidator& validator = wxDefaultValidator,
             const wxString& name = wxChoiceNameStr );
 
-    int GetSelection() const wxOVERRIDE;
-    void SetSelection(int n) wxOVERRIDE;
+    int GetSelection() const;
+    void SetSelection(int n);
 
-    virtual unsigned int GetCount() const wxOVERRIDE;
-    virtual int FindString(const wxString& s, bool bCase = false) const wxOVERRIDE;
-    virtual wxString GetString(unsigned int n) const wxOVERRIDE;
-    virtual void SetString(unsigned int n, const wxString& string) wxOVERRIDE;
+    virtual unsigned int GetCount() const;
+    virtual int FindString(const wxString& s, bool bCase = false) const;
+    virtual wxString GetString(unsigned int n) const;
+    virtual void SetString(unsigned int n, const wxString& string);
 
-    virtual void SetColumns(int n=1) wxOVERRIDE;
-    virtual int GetColumns() const wxOVERRIDE;
+    virtual void SetColumns(int n=1);
+    virtual int GetColumns() const;
 
     virtual void GTKDisableEvents();
     virtual void GTKEnableEvents();
@@ -91,18 +91,18 @@ protected:
     // index to GtkListStore cell which displays the item text
     int m_stringCellIndex;
 
-    virtual wxSize DoGetBestSize() const wxOVERRIDE;
-    virtual wxSize DoGetSizeFromTextSize(int xlen, int ylen = -1) const wxOVERRIDE;
+    virtual wxSize DoGetBestSize() const;
+    virtual wxSize DoGetSizeFromTextSize(int xlen, int ylen = -1) const;
     virtual int DoInsertItems(const wxArrayStringsAdapter& items,
                               unsigned int pos,
-                              void **clientData, wxClientDataType type) wxOVERRIDE;
-    virtual void DoSetItemClientData(unsigned int n, void* clientData) wxOVERRIDE;
-    virtual void* DoGetItemClientData(unsigned int n) const wxOVERRIDE;
-    virtual void DoClear() wxOVERRIDE;
-    virtual void DoDeleteOneItem(unsigned int n) wxOVERRIDE;
+                              void **clientData, wxClientDataType type);
+    virtual void DoSetItemClientData(unsigned int n, void* clientData);
+    virtual void* DoGetItemClientData(unsigned int n) const;
+    virtual void DoClear();
+    virtual void DoDeleteOneItem(unsigned int n);
 
-    virtual GdkWindow *GTKGetWindow(wxArrayGdkWindows& windows) const wxOVERRIDE;
-    virtual void DoApplyWidgetStyle(GtkRcStyle *style) wxOVERRIDE;
+    virtual GdkWindow *GTKGetWindow(wxArrayGdkWindows& windows) const;
+    virtual void DoApplyWidgetStyle(GtkRcStyle *style);
 
     // in derived classes, implement this to insert list store entry
     // with all items default except text
@@ -111,7 +111,7 @@ protected:
 private:
     void Init();
 
-    wxDECLARE_DYNAMIC_CLASS(wxChoice);
+    DECLARE_DYNAMIC_CLASS(wxChoice)
 };
 
 

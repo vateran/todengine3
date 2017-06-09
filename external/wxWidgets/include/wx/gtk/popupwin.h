@@ -24,9 +24,9 @@ public:
         { (void)Create(parent, flags); }
     bool Create(wxWindow *parent, int flags = wxBORDER_NONE);
 
-    virtual bool Show(bool show = true) wxOVERRIDE;
+    virtual bool Show(bool show = true);
 
-    virtual void SetFocus() wxOVERRIDE;
+    virtual void SetFocus();
 
     // implementation
     // --------------
@@ -37,14 +37,14 @@ public:
 protected:
     virtual void DoSetSize(int x, int y,
                            int width, int height,
-                           int sizeFlags = wxSIZE_AUTO) wxOVERRIDE;
+                           int sizeFlags = wxSIZE_AUTO);
 
-    virtual void DoMoveWindow(int x, int y, int width, int height) wxOVERRIDE;
+    virtual void DoMoveWindow(int x, int y, int width, int height);
 
 #ifdef __WXUNIVERSAL__
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 #endif
-    wxDECLARE_DYNAMIC_CLASS(wxPopupWindow);
+    DECLARE_DYNAMIC_CLASS(wxPopupWindow)
 };
 
 #endif // _WX_GTK_POPUPWIN_H_

@@ -174,30 +174,6 @@ public:
                                wxDC& dc,
                                int row, int col) = 0;
 
-    // Get the preferred height for a given width. Override this method if the
-    // renderer computes height as function of its width, as is the case of the
-    // standard wxGridCellAutoWrapStringRenderer, for example.
-    // and vice versa
-    virtual int GetBestHeight(wxGrid& grid,
-                              wxGridCellAttr& attr,
-                              wxDC& dc,
-                              int row, int col,
-                              int WXUNUSED(width))
-    {
-        return GetBestSize(grid, attr, dc, row, col).GetHeight();
-    }
-
-    // Get the preferred width for a given height, this is the symmetric
-    // version of GetBestHeight().
-    virtual int GetBestWidth(wxGrid& grid,
-                             wxGridCellAttr& attr,
-                             wxDC& dc,
-                             int row, int col,
-                             int WXUNUSED(height))
-    {
-        return GetBestSize(grid, attr, dc, row, col).GetWidth();
-    }
-
     // create a new object which is the copy of this one
     virtual wxGridCellRenderer *Clone() const = 0;
 };
@@ -379,7 +355,7 @@ class WXDLLIMPEXP_ADV wxGridRowHeaderRendererDefault
 public:
     virtual void DrawBorder(const wxGrid& grid,
                             wxDC& dc,
-                            wxRect& rect) const wxOVERRIDE;
+                            wxRect& rect) const;
 };
 
 // Column header cells renderers
@@ -389,7 +365,7 @@ class WXDLLIMPEXP_ADV wxGridColumnHeaderRendererDefault
 public:
     virtual void DrawBorder(const wxGrid& grid,
                             wxDC& dc,
-                            wxRect& rect) const wxOVERRIDE;
+                            wxRect& rect) const;
 };
 
 // Header corner renderer
@@ -399,7 +375,7 @@ class WXDLLIMPEXP_ADV wxGridCornerHeaderRendererDefault
 public:
     virtual void DrawBorder(const wxGrid& grid,
                             wxDC& dc,
-                            wxRect& rect) const wxOVERRIDE;
+                            wxRect& rect) const;
 };
 
 
@@ -776,7 +752,7 @@ private:
     wxGrid * m_view;
     wxGridCellAttrProvider *m_attrProvider;
 
-    wxDECLARE_ABSTRACT_CLASS(wxGridTableBase);
+    DECLARE_ABSTRACT_CLASS(wxGridTableBase)
     wxDECLARE_NO_COPY_CLASS(wxGridTableBase);
 };
 
@@ -850,25 +826,25 @@ public:
 
     // these are pure virtual in wxGridTableBase
     //
-    virtual int GetNumberRows() wxOVERRIDE { return static_cast<int>(m_data.size()); }
-    virtual int GetNumberCols() wxOVERRIDE { return m_numCols; }
-    virtual wxString GetValue( int row, int col ) wxOVERRIDE;
-    virtual void SetValue( int row, int col, const wxString& s ) wxOVERRIDE;
+    virtual int GetNumberRows() { return static_cast<int>(m_data.size()); }
+    virtual int GetNumberCols() { return m_numCols; }
+    virtual wxString GetValue( int row, int col );
+    virtual void SetValue( int row, int col, const wxString& s );
 
     // overridden functions from wxGridTableBase
     //
-    void Clear() wxOVERRIDE;
-    bool InsertRows( size_t pos = 0, size_t numRows = 1 ) wxOVERRIDE;
-    bool AppendRows( size_t numRows = 1 ) wxOVERRIDE;
-    bool DeleteRows( size_t pos = 0, size_t numRows = 1 ) wxOVERRIDE;
-    bool InsertCols( size_t pos = 0, size_t numCols = 1 ) wxOVERRIDE;
-    bool AppendCols( size_t numCols = 1 ) wxOVERRIDE;
-    bool DeleteCols( size_t pos = 0, size_t numCols = 1 ) wxOVERRIDE;
+    void Clear();
+    bool InsertRows( size_t pos = 0, size_t numRows = 1 );
+    bool AppendRows( size_t numRows = 1 );
+    bool DeleteRows( size_t pos = 0, size_t numRows = 1 );
+    bool InsertCols( size_t pos = 0, size_t numCols = 1 );
+    bool AppendCols( size_t numCols = 1 );
+    bool DeleteCols( size_t pos = 0, size_t numCols = 1 );
 
-    void SetRowLabelValue( int row, const wxString& ) wxOVERRIDE;
-    void SetColLabelValue( int col, const wxString& ) wxOVERRIDE;
-    wxString GetRowLabelValue( int row ) wxOVERRIDE;
-    wxString GetColLabelValue( int col ) wxOVERRIDE;
+    void SetRowLabelValue( int row, const wxString& );
+    void SetColLabelValue( int col, const wxString& );
+    wxString GetRowLabelValue( int row );
+    wxString GetColLabelValue( int col );
 
 private:
     wxGridStringArray m_data;
@@ -885,7 +861,7 @@ private:
     wxArrayString     m_rowLabels;
     wxArrayString     m_colLabels;
 
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxGridStringTable);
+    DECLARE_DYNAMIC_CLASS_NO_COPY( wxGridStringTable )
 };
 
 
@@ -1107,7 +1083,7 @@ public:
 
     int      GetBatchCount() { return m_batchCount; }
 
-    virtual void Refresh(bool eraseb = true, const wxRect* rect = NULL) wxOVERRIDE;
+    virtual void Refresh(bool eraseb = true, const wxRect* rect = NULL);
 
     // Use this, rather than wxWindow::Refresh(), to force an
     // immediate repainting of the grid. Has no effect if you are
@@ -1448,10 +1424,15 @@ public:
         if ( m_colAt.IsEmpty() )
             return idx;
 
-        int pos = m_colAt.Index(idx);
-        wxASSERT_MSG( pos != wxNOT_FOUND, "invalid column index" );
+        for ( int i = 0; i < m_numCols; i++ )
+        {
+            if ( m_colAt[i] == idx )
+                return i;
+        }
 
-        return pos;
+        wxFAIL_MSG( "invalid column index" );
+
+        return wxNOT_FOUND;
     }
 
     // reset the columns positions to the default order
@@ -1661,7 +1642,7 @@ public:
 
     // ------- drag and drop
 #if wxUSE_DRAG_AND_DROP
-    virtual void SetDropTarget(wxDropTarget *dropTarget) wxOVERRIDE;
+    virtual void SetDropTarget(wxDropTarget *dropTarget);
 #endif // wxUSE_DRAG_AND_DROP
 
 
@@ -1857,16 +1838,16 @@ public:
 
 
     // override some base class functions
-    virtual bool Enable(bool enable = true) wxOVERRIDE;
-    virtual wxWindow *GetMainWindowOfCompositeControl() wxOVERRIDE
+    virtual bool Enable(bool enable = true);
+    virtual wxWindow *GetMainWindowOfCompositeControl()
         { return (wxWindow*)m_gridWin; }
-    virtual void Fit() wxOVERRIDE;
+    virtual void Fit();
 
     // implementation only
     void CancelMouseCapture();
 
 protected:
-    virtual wxSize DoGetBestSize() const wxOVERRIDE;
+    virtual wxSize DoGetBestSize() const;
 
     bool m_created;
 
@@ -2117,21 +2098,21 @@ protected:
 
     // generate the appropriate grid event and return -1 if it was vetoed, 1 if
     // it was processed (but not vetoed) and 0 if it wasn't processed
-    int SendEvent(wxEventType evtType,
+    int SendEvent(const wxEventType evtType,
                   int row, int col,
                   const wxMouseEvent& e);
-    int SendEvent(wxEventType evtType,
+    int SendEvent(const wxEventType evtType,
                   const wxGridCellCoords& coords,
                   const wxMouseEvent& e)
         { return SendEvent(evtType, coords.GetRow(), coords.GetCol(), e); }
-    int SendEvent(wxEventType evtType,
+    int SendEvent(const wxEventType evtType,
                   int row, int col,
                   const wxString& s = wxString());
-    int SendEvent(wxEventType evtType,
+    int SendEvent(const wxEventType evtType,
                   const wxGridCellCoords& coords,
                   const wxString& s = wxString())
         { return SendEvent(evtType, coords.GetRow(), coords.GetCol(), s); }
-    int SendEvent(wxEventType evtType, const wxString& s = wxString())
+    int SendEvent(const wxEventType evtType, const wxString& s = wxString())
         { return SendEvent(evtType, m_currentCellCoords, s); }
 
     // send wxEVT_GRID_{ROW,COL}_SIZE or wxEVT_GRID_COL_AUTO_SIZE, return true
@@ -2185,7 +2166,7 @@ protected:
 private:
 
     // implement wxScrolledWindow method to return m_gridWin size
-    virtual wxSize GetSizeAvailableForScrollTarget(const wxSize& size) wxOVERRIDE;
+    virtual wxSize GetSizeAvailableForScrollTarget(const wxSize& size);
 
     // redraw the grid lines, should be called after changing their attributes
     void RedrawGridLines();
@@ -2348,8 +2329,8 @@ private:
     wxGridFixedIndicesSet *m_setFixedRows,
                           *m_setFixedCols;
 
-    wxDECLARE_DYNAMIC_CLASS(wxGrid);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_DYNAMIC_CLASS( wxGrid )
+    DECLARE_EVENT_TABLE()
     wxDECLARE_NO_COPY_CLASS(wxGrid);
 };
 
@@ -2439,7 +2420,7 @@ public:
     wxPoint     GetPosition() { return wxPoint( m_x, m_y ); }
     bool        Selecting() { return m_selecting; }
 
-    virtual wxEvent *Clone() const wxOVERRIDE { return new wxGridEvent(*this); }
+    virtual wxEvent *Clone() const { return new wxGridEvent(*this); }
 
 protected:
     int         m_row;
@@ -2458,7 +2439,7 @@ private:
         m_selecting = sel;
     }
 
-    wxDECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxGridEvent);
+    DECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxGridEvent)
 };
 
 class WXDLLIMPEXP_ADV wxGridSizeEvent : public wxNotifyEvent,
@@ -2499,7 +2480,7 @@ public:
     int         GetRowOrCol() { return m_rowOrCol; }
     wxPoint     GetPosition() { return wxPoint( m_x, m_y ); }
 
-    virtual wxEvent *Clone() const wxOVERRIDE { return new wxGridSizeEvent(*this); }
+    virtual wxEvent *Clone() const { return new wxGridSizeEvent(*this); }
 
 protected:
     int         m_rowOrCol;
@@ -2514,7 +2495,7 @@ private:
         m_y = y;
     }
 
-    wxDECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxGridSizeEvent);
+    DECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxGridSizeEvent)
 };
 
 
@@ -2563,7 +2544,7 @@ public:
     int         GetRightCol()  { return m_bottomRight.GetCol(); }
     bool        Selecting() { return m_selecting; }
 
-    virtual wxEvent *Clone() const wxOVERRIDE { return new wxGridRangeSelectEvent(*this); }
+    virtual wxEvent *Clone() const { return new wxGridRangeSelectEvent(*this); }
 
 protected:
     void Init(const wxGridCellCoords& topLeft,
@@ -2579,7 +2560,7 @@ protected:
     wxGridCellCoords  m_bottomRight;
     bool              m_selecting;
 
-    wxDECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxGridRangeSelectEvent);
+    DECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxGridRangeSelectEvent)
 };
 
 
@@ -2604,14 +2585,14 @@ public:
     void SetCol(int col)                { m_col = col; }
     void SetControl(wxControl* ctrl)    { m_ctrl = ctrl; }
 
-    virtual wxEvent *Clone() const wxOVERRIDE { return new wxGridEditorCreatedEvent(*this); }
+    virtual wxEvent *Clone() const { return new wxGridEditorCreatedEvent(*this); }
 
 private:
     int m_row;
     int m_col;
     wxControl* m_ctrl;
 
-    wxDECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxGridEditorCreatedEvent);
+    DECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxGridEditorCreatedEvent)
 };
 
 

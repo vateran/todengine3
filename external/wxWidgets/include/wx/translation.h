@@ -183,12 +183,6 @@ private:
     wxTranslationsLoader *m_loader;
 
     wxMsgCatalog *m_pMsgCat; // pointer to linked list of catalogs
-
-    // In addition to keeping all the catalogs in the linked list, we also
-    // store them in a hash map indexed by the domain name to allow finding
-    // them by name efficiently.
-    WX_DECLARE_HASH_MAP(wxString, wxMsgCatalog *, wxStringHash, wxStringEqual, wxMsgCatalogMap);
-    wxMsgCatalogMap m_catalogMap;
 };
 
 
@@ -214,9 +208,9 @@ public:
     static void AddCatalogLookupPathPrefix(const wxString& prefix);
 
     virtual wxMsgCatalog *LoadCatalog(const wxString& domain,
-                                      const wxString& lang) wxOVERRIDE;
+                                      const wxString& lang);
 
-    virtual wxArrayString GetAvailableTranslations(const wxString& domain) const wxOVERRIDE;
+    virtual wxArrayString GetAvailableTranslations(const wxString& domain) const;
 };
 
 

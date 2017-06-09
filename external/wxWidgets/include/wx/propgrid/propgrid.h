@@ -22,7 +22,6 @@
 #include "wx/tooltip.h"
 #include "wx/datetime.h"
 #include "wx/recguard.h"
-#include "wx/time.h" // needed for wxMilliClock_t
 
 #include "wx/propgrid/property.h"
 #include "wx/propgrid/propgridiface.h"
@@ -77,23 +76,13 @@ public:
 
     wxPGChoices         m_boolChoices;
 
-    // Some shared variants
-#if WXWIN_COMPATIBILITY_3_0
     wxVariant           m_vEmptyString;
     wxVariant           m_vZero;
     wxVariant           m_vMinusOne;
     wxVariant           m_vTrue;
     wxVariant           m_vFalse;
-#else
-    const wxVariant     m_vEmptyString;
-    const wxVariant     m_vZero;
-    const wxVariant     m_vMinusOne;
-    const wxVariant     m_vTrue;
-    const wxVariant     m_vFalse;
-#endif // WXWIN_COMPATIBILITY_3_0
 
     // Cached constant strings
-#if WXWIN_COMPATIBILITY_3_0
     wxPGCachedString    m_strstring;
     wxPGCachedString    m_strlong;
     wxPGCachedString    m_strbool;
@@ -104,19 +93,6 @@ public:
     wxPGCachedString    m_strMax;
     wxPGCachedString    m_strUnits;
     wxPGCachedString    m_strHint;
-#else
-    const wxString      m_strstring;
-    const wxString      m_strlong;
-    const wxString      m_strbool;
-    const wxString      m_strlist;
-
-    const wxString      m_strDefaultValue;
-    const wxString      m_strMin;
-    const wxString      m_strMax;
-    const wxString      m_strUnits;
-    const wxString      m_strHint;
-#endif // WXWIN_COMPATIBILITY_3_0
-
 #if wxPG_COMPATIBILITY_1_4
     wxPGCachedString    m_strInlineHelp;
 #endif
@@ -229,14 +205,7 @@ wxPG_DESCRIPTION                    = 0x00002000,
 /** wxPropertyGridManager only: don't show an internal border around the
     property grid. Recommended if you use a header.
 */
-wxPG_NO_INTERNAL_BORDER             = 0x00004000,
-
-/** A mask which can be used to filter (out) all styles.
-*/
-wxPG_WINDOW_STYLE_MASK = wxPG_AUTO_SORT|wxPG_HIDE_CATEGORIES|wxPG_BOLD_MODIFIED|
-                         wxPG_SPLITTER_AUTO_CENTER|wxPG_TOOLTIPS|wxPG_HIDE_MARGIN|
-                         wxPG_STATIC_SPLITTER|wxPG_LIMITED_EDITING|wxPG_TOOLBAR|
-                         wxPG_DESCRIPTION|wxPG_NO_INTERNAL_BORDER
+wxPG_NO_INTERNAL_BORDER             = 0x00004000
 };
 
 #if wxPG_COMPATIBILITY_1_4
@@ -281,7 +250,7 @@ wxPG_EX_HELP_AS_TOOLTIPS            = 0x00010000,
 /** Prevent TAB from focusing to wxButtons. This behaviour was default
     in version 1.2.0 and earlier.
     NOTE! Tabbing to button doesn't work yet. Problem seems to be that on wxMSW
-      at least the button doesn't properly propagate key events (yes, I'm using
+      atleast the button doesn't properly propagate key events (yes, I'm using
       wxWANTS_CHARS).
 */
 //wxPG_EX_NO_TAB_TO_BUTTON            = 0x00020000,
@@ -344,18 +313,16 @@ wxPG_EX_NO_TOOLBAR_DIVIDER              = 0x08000000,
 */
 wxPG_EX_TOOLBAR_SEPARATOR               = 0x10000000,
 
+#if wxABI_VERSION >= 30003
 /** Allows to take focus on the entire area (on canvas)
     even if wxPropertyGrid is not a standalone control.
 */
 wxPG_EX_ALWAYS_ALLOW_FOCUS              = 0x00100000,
+#endif // 3.0.3+
 
 /** A mask which can be used to filter (out) all extra styles.
 */
-wxPG_EX_WINDOW_STYLE_MASK = wxPG_EX_INIT_NOCAT|wxPG_EX_NO_FLAT_TOOLBAR|wxPG_EX_MODE_BUTTONS|
-                            wxPG_EX_HELP_AS_TOOLTIPS|wxPG_EX_NATIVE_DOUBLE_BUFFERING|wxPG_EX_AUTO_UNSPECIFIED_VALUES|
-                            wxPG_EX_WRITEONLY_BUILTIN_ATTRIBUTES|wxPG_EX_HIDE_PAGE_BUTTONS|wxPG_EX_MULTIPLE_SELECTION|
-                            wxPG_EX_ENABLE_TLP_TRACKING|wxPG_EX_NO_TOOLBAR_DIVIDER|wxPG_EX_TOOLBAR_SEPARATOR|
-                            wxPG_EX_ALWAYS_ALLOW_FOCUS
+wxPG_EX_WINDOW_STYLE_MASK               = 0x1FFFF000
 };
 
 #if wxPG_COMPATIBILITY_1_4
@@ -372,6 +339,15 @@ wxPG_EX_WINDOW_STYLE_MASK = wxPG_EX_INIT_NOCAT|wxPG_EX_NO_FLAT_TOOLBAR|wxPG_EX_M
 
 /** @}
 */
+
+// -----------------------------------------------------------------------
+
+//
+// Ids for sub-controls
+// NB: It should not matter what these are.
+#define wxPG_SUBID1                     2
+#define wxPG_SUBID2                     3
+#define wxPG_SUBID_TEMP1                4
 
 // -----------------------------------------------------------------------
 
@@ -591,28 +567,27 @@ enum wxPG_KEYBOARD_ACTIONS
 
 // -----------------------------------------------------------------------
 
+
 // wxPropertyGrid::DoSelectProperty flags (selFlags)
-enum wxPG_SELECT_PROPERTY_FLAGS
-{
-    // Focuses to created editor
-    wxPG_SEL_FOCUS                 = 0x0001,
-    // Forces deletion and recreation of editor
-    wxPG_SEL_FORCE                 = 0x0002,
-    // For example, doesn't cause EnsureVisible
-    wxPG_SEL_NONVISIBLE            = 0x0004,
-    // Do not validate editor's value before selecting
-    wxPG_SEL_NOVALIDATE            = 0x0008,
-    // Property being deselected is about to be deleted
-    wxPG_SEL_DELETING              = 0x0010,
-    // Property's values was set to unspecified by the user
-    wxPG_SEL_SETUNSPEC             = 0x0020,
-    // Property's event handler changed the value
-    wxPG_SEL_DIALOGVAL             = 0x0040,
-    // Set to disable sending of wxEVT_PG_SELECTED event
-    wxPG_SEL_DONT_SEND_EVENT       = 0x0080,
-    // Don't make any graphics updates
-    wxPG_SEL_NO_REFRESH            = 0x0100
-};
+
+// Focuses to created editor
+#define wxPG_SEL_FOCUS                  0x0001
+// Forces deletion and recreation of editor
+#define wxPG_SEL_FORCE                  0x0002
+// For example, doesn't cause EnsureVisible
+#define wxPG_SEL_NONVISIBLE             0x0004
+// Do not validate editor's value before selecting
+#define wxPG_SEL_NOVALIDATE             0x0008
+// Property being deselected is about to be deleted
+#define wxPG_SEL_DELETING               0x0010
+// Property's values was set to unspecified by the user
+#define wxPG_SEL_SETUNSPEC              0x0020
+// Property's event handler changed the value
+#define wxPG_SEL_DIALOGVAL              0x0040
+// Set to disable sending of wxEVT_PG_SELECTED event
+#define wxPG_SEL_DONT_SEND_EVENT        0x0080
+// Don't make any graphics updates
+#define wxPG_SEL_NO_REFRESH             0x0100
 
 // -----------------------------------------------------------------------
 
@@ -777,7 +752,7 @@ class WXDLLIMPEXP_PROPGRID wxPropertyGrid : public wxControl,
     friend class wxPropertyGridManager;
     friend class wxPGHeaderCtrl;
 
-    wxDECLARE_DYNAMIC_CLASS(wxPropertyGrid);
+    DECLARE_DYNAMIC_CLASS(wxPropertyGrid)
 public:
 
 #ifndef SWIG
@@ -835,12 +810,7 @@ public:
     */
     void DedicateKey( int keycode )
     {
-#if WXWIN_COMPATIBILITY_3_0
-        // Deprecated: use a hash set instead.
         m_dedicatedKeys.push_back(keycode);
-#else
-        m_dedicatedKeys.insert(keycode);
-#endif
     }
 
     /**
@@ -874,7 +844,7 @@ public:
 
     /** Deletes all properties.
     */
-    virtual void Clear() wxOVERRIDE;
+    virtual void Clear();
 
     /** Clears action triggers for given action.
         @param action
@@ -995,7 +965,7 @@ public:
     */
     unsigned int GetColumnCount() const
     {
-        return m_pState->GetColumnCount();
+        return (unsigned int) m_pState->m_colWidths.size();
     }
 
     /** Returns colour of empty space below properties. */
@@ -1111,12 +1081,13 @@ public:
     wxPropertyGridHitTestResult HitTest( const wxPoint& pt ) const;
 
     /** Returns true if any property has been modified by the user. */
-    bool IsAnyModified() const
-#if WXWIN_COMPATIBILITY_3_0
-         { return m_pState->m_anyModified != (unsigned char)false; }
-#else
-         { return m_pState->m_anyModified; }
-#endif
+    bool IsAnyModified() const { return (m_pState->m_anyModified>0); }
+
+    /**
+        Returns true if updating is frozen (ie Freeze() called but not yet
+        Thaw() ).
+     */
+    bool IsFrozen() const { return (m_frozen>0)?true:false; }
 
     /**
         It is recommended that you call this function any time your code causes
@@ -1135,7 +1106,7 @@ public:
 
     /** Redraws given property.
     */
-    virtual void RefreshProperty( wxPGProperty* p ) wxOVERRIDE;
+    virtual void RefreshProperty( wxPGProperty* p );
 
     /** Registers a new editor class.
         @return
@@ -1557,9 +1528,6 @@ public:
     static wxString& CreateEscapeSequences( wxString& dst_str,
                                             wxString& src_str );
 
-    // Checks system screen design used for laying out various dialogs.
-    static bool IsSmallScreen();
-
     /**
         Returns rectangle that fully contains properties between and including
         p1 and p2. Rectangle is in virtual scrolled window coordinates.
@@ -1601,6 +1569,8 @@ public:
         { return (m_iFlags & flag) ? true : false; }
     void SetInternalFlag( long flag ) { m_iFlags |= flag; }
     void ClearInternalFlag( long flag ) { m_iFlags &= ~(flag); }
+    void IncFrozen() { m_frozen++; }
+    void DecFrozen() { m_frozen--; }
 
     void OnComboItemPaint( const wxPGComboBox* pCb,
                            int item,
@@ -1608,7 +1578,6 @@ public:
                            wxRect& rect,
                            int flags );
 
-#if WXWIN_COMPATIBILITY_3_0
     /** Standardized double-to-string conversion.
     */
     static const wxString& DoubleToString( wxString& target,
@@ -1616,7 +1585,6 @@ public:
                                            int precision,
                                            bool removeZeroes,
                                            wxString* precTemplate = NULL );
-#endif // WXWIN_COMPATIBILITY_3_0
 
     /**
         Call this from wxPGProperty::OnEvent() to cause property value to be
@@ -1740,7 +1708,7 @@ public:
         @param text
             Initial text value of created wxTextCtrl.
     */
-    void SetupTextCtrlValue( const wxString& text ) { m_prevTcValue = text; }
+    void SetupTextCtrlValue( const wxString text ) { m_prevTcValue = text; }
 
     /**
         Unfocuses or closes editor if one was open, but does not deselect
@@ -1748,7 +1716,7 @@ public:
     */
     bool UnfocusEditor();
 
-    virtual void SetWindowStyleFlag( long style ) wxOVERRIDE;
+    virtual void SetWindowStyleFlag( long style );
 
     void DrawItems( const wxPGProperty* p1, const wxPGProperty* p2 );
 
@@ -1760,7 +1728,7 @@ public:
     virtual void DrawItemAndChildren( wxPGProperty* p );
 
     /**
-        Draws item, children, and consecutive parents as long as category is
+        Draws item, children, and consequtive parents as long as category is
         not met.
      */
     void DrawItemAndValueRelated( wxPGProperty* p );
@@ -1811,20 +1779,20 @@ public:
     bool DoSelectProperty( wxPGProperty* p, unsigned int flags = 0 );
 
     // Overridden functions.
-    virtual bool Destroy() wxOVERRIDE;
+    virtual bool Destroy();
     // Returns property at given y coordinate (relative to grid's top left).
     wxPGProperty* GetItemAtY( int y ) const { return DoGetItemAtY(y); }
 
     virtual void Refresh( bool eraseBackground = true,
-                          const wxRect *rect = (const wxRect *) NULL ) wxOVERRIDE;
-    virtual bool SetFont( const wxFont& font ) wxOVERRIDE;
-    virtual void SetExtraStyle( long exStyle ) wxOVERRIDE;
-    virtual bool Reparent( wxWindowBase *newParent ) wxOVERRIDE;
+                          const wxRect *rect = (const wxRect *) NULL );
+    virtual bool SetFont( const wxFont& font );
+    virtual void Freeze();
+    virtual void SetExtraStyle( long exStyle );
+    virtual void Thaw();
+    virtual bool Reparent( wxWindowBase *newParent );
 
 protected:
-    virtual void DoThaw() wxOVERRIDE;
-
-    virtual wxSize DoGetBestSize() const wxOVERRIDE;
+    virtual wxSize DoGetBestSize() const;
 
 #ifndef wxPG_ICON_WIDTH
     wxBitmap            *m_expandbmp, *m_collbmp;
@@ -1839,7 +1807,7 @@ protected:
     wxBitmap            *m_doubleBuffer;
 
     /** Local time ms when control was created. */
-    wxMilliClock_t      m_timeCreated;
+    wxLongLong          m_timeCreated;
 
     /** wxPGProperty::OnEvent can change value by setting this. */
     wxVariant           m_changeInEventValue;
@@ -1948,18 +1916,9 @@ protected:
     wxArrayPGProperty   m_deletedProperties;
     wxArrayPGProperty   m_removedProperties;
 
-#if !WXWIN_COMPATIBILITY_3_0
-    /** List of editors and their event handlers to be deleted in idle event handler. */
-    wxArrayPGObject     m_deletedEditorObjects;
-#endif
-
     /** List of key codes that will not be handed over to editor controls. */
-#if WXWIN_COMPATIBILITY_3_0
-    // Deprecated: use a hash set instead.
+    // FIXME: Make this a hash set once there is template-based wxHashSet.
     wxVector<int>       m_dedicatedKeys;
-#else
-    wxPGHashSetInt      m_dedicatedKeys;
-#endif
 
     //
     // Temporary values
@@ -1978,22 +1937,18 @@ protected:
     unsigned char       m_mouseSide;
 
     /** True when editor control is focused. */
-#if WXWIN_COMPATIBILITY_3_0
     unsigned char       m_editorFocused;
-#else
-    bool                m_editorFocused;
-#endif
 
     /** 1 if m_latsCaption is also the bottommost caption. */
     //unsigned char       m_lastCaptionBottomnest;
 
+    /** Set to 1 when graphics frozen. */
+    unsigned char       m_frozen;
+
     unsigned char       m_vspacing;
 
-#if WXWIN_COMPATIBILITY_3_0
-    // Unused variable.
     // Used to track when Alt/Ctrl+Key was consumed.
     unsigned char       m_keyComboConsumed;
-#endif
 
     /** 1 if in DoPropertyChanged() */
     bool                m_inDoPropertyChanged;
@@ -2014,11 +1969,8 @@ protected:
     /** Internal flags - see wxPG_FL_XXX constants. */
     wxUint32            m_iFlags;
 
-#if WXWIN_COMPATIBILITY_3_0
-    // Unused variable.
     /** When drawing next time, clear this many item slots at the end. */
     int                 m_clearThisMany;
-#endif
 
     // Mouse is hovering over this column (index)
     unsigned int        m_colHover;
@@ -2049,7 +2001,7 @@ protected:
     wxWindow*           m_tlpClosed;
 
     // Local time ms when tlp was closed.
-    wxMilliClock_t      m_tlpClosedTime;
+    wxLongLong          m_tlpClosedTime;
 
     // Sort function
     wxPGSortCallback    m_sortFunction;
@@ -2185,28 +2137,9 @@ protected:
     */
     void CorrectEditorWidgetPosY();
 
-#if WXWIN_COMPATIBILITY_3_0
-    wxDEPRECATED_MSG("use two-argument function DoDrawItems(dc,rect)")
     int DoDrawItems( wxDC& dc,
-                     const wxRect* itemsRect,
-                     bool isBuffered ) const
-    {
-        return DoDrawItemsBase(dc, itemsRect, isBuffered);
-    }
-
-    int DoDrawItems( wxDC& dc,
-                     const wxRect* itemsRect ) const
-    {
-        return DoDrawItemsBase(dc, itemsRect, true);
-    }
-
-    int DoDrawItemsBase( wxDC& dc,
                      const wxRect* itemsRect,
                      bool isBuffered ) const;
-#else
-    int DoDrawItems( wxDC& dc,
-                     const wxRect* itemsRect ) const;
-#endif
 
     /** Draws an expand/collapse (ie. +/-) button.
     */
@@ -2318,13 +2251,11 @@ protected:
 
     bool DoHideProperty( wxPGProperty* p, bool hide, int flags );
 
-    void DeletePendingObjects();
-
 private:
 
     bool ButtonTriggerKeyTest( int action, wxKeyEvent& event );
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 // -----------------------------------------------------------------------
@@ -2344,12 +2275,12 @@ inline unsigned int wxPropertyGridPageState::GetActualVirtualHeight() const
 
 inline wxString wxPGProperty::GetHintText() const
 {
-    wxVariant vHintText = GetAttribute(wxPG_ATTR_HINT);
+    wxVariant vHintText = GetAttribute(wxPGGlobalVars->m_strHint);
 
 #if wxPG_COMPATIBILITY_1_4
     // Try the old, deprecated "InlineHelp"
     if ( vHintText.IsNull() )
-        vHintText = GetAttribute(wxPG_ATTR_INLINE_HELP);
+        vHintText = GetAttribute(wxPGGlobalVars->m_strInlineHelp);
 #endif
 
     if ( !vHintText.IsNull() )
@@ -2480,7 +2411,7 @@ public:
     ~wxPropertyGridEvent();
 
     /** Copyer. */
-    virtual wxEvent* Clone() const wxOVERRIDE;
+    virtual wxEvent* Clone() const;
 
     /**
         Returns the column index associated with this event.
@@ -2629,7 +2560,7 @@ public:
 private:
     void Init();
     void OnPropertyGridSet();
-    wxDECLARE_DYNAMIC_CLASS(wxPropertyGridEvent);
+    DECLARE_DYNAMIC_CLASS(wxPropertyGridEvent)
 
     wxPGProperty*       m_property;
     wxPropertyGrid*     m_pg;

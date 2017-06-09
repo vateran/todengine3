@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // Name:        wx/colordlg.h
 // Purpose:     wxColourDialog
-// Author:      Vadim Zeitlin
+// Author:      Vadim Zeitiln
 // Modified by:
 // Created:     01/02/97
 // Copyright:   (c) wxWidgets team
@@ -23,8 +23,6 @@
     #include "wx/osx/colordlg.h"
 #elif defined(__WXGTK20__) && !defined(__WXUNIVERSAL__)
     #include "wx/gtk/colordlg.h"
-#elif defined(__WXQT__)
-    #include "wx/qt/colordlg.h"
 #else
     #include "wx/generic/colrdlgg.h"
 

@@ -35,7 +35,9 @@ public:
     virtual WXHWND MSWGetParent() const;
 
 protected:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxPopupWindow);
+    virtual void DoGetPosition(int *x, int *y) const;
+
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxPopupWindow)
 };
 
 #endif // _WX_MSW_POPUPWIN_H_

@@ -1,11 +1,12 @@
 /////////////////////////////////////////////////////////////////////////////
 // Name:        wx/richtext/richtextsizepage.h
-// Purpose:     Declares the rich text formatting dialog size page.
+// Purpose:
 // Author:      Julian Smart
 // Modified by:
 // Created:     20/10/2010 10:23:24
+// RCS-ID:
 // Copyright:   (c) Julian Smart
-// Licence:     wxWindows licence
+// Licence:
 /////////////////////////////////////////////////////////////////////////////
 
 #ifndef _RICHTEXTSIZEPAGE_H_
@@ -48,8 +49,8 @@
 
 class WXDLLIMPEXP_RICHTEXT wxRichTextSizePage: public wxRichTextDialogPage
 {
-    wxDECLARE_DYNAMIC_CLASS(wxRichTextSizePage);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_DYNAMIC_CLASS( wxRichTextSizePage )
+    DECLARE_EVENT_TABLE()
     DECLARE_HELP_PROVISION()
 
 public:
@@ -73,8 +74,8 @@ public:
     wxRichTextAttr* GetAttributes();
 
     /// Data transfer
-    virtual bool TransferDataToWindow() wxOVERRIDE;
-    virtual bool TransferDataFromWindow() wxOVERRIDE;
+    virtual bool TransferDataToWindow();
+    virtual bool TransferDataFromWindow();
 
     /// Show/hide position controls
     static void ShowPositionControls(bool show) { sm_showPositionControls = show; }
@@ -102,9 +103,6 @@ public:
 
     /// Enable the checkboxes for position and size
     static void EnablePositionAndSizeCheckboxes(bool enable) { sm_enablePositionAndSizeCheckboxes = enable; }
-
-    /// Enable the move object controls
-    static void ShowMoveObjectControls(bool enable) { sm_showMoveObjectControls = enable; }
 
 ////@begin wxRichTextSizePage event handler declarations
 
@@ -297,7 +295,6 @@ public:
     static bool sm_showFloatingAndAlignmentControls;
     static bool sm_enablePositionAndSizeUnits;
     static bool sm_enablePositionAndSizeCheckboxes;
-    static bool sm_showMoveObjectControls;
 };
 
 #endif

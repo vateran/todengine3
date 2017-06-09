@@ -42,7 +42,7 @@ protected:
     wxNativePrinterDC* m_nativePrinterDC ;
 
 private:
-    wxDECLARE_CLASS(wxPrinterDC);
+    DECLARE_CLASS(wxPrinterDC)
 #endif // wxUSE_PRINTING_ARCHITECTURE
 };
 

@@ -40,7 +40,7 @@ public:
                 const wxString& name = wxButtonNameStr);
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxBitmapButton);
+    DECLARE_DYNAMIC_CLASS(wxBitmapButton)
 };
 
 #endif // _WX_GTK_BMPBUTTON_H_

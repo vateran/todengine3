@@ -1,6 +1,6 @@
 /////////////////////////////////////////////////////////////////////////////
 // Name:        wx/richtext/richtextsymboldlg.h
-// Purpose:     Declares the symbol picker dialog.
+// Purpose:
 // Author:      Julian Smart
 // Modified by:
 // Created:     10/5/2006 3:11:58 PM
@@ -55,8 +55,8 @@ class wxStdDialogButtonSizer;
 
 class WXDLLIMPEXP_RICHTEXT wxSymbolPickerDialog: public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(wxSymbolPickerDialog);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_DYNAMIC_CLASS( wxSymbolPickerDialog )
+    DECLARE_EVENT_TABLE()
     DECLARE_HELP_PROVISION()
 
 public:
@@ -103,7 +103,7 @@ public:
     static void SetShowToolTips(bool show) { sm_showToolTips = show; }
 
     /// Data transfer
-    virtual bool TransferDataToWindow() wxOVERRIDE;
+    virtual bool TransferDataToWindow();
 
 ////@begin wxSymbolPickerDialog event handler declarations
 
@@ -231,7 +231,7 @@ public:
     // ---------
 
     // set the current font
-    virtual bool SetFont(const wxFont& font) wxOVERRIDE;
+    virtual bool SetFont(const wxFont& font);
 
     // set Unicode/ASCII mode
     void SetUnicodeMode(bool unicodeMode);
@@ -276,7 +276,7 @@ public:
     // change the background colour of the selected cells
     void SetSelectionBackground(const wxColour& col);
 
-    virtual wxVisualAttributes GetDefaultAttributes() const wxOVERRIDE
+    virtual wxVisualAttributes GetDefaultAttributes() const
     {
         return GetClassDefaultAttributes(GetWindowVariant());
     }
@@ -297,7 +297,7 @@ protected:
     virtual void OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const;
 
     // gets the line height
-    virtual wxCoord OnGetRowHeight(size_t line) const wxOVERRIDE;
+    virtual wxCoord OnGetRowHeight(size_t line) const;
 
     // event handlers
     void OnPaint(wxPaintEvent& event);
@@ -366,9 +366,9 @@ private:
     // Unicode/ASCII mode
     bool        m_unicodeMode;
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
     wxDECLARE_NO_COPY_CLASS(wxSymbolListCtrl);
-    wxDECLARE_ABSTRACT_CLASS(wxSymbolListCtrl);
+    DECLARE_ABSTRACT_CLASS(wxSymbolListCtrl)
 };
 
 #endif

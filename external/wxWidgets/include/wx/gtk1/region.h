@@ -82,7 +82,7 @@ protected:
     void InitRect(wxCoord x, wxCoord y, wxCoord w, wxCoord h);
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxRegion);
+    DECLARE_DYNAMIC_CLASS(wxRegion)
 };
 
 // ----------------------------------------------------------------------------
@@ -117,7 +117,7 @@ private:
     wxRegion m_region;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxRegionIterator);
+    DECLARE_DYNAMIC_CLASS(wxRegionIterator)
 };
 
 

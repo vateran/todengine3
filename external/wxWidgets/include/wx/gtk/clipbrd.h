@@ -30,31 +30,31 @@ public:
     virtual ~wxClipboard();
 
     // open the clipboard before SetData() and GetData()
-    virtual bool Open() wxOVERRIDE;
+    virtual bool Open();
 
     // close the clipboard after SetData() and GetData()
-    virtual void Close() wxOVERRIDE;
+    virtual void Close();
 
     // query whether the clipboard is opened
-    virtual bool IsOpened() const wxOVERRIDE;
+    virtual bool IsOpened() const;
 
     // set the clipboard data. all other formats will be deleted.
-    virtual bool SetData( wxDataObject *data ) wxOVERRIDE;
+    virtual bool SetData( wxDataObject *data );
 
     // add to the clipboard data.
-    virtual bool AddData( wxDataObject *data ) wxOVERRIDE;
+    virtual bool AddData( wxDataObject *data );
 
     // ask if data in correct format is available
-    virtual bool IsSupported( const wxDataFormat& format ) wxOVERRIDE;
+    virtual bool IsSupported( const wxDataFormat& format );
 
     // ask if data in correct format is available
-    virtual bool IsSupportedAsync( wxEvtHandler *sink ) wxOVERRIDE;
+    virtual bool IsSupportedAsync( wxEvtHandler *sink );
 
     // fill data with data on the clipboard (if available)
-    virtual bool GetData( wxDataObject& data ) wxOVERRIDE;
+    virtual bool GetData( wxDataObject& data );
 
     // clears wxTheClipboard and the system's clipboard if possible
-    virtual void Clear() wxOVERRIDE;
+    virtual void Clear();
 
 
 
@@ -129,7 +129,7 @@ public:
 private:
     GtkWidget         *m_targetsWidgetAsync;  // for getting list of supported formats
 
-    wxDECLARE_DYNAMIC_CLASS(wxClipboard);
+    DECLARE_DYNAMIC_CLASS(wxClipboard)
 };
 
 #endif // _WX_GTK_CLIPBOARD_H_

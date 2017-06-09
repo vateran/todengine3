@@ -61,7 +61,7 @@ protected:
     virtual wxSize DoGetBestSize() const;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxButton);
+    DECLARE_DYNAMIC_CLASS(wxButton)
 };
 
 #endif // __GTKBUTTONH__

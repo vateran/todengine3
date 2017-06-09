@@ -20,7 +20,7 @@
 
 class WXDLLIMPEXP_CORE wxColourDialog: public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(wxColourDialog);
+DECLARE_DYNAMIC_CLASS(wxColourDialog)
 public:
     wxColourDialog();
     wxColourDialog(wxWindow *parent, wxColourData *data = NULL);

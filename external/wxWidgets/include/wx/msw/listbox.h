@@ -26,7 +26,7 @@
   WX_DEFINE_EXPORTED_ARRAY_PTR(wxOwnerDrawn *, wxListBoxItemsArray);
 #endif // wxUSE_OWNER_DRAWN
 
-// forward declaration for GetSelections()
+// forward decl for GetSelections()
 class WXDLLIMPEXP_FWD_BASE wxArrayInt;
 
 // ----------------------------------------------------------------------------
@@ -93,11 +93,6 @@ public:
     int HitTest(const wxPoint& pt) const { return DoHitTestList(pt); }
     int HitTest(wxCoord x, wxCoord y) const { return DoHitTestList(wxPoint(x, y)); }
 
-    virtual void EnsureVisible(int n);
-
-    virtual int GetTopItem() const;
-    virtual int GetCountPerPage() const;
-
     // ownerdrawn wxListBox and wxCheckListBox support
 #if wxUSE_OWNER_DRAWN
     // override base class virtuals
@@ -133,7 +128,7 @@ public:
     WXDWORD MSWGetStyle(long style, WXDWORD *exstyle) const;
 
     // under XP when using "transition effect for menus and tooltips" if we
-    // return true for WM_PRINTCLIENT here then it causes noticeable slowdown
+    // return true for WM_PRINTCLIENT here then it causes noticable slowdown
     virtual bool MSWShouldPropagatePrintChild()
     {
         return false;
@@ -197,7 +192,7 @@ private:
     bool m_updateHorizontalExtent;
 
 
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxListBox);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxListBox)
 };
 
 #endif // wxUSE_LISTBOX

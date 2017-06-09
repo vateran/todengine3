@@ -26,7 +26,7 @@ public:
                 wxWindowID id,
                 const wxPoint& pos = wxDefaultPosition,
                 const wxSize& size = wxDefaultSize,
-                long style = wxTB_DEFAULT_STYLE,
+                long style = wxTB_HORIZONTAL,
                 const wxString& name = wxToolBarNameStr)
     {
         Init();
@@ -38,7 +38,7 @@ public:
                 wxWindowID id,
                 const wxPoint& pos = wxDefaultPosition,
                 const wxSize& size = wxDefaultSize,
-                long style = wxTB_DEFAULT_STYLE,
+                long style = wxTB_HORIZONTAL,
                 const wxString& name = wxToolBarNameStr);
 
     virtual ~wxToolBar();
@@ -55,8 +55,6 @@ public:
 
     virtual void SetToolNormalBitmap(int id, const wxBitmap& bitmap);
     virtual void SetToolDisabledBitmap(int id, const wxBitmap& bitmap);
-
-    virtual void SetToolPacking(int packing);
 
     // implementation only from now on
     // -------------------------------
@@ -136,8 +134,6 @@ protected:
     // get the Windows toolbar style of this control
     long GetMSWToolbarStyle() const;
 
-    // set native toolbar padding
-    void MSWSetPadding(WXWORD padding);
 
     // the big bitmap containing all bitmaps of the toolbar buttons
     WXHBITMAP m_hBitmap;
@@ -174,8 +170,8 @@ private:
     WXHBRUSH MSWGetToolbarBgBrush();
 #endif // wxHAS_MSW_BACKGROUND_ERASE_HOOK
 
-    wxDECLARE_EVENT_TABLE();
-    wxDECLARE_DYNAMIC_CLASS(wxToolBar);
+    DECLARE_EVENT_TABLE()
+    DECLARE_DYNAMIC_CLASS(wxToolBar)
     wxDECLARE_NO_COPY_CLASS(wxToolBar);
 };
 

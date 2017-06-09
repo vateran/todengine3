@@ -106,12 +106,12 @@ public:
     // Allocates a copy of this object.
     // Required for wxEvtHandler::AddPendingEvent
     // ------------------------------------------------------------------------
-    virtual wxEvent *Clone() const wxOVERRIDE
+    virtual wxEvent *Clone() const
     {   return new wxMediaEvent(*this);     }
 
 
     // Put this class on wxWidget's RTTI table
-    wxDECLARE_DYNAMIC_CLASS(wxMediaEvent);
+    DECLARE_DYNAMIC_CLASS(wxMediaEvent)
 };
 
 // ----------------------------------------------------------------------------
@@ -215,13 +215,21 @@ protected:
     static const wxClassInfo* NextBackend(wxClassInfo::const_iterator* it);
 
     void OnMediaFinished(wxMediaEvent& evt);
-    virtual void DoMoveWindow(int x, int y, int w, int h) wxOVERRIDE;
-    wxSize DoGetBestSize() const wxOVERRIDE;
+    virtual void DoMoveWindow(int x, int y, int w, int h);
+    wxSize DoGetBestSize() const;
 
+    //FIXME:  This is nasty... find a better way to work around
+    //inheritance issues
+#if defined(__WXOSX_CARBON__)
+    virtual void MacVisibilityChanged();
+#endif
+#if defined(__WXOSX_CARBON__) || defined(__WXCOCOA__)
+    friend class wxQTMediaBackend;
+#endif
     class wxMediaBackend* m_imp;
     bool m_bLoaded;
 
-    wxDECLARE_DYNAMIC_CLASS(wxMediaCtrl);
+    DECLARE_DYNAMIC_CLASS(wxMediaCtrl)
 };
 
 // ----------------------------------------------------------------------------
@@ -229,7 +237,7 @@ protected:
 // wxMediaBackend
 //
 // Derive from this and use standard wxWidgets RTTI
-// (wxDECLARE_DYNAMIC_CLASS and wxIMPLEMENT_CLASS) to make a backend
+// (DECLARE_DYNAMIC_CLASS and IMPLEMENT_CLASS) to make a backend
 // for wxMediaCtrl.  Backends are searched alphabetically -
 // the one with the earliest letter is tried first.
 //
@@ -313,7 +321,7 @@ public:
     {                                   }
     virtual void RESERVED9() {}
 
-    wxDECLARE_DYNAMIC_CLASS(wxMediaBackend);
+    DECLARE_DYNAMIC_CLASS(wxMediaBackend)
 };
 
 

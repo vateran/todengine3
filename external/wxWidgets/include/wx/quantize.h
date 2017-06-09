@@ -36,7 +36,7 @@ class WXDLLIMPEXP_FWD_CORE wxPalette;
 class WXDLLIMPEXP_CORE wxQuantize: public wxObject
 {
 public:
-    wxDECLARE_DYNAMIC_CLASS(wxQuantize);
+DECLARE_DYNAMIC_CLASS(wxQuantize)
 
 //// Constructor
 

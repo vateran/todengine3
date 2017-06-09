@@ -35,6 +35,8 @@ public:
     class compatibility_iterator
     {
     private:
+        /* Workaround for broken VC6 nested class name resolution */
+        typedef typename BaseListType::iterator iterator;
         friend class wxDList<T>;
 
         iterator m_iter;

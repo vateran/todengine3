@@ -12,6 +12,7 @@
 
 // Include the header to get wxUSE_EVENTLOOP_SOURCE definition from it.
 #include "wx/evtloop.h"
+
 // ----------------------------------------------------------------------------
 // wxEventLoopSource: a source of events which may be added to wxEventLoop
 // ----------------------------------------------------------------------------
@@ -94,8 +95,6 @@ inline wxEventLoopSource::~wxEventLoopSource() { }
 
 #if defined(__DARWIN__)
     #include "wx/osx/evtloopsrc.h"
-#elif defined(__WXQT__)
-     #include "wx/unix/evtloopsrc.h"
 #endif
 
 #endif // wxUSE_EVENTLOOP_SOURCE

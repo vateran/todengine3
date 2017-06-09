@@ -28,7 +28,11 @@ class wxTextSizerWrapper;
 
 #define wxDIALOG_NO_PARENT      0x00000020  // Don't make owned by apps top window
 
+#ifdef __WXWINCE__
+#define wxDEFAULT_DIALOG_STYLE  (wxCAPTION | wxMAXIMIZE | wxCLOSE_BOX | wxNO_BORDER)
+#else
 #define wxDEFAULT_DIALOG_STYLE  (wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX)
+#endif
 
 // Layout adaptation levels, for SetLayoutAdaptationLevel
 
@@ -76,8 +80,10 @@ public:
     virtual void ShowWindowModal () ;
     virtual void SendWindowModalDialogEvent ( wxEventType type );
 
+#ifdef wxHAS_EVENT_BIND
     template<typename Functor>
     void ShowWindowModalThenDo(const Functor& onEndModal);
+#endif // wxHAS_EVENT_BIND
 
     // Modal dialogs have a return code - usually the id of the last
     // pressed button
@@ -266,7 +272,7 @@ private:
 
 
     wxDECLARE_NO_COPY_CLASS(wxDialogBase);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 /*!
@@ -278,7 +284,7 @@ private:
 
 class WXDLLIMPEXP_CORE wxDialogLayoutAdapter: public wxObject
 {
-    wxDECLARE_CLASS(wxDialogLayoutAdapter);
+    DECLARE_CLASS(wxDialogLayoutAdapter)
 public:
     wxDialogLayoutAdapter() {}
 
@@ -296,17 +302,17 @@ public:
 
 class WXDLLIMPEXP_CORE wxStandardDialogLayoutAdapter: public wxDialogLayoutAdapter
 {
-    wxDECLARE_CLASS(wxStandardDialogLayoutAdapter);
+    DECLARE_CLASS(wxStandardDialogLayoutAdapter)
 public:
     wxStandardDialogLayoutAdapter() {}
 
 // Overrides
 
     // Indicate that adaptation should be done
-    virtual bool CanDoLayoutAdaptation(wxDialog* dialog) wxOVERRIDE;
+    virtual bool CanDoLayoutAdaptation(wxDialog* dialog);
 
     // Do layout adaptation
-    virtual bool DoLayoutAdaptation(wxDialog* dialog) wxOVERRIDE;
+    virtual bool DoLayoutAdaptation(wxDialog* dialog);
 
 // Implementation
 
@@ -343,7 +349,7 @@ public:
     static int DoMustScroll(wxDialog* dialog, wxSize& windowSize, wxSize& displaySize);
 };
 
-#if defined(__WXUNIVERSAL__)
+#if defined(__WXUNIVERSAL__) && !defined(__WXMICROWIN__)
     #include "wx/univ/dialog.h"
 #else
     #if defined(__WXMSW__)
@@ -356,8 +362,10 @@ public:
         #include "wx/gtk1/dialog.h"
     #elif defined(__WXMAC__)
         #include "wx/osx/dialog.h"
-    #elif defined(__WXQT__)
-        #include "wx/qt/dialog.h"
+    #elif defined(__WXCOCOA__)
+        #include "wx/cocoa/dialog.h"
+    #elif defined(__WXPM__)
+        #include "wx/os2/dialog.h"
     #endif
 #endif
 
@@ -373,10 +381,10 @@ public:
     int GetReturnCode() const
         { return GetDialog()->GetReturnCode(); }
 
-    virtual wxEvent *Clone() const wxOVERRIDE { return new wxWindowModalDialogEvent (*this); }
+    virtual wxEvent *Clone() const { return new wxWindowModalDialogEvent (*this); }
 
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxWindowModalDialogEvent);
+    DECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxWindowModalDialogEvent )
 };
 
 wxDECLARE_EXPORTED_EVENT(WXDLLIMPEXP_CORE, wxEVT_WINDOW_MODAL_DIALOG_CLOSED , wxWindowModalDialogEvent );
@@ -389,6 +397,7 @@ typedef void (wxEvtHandler::*wxWindowModalDialogEventFunction)(wxWindowModalDial
 #define EVT_WINDOW_MODAL_DIALOG_CLOSED(winid, func) \
     wx__DECLARE_EVT1(wxEVT_WINDOW_MODAL_DIALOG_CLOSED, winid, wxWindowModalDialogEventHandler(func))
 
+#ifdef wxHAS_EVENT_BIND
 template<typename Functor>
 class wxWindowModalDialogEventFunctor
 {
@@ -426,6 +435,7 @@ void wxDialogBase::ShowWindowModalThenDo(const Functor& onEndModal)
          wxWindowModalDialogEventFunctor<Functor>(onEndModal));
     ShowWindowModal();
 }
+#endif // wxHAS_EVENT_BIND
 
 #endif
     // _WX_DIALOG_H_BASE_

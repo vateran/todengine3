@@ -129,7 +129,7 @@ protected:
     void Init();
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxRadioBox);
+    DECLARE_DYNAMIC_CLASS(wxRadioBox)
 };
 
 #endif // _WX_GTK_RADIOBOX_H_

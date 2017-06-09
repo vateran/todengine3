@@ -39,7 +39,7 @@ public:
 
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxStaticLine);
+    DECLARE_DYNAMIC_CLASS(wxStaticLine)
 };
 
 #endif // wxUSE_STATLINE

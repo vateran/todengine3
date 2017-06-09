@@ -46,6 +46,8 @@ public:
     virtual bool MSWCommand(WXUINT param, WXWORD id);
     virtual void Command(wxCommandEvent& event);
 
+    virtual State GetNormalState() const;
+
     // returns true if the platform should explicitly apply a theme border
     virtual bool CanApplyThemeBorder() const { return false; }
 
@@ -54,15 +56,13 @@ protected:
 
     virtual WXDWORD MSWGetStyle(long flags, WXDWORD *exstyle = NULL) const;
 
-    virtual bool MSWIsPushed() const;
-
     void Init();
 
     // current state of the button (when owner-drawn)
     bool m_state;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxToggleButton);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxToggleButton)
 };
 
 //-----------------------------------------------------------------------------
@@ -103,7 +103,7 @@ public:
     virtual void SetLabel(const wxString& label) { wxToggleButton::SetLabel(label); }
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxBitmapToggleButton);
+    DECLARE_DYNAMIC_CLASS(wxBitmapToggleButton)
 };
 
 #endif // _WX_TOGGLEBUTTON_H_

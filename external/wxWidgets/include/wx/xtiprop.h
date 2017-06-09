@@ -96,6 +96,7 @@ private:
 class wxPropertySetter##property : public wxPropertySetter              \
 {                                                                       \
 public:                                                                 \
+    wxINFUNC_CLASS_TYPE_FIX(Klass)                                      \
     wxPropertySetter##property() : wxPropertySetter( wxT(#setterMethod) ) {}            \
     virtual ~wxPropertySetter##property() {}                            \
                                                                         \
@@ -106,7 +107,7 @@ public:                                                                 \
         if ( variantValue.GetAs(&tempobj) )                                \
             obj->setterMethod(tempobj);                                    \
         else                                                            \
-            obj->setterMethod(*variantValue.As<valueType*>());      \
+            obj->setterMethod(*wxANY_AS(variantValue, valueType*));      \
     }                                                                   \
 };
 
@@ -114,6 +115,7 @@ public:                                                                 \
 class wxPropertyGetter##property : public wxPropertyGetter                              \
 {                                                                       \
 public:                                                                 \
+    wxINFUNC_CLASS_TYPE_FIX(Klass)                                      \
     wxPropertyGetter##property() : wxPropertyGetter( wxT(#gettermethod) ) {}            \
     virtual ~wxPropertyGetter##property() {}                                    \
                                                                         \
@@ -128,6 +130,7 @@ public:                                                                 \
 class wxPropertyCollectionAdder##property : public wxPropertyCollectionAdder                                \
 {                                                                       \
 public:                                                                 \
+    wxINFUNC_CLASS_TYPE_FIX(Klass)                                      \
     wxPropertyCollectionAdder##property() : wxPropertyCollectionAdder( wxT(#addermethod) ) {}               \
     virtual ~wxPropertyCollectionAdder##property() {}                                     \
                                                                         \
@@ -138,7 +141,7 @@ public:                                                                 \
         if ( variantValue.GetAs(&tempobj) )                                \
             obj->addermethod(tempobj);    \
         else                                                                            \
-            obj->addermethod(*variantValue.As<valueType*>());  \
+            obj->addermethod(*wxANY_AS(variantValue, valueType*));  \
     }                                                                                   \
 };
 
@@ -146,6 +149,7 @@ public:                                                                 \
 class wxPropertyCollectionGetter##property : public wxPropertyCollectionGetter              \
 {                                                                           \
 public:                                                                     \
+    wxINFUNC_CLASS_TYPE_FIX(Klass)                                          \
     wxPropertyCollectionGetter##property() : wxPropertyCollectionGetter( wxT(#gettermethod) ) {} \
     virtual ~wxPropertyCollectionGetter##property() {}                              \
                                                                             \

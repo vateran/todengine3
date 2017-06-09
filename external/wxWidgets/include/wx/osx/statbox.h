@@ -11,13 +11,16 @@
 #ifndef _WX_STATBOX_H_
 #define _WX_STATBOX_H_
 
-class WXDLLIMPEXP_CORE wxStaticBox : public wxStaticBoxBase
-{
-    wxDECLARE_DYNAMIC_CLASS(wxStaticBox);
+#include "wx/control.h"
 
-public:
-    wxStaticBox() {}
-    wxStaticBox(wxWindow *parent, wxWindowID id,
+// Group box
+class WXDLLIMPEXP_CORE wxStaticBox: public wxControl
+{
+  DECLARE_DYNAMIC_CLASS(wxStaticBox)
+
+ public:
+    inline wxStaticBox() {}
+    inline wxStaticBox(wxWindow *parent, wxWindowID id,
            const wxString& label,
            const wxPoint& pos = wxDefaultPosition,
            const wxSize& size = wxDefaultSize,

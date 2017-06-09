@@ -30,17 +30,9 @@
 
 #include "wx/generic/progdlgg.h"
 
-#if defined(__WXMSW__) && !defined(__WXUNIVERSAL__)
-    // The native implementation requires the use of threads and still has some
-    // problems, so it can be explicitly disabled.
-    #if wxUSE_THREADS && wxUSE_NATIVE_PROGRESSDLG
-        #define wxHAS_NATIVE_PROGRESSDIALOG
-        #include "wx/msw/progdlg.h"
-    #endif
-#endif
-
-// If there is no native one, just use the generic version.
-#ifndef wxHAS_NATIVE_PROGRESSDIALOG
+#if defined(__WXMSW__) && wxUSE_THREADS && !defined(__WXUNIVERSAL__)
+    #include "wx/msw/progdlg.h"
+#else
     class WXDLLIMPEXP_CORE wxProgressDialog
                            : public wxGenericProgressDialog
     {
@@ -56,7 +48,7 @@
     private:
         wxDECLARE_DYNAMIC_CLASS_NO_COPY( wxProgressDialog );
     };
-#endif // !wxHAS_NATIVE_PROGRESSDIALOG
+#endif // defined(__WXMSW__) && wxUSE_THREADS
 
 #endif // wxUSE_PROGRESSDLG
 

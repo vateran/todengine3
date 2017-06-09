@@ -98,7 +98,7 @@ protected:
     wxString m_label;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxControl);
+    DECLARE_DYNAMIC_CLASS(wxControl)
 };
 
 #endif // __GTKCONTROLH__

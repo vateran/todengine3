@@ -53,6 +53,7 @@ public:
     // The base for numbers display, e.g. 10 or 16.
     virtual int GetBase() const = 0;
     virtual bool SetBase(int base) = 0;
+
     // Select text in the textctrl
     virtual void SetSelection(long from, long to) = 0;
 
@@ -81,13 +82,13 @@ public:
     double GetValue() const       { return m_value; }
     void   SetValue(double value) { m_value = value; }
 
-    virtual wxEvent *Clone() const wxOVERRIDE { return new wxSpinDoubleEvent(*this); }
+    virtual wxEvent *Clone() const { return new wxSpinDoubleEvent(*this); }
 
 protected:
     double m_value;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxSpinDoubleEvent);
+    DECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxSpinDoubleEvent)
 };
 
 // ----------------------------------------------------------------------------
@@ -120,6 +121,9 @@ typedef void (wxEvtHandler::*wxSpinDoubleEventFunction)(wxSpinDoubleEvent&);
 #elif defined(__WXMSW__)
     #define wxHAS_NATIVE_SPINCTRL
     #include "wx/msw/spinctrl.h"
+#elif defined(__WXPM__)
+    #define wxHAS_NATIVE_SPINCTRL
+    #include "wx/os2/spinctrl.h"
 #elif defined(__WXGTK20__)
     #define wxHAS_NATIVE_SPINCTRL
     #define wxHAS_NATIVE_SPINCTRLDOUBLE
@@ -127,15 +131,12 @@ typedef void (wxEvtHandler::*wxSpinDoubleEventFunction)(wxSpinDoubleEvent&);
 #elif defined(__WXGTK__)
     #define wxHAS_NATIVE_SPINCTRL
     #include "wx/gtk1/spinctrl.h"
-#elif defined(__WXQT__)
-    #define wxHAS_NATIVE_SPINCTRL
-    #define wxHAS_NATIVE_SPINCTRLDOUBLE
-    #include "wx/qt/spinctrl.h"
 #endif // platform
 
 #if !defined(wxHAS_NATIVE_SPINCTRL) || !defined(wxHAS_NATIVE_SPINCTRLDOUBLE)
     #include "wx/generic/spinctlg.h"
 #endif
+
 namespace wxPrivate
 {
 

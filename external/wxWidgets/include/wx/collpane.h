@@ -70,12 +70,12 @@ public:
 
 
     // default copy ctor, assignment operator and dtor are ok
-    virtual wxEvent *Clone() const wxOVERRIDE { return new wxCollapsiblePaneEvent(*this); }
+    virtual wxEvent *Clone() const { return new wxCollapsiblePaneEvent(*this); }
 
 private:
     bool m_bCollapsed;
 
-    wxDECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxCollapsiblePaneEvent);
+    DECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxCollapsiblePaneEvent)
 };
 
 // ----------------------------------------------------------------------------

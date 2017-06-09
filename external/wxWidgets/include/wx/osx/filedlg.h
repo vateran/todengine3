@@ -24,7 +24,7 @@ class WXDLLIMPEXP_FWD_CORE wxChoice;
 
 class WXDLLIMPEXP_CORE wxFileDialog: public wxFileDialogBase
 {
-    wxDECLARE_DYNAMIC_CLASS(wxFileDialog);
+DECLARE_DYNAMIC_CLASS(wxFileDialog)
 protected:
     wxArrayString m_fileNames;
     wxArrayString m_paths;

@@ -16,7 +16,7 @@
 
 class WXDLLIMPEXP_CORE wxAcceleratorTable: public wxObject
 {
-    wxDECLARE_DYNAMIC_CLASS(wxAcceleratorTable);
+DECLARE_DYNAMIC_CLASS(wxAcceleratorTable)
 public:
     wxAcceleratorTable();
     wxAcceleratorTable(int n, const wxAcceleratorEntry entries[]); // Load from array

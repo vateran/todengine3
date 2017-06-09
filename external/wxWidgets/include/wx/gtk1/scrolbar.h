@@ -77,7 +77,7 @@ protected:
     virtual wxSize DoGetBestSize() const;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxScrollBar);
+    DECLARE_DYNAMIC_CLASS(wxScrollBar)
 };
 
 #endif

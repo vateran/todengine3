@@ -14,7 +14,7 @@
 // Checkbox item (single checkbox)
 class WXDLLIMPEXP_CORE wxCheckBox: public wxCheckBoxBase
 {
-    wxDECLARE_DYNAMIC_CLASS(wxCheckBox);
+    DECLARE_DYNAMIC_CLASS(wxCheckBox)
 
 public:
     inline wxCheckBox() { Init(); }

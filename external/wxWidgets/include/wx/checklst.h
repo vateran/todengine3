@@ -21,7 +21,13 @@
 // wxCheckListBox: a listbox whose items may be checked
 // ----------------------------------------------------------------------------
 
-class WXDLLIMPEXP_CORE wxCheckListBoxBase : public wxListBox
+class WXDLLIMPEXP_CORE wxCheckListBoxBase : public
+                                              #ifdef __WXWINCE__
+                                                  // keep virtuals synchronised
+                                                  wxListBoxBase
+                                              #else
+                                                  wxListBox
+                                              #endif
 {
 public:
     wxCheckListBoxBase() { }
@@ -37,6 +43,8 @@ public:
 
 #if defined(__WXUNIVERSAL__)
     #include "wx/univ/checklst.h"
+#elif defined(__WXWINCE__)
+    #include "wx/msw/wince/checklst.h"
 #elif defined(__WXMSW__)
     #include "wx/msw/checklst.h"
 #elif defined(__WXMOTIF__)
@@ -47,8 +55,10 @@ public:
     #include "wx/gtk1/checklst.h"
 #elif defined(__WXMAC__)
     #include "wx/osx/checklst.h"
-#elif defined(__WXQT__)
-    #include "wx/qt/checklst.h"
+#elif defined(__WXCOCOA__)
+    #include "wx/cocoa/checklst.h"
+#elif defined(__WXPM__)
+    #include "wx/os2/checklst.h"
 #endif
 
 #endif // wxUSE_CHECKLISTBOX

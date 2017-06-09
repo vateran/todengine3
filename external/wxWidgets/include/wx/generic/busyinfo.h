@@ -27,21 +27,11 @@ class WXDLLIMPEXP_FWD_CORE wxWindow;
 class WXDLLIMPEXP_CORE wxBusyInfo : public wxObject
 {
 public:
-    wxBusyInfo(const wxBusyInfoFlags& flags)
-    {
-        Init(flags);
-    }
-
-    wxBusyInfo(const wxString& message, wxWindow *parent = NULL)
-    {
-        Init(wxBusyInfoFlags().Parent(parent).Label(message));
-    }
+    wxBusyInfo(const wxString& message, wxWindow *parent = NULL);
 
     virtual ~wxBusyInfo();
 
 private:
-    void Init(const wxBusyInfoFlags& flags);
-
     wxFrame *m_InfoFrame;
 
     wxDECLARE_NO_COPY_CLASS(wxBusyInfo);

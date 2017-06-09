@@ -47,7 +47,7 @@ public:
 
     // unhide the base class version
     virtual bool LoadFile(const wxString& name,
-                          wxBitmapType flags = wxICON_DEFAULT_TYPE) wxOVERRIDE
+                          wxBitmapType flags = wxICON_DEFAULT_TYPE)
         { return wxBitmap::LoadFile(name, flags); }
 
     // create from bitmap (which should have a mask unless it's monochrome):
@@ -56,7 +56,7 @@ public:
     void CopyFromBitmap(const wxBitmap& bmp);
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxIcon);
+    DECLARE_DYNAMIC_CLASS(wxIcon)
 };
 
 #endif // _WX_GENERIC_ICON_H_

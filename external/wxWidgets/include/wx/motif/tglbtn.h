@@ -41,7 +41,7 @@ protected:
     virtual wxBorder GetDefaultBorder() const { return wxBORDER_NONE; }
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxToggleButton);
+    DECLARE_DYNAMIC_CLASS(wxToggleButton)
 
     // common part of all constructors
     void Init()

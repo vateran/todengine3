@@ -28,8 +28,10 @@ public:
     virtual bool DoMessageFromThreadWait();
     virtual WXDWORD WaitForThread(WXHANDLE hThread, int flags);
 #endif // wxUSE_THREADS
+#ifndef __WXWINCE__
     virtual bool CanUseStderr() { return true; }
     virtual bool WriteToStderr(const wxString& text);
+#endif // !__WXWINCE__
 };
 
 #if wxUSE_GUI
@@ -51,8 +53,10 @@ public:
 #endif // wxUSE_THREADS
     virtual wxPortId GetToolkitVersion(int *majVer = NULL, int *minVer = NULL) const;
 
+#ifndef __WXWINCE__
     virtual bool CanUseStderr();
     virtual bool WriteToStderr(const wxString& text);
+#endif // !__WXWINCE__
 };
 
 #elif defined(__WXGTK__)
@@ -79,8 +83,10 @@ public:
 #endif // wxUSE_THREADS
     virtual wxPortId GetToolkitVersion(int *majVer = NULL, int *minVer = NULL) const;
 
+#ifndef __WXWINCE__
     virtual bool CanUseStderr() { return false; }
     virtual bool WriteToStderr(const wxString& WXUNUSED(text)) { return false; }
+#endif // !__WXWINCE__
 };
 
 #endif

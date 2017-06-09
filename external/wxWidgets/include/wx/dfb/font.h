@@ -38,6 +38,18 @@ public:
     }
 
     wxFont(const wxNativeFontInfo& info) { Create(info); }
+#if FUTURE_WXWIN_COMPATIBILITY_3_0
+    wxFont(int size,
+           int family,
+           int style,
+           int weight,
+           bool underlined = false,
+           const wxString& face = wxEmptyString,
+           wxFontEncoding encoding = wxFONTENCODING_DEFAULT)
+    {
+        (void)Create(size, (wxFontFamily)family, (wxFontStyle)style, (wxFontWeight)weight, underlined, face, encoding);
+    }
+#endif
 
     wxFont(int size,
            wxFontFamily family,
@@ -91,19 +103,6 @@ public:
 
     wxDECLARE_COMMON_FONT_METHODS();
 
-
-    wxDEPRECATED_MSG("use wxFONT{FAMILY,STYLE,WEIGHT}_XXX constants")
-    wxFont(int size,
-           int family,
-           int style,
-           int weight,
-           bool underlined = false,
-           const wxString& face = wxEmptyString,
-           wxFontEncoding encoding = wxFONTENCODING_DEFAULT)
-    {
-        (void)Create(size, (wxFontFamily)family, (wxFontStyle)style, (wxFontWeight)weight, underlined, face, encoding);
-    }
-
     // implementation from now on:
     wxIDirectFBFontPtr GetDirectFBFont(bool antialiased) const;
 
@@ -114,7 +113,7 @@ protected:
     virtual wxFontFamily DoGetFamily() const;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxFont);
+    DECLARE_DYNAMIC_CLASS(wxFont)
 };
 
 #endif // _WX_DFB_FONT_H_

@@ -20,6 +20,17 @@
 #include "wx/osx/core/cfstring.h"
 #include "wx/osx/core/cfdataref.h"
 
+// Define helper macros allowing to insert small snippets of code to be
+// compiled for high enough OS X version only: this shouldn't be abused for
+// anything big but it's handy for e.g. specifying OS X 10.6-only protocols in
+// the Objective C classes declarations when they're not supported under the
+// previous versions
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6
+    #define wxOSX_10_6_AND_LATER(x) x
+#else
+    #define wxOSX_10_6_AND_LATER(x)
+#endif
+
 // platform specific Clang analyzer support
 #ifndef NS_RETURNS_RETAINED
 #   if WX_HAS_CLANG_FEATURE(attribute_ns_returns_retained)
@@ -42,6 +53,8 @@
 // Carbon functions are currently still used in wxOSX/Cocoa too (including
 // wxBase part of it).
 #include <Carbon/Carbon.h>
+
+WXDLLIMPEXP_BASE long UMAGetSystemVersion() ;
 
 void WXDLLIMPEXP_CORE wxMacStringToPascal( const wxString&from , unsigned char * to );
 wxString WXDLLIMPEXP_CORE wxMacMakeStringFromPascal( const unsigned char * from );
@@ -128,7 +141,11 @@ class wxSearchCtrl;
 
 WXDLLIMPEXP_CORE wxWindowMac * wxFindWindowFromWXWidget(WXWidget inControl );
 
+#if wxOSX_USE_CARBON
+typedef wxMacControl wxWidgetImplType;
+#else
 typedef wxWidgetImpl wxWidgetImplType;
+#endif
 
 #if wxUSE_MENUS
 class wxMenuItemImpl : public wxObject
@@ -162,7 +179,7 @@ public :
 protected :
     wxMenuItem* m_peer;
 
-    wxDECLARE_ABSTRACT_CLASS(wxMenuItemImpl);
+    DECLARE_ABSTRACT_CLASS(wxMenuItemImpl)
 } ;
 
 class wxMenuImpl : public wxObject
@@ -185,18 +202,13 @@ public :
     wxMenu* GetWXPeer() { return m_peer ; }
 
     virtual void PopUp( wxWindow *win, int x, int y ) = 0;
-    
-    virtual void GetMenuBarDimensions(int &x, int &y, int &width, int &height) const
-    {
-        x = y = width = height = -1;
-    }
 
     static wxMenuImpl* Create( wxMenu* peer, const wxString& title );
     static wxMenuImpl* CreateRootMenu( wxMenu* peer );
 protected :
     wxMenu* m_peer;
 
-    wxDECLARE_ABSTRACT_CLASS(wxMenuItemImpl);
+    DECLARE_ABSTRACT_CLASS(wxMenuItemImpl)
 } ;
 #endif
 
@@ -551,7 +563,7 @@ protected :
     bool                m_needsFrame;
     bool                m_shouldSendEvents;
 
-    wxDECLARE_ABSTRACT_CLASS(wxWidgetImpl);
+    DECLARE_ABSTRACT_CLASS(wxWidgetImpl)
 };
 
 //
@@ -609,7 +621,6 @@ public:
     // display
 
     virtual void            ListScrollTo( unsigned int n ) = 0;
-    virtual int             ListGetTopItem() const = 0;
     virtual void            UpdateLine( unsigned int n, wxListWidgetColumn* col = NULL ) = 0;
     virtual void            UpdateLineToEnd( unsigned int n) = 0;
 
@@ -652,10 +663,7 @@ public :
 
     virtual bool CanClipMaxLength() const { return false; }
     virtual void SetMaxLength(unsigned long WXUNUSED(len)) {}
-
-    virtual bool CanForceUpper() { return false; }
-    virtual void ForceUpper() {}
-
+    
     virtual bool GetStyle( long position, wxTextAttr& style);
     virtual void SetStyle( long start, long end, const wxTextAttr& style ) ;
     virtual void Copy() ;
@@ -847,10 +855,6 @@ public :
 
     virtual void SetTitle( const wxString& title, wxFontEncoding encoding ) = 0;
 
-    virtual bool EnableCloseButton(bool enable) = 0;
-    virtual bool EnableMaximizeButton(bool enable) = 0;
-    virtual bool EnableMinimizeButton(bool enable) = 0;
-
     virtual bool IsMaximized() const = 0;
 
     virtual bool IsIconized() const= 0;
@@ -862,8 +866,6 @@ public :
     virtual bool IsFullScreen() const= 0;
 
     virtual void ShowWithoutActivating() { Show(true); }
-
-    virtual bool EnableFullScreenView(bool enable) = 0;
 
     virtual bool ShowFullScreen(bool show, long style)= 0;
 
@@ -904,7 +906,7 @@ public :
     virtual void RestoreWindowLevel() {}
 protected :
     wxNonOwnedWindow*   m_wxPeer;
-    wxDECLARE_ABSTRACT_CLASS(wxNonOwnedWindowImpl);
+    DECLARE_ABSTRACT_CLASS(wxNonOwnedWindowImpl)
 };
 
 #endif // wxUSE_GUI

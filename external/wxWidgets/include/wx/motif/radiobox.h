@@ -128,7 +128,7 @@ protected:
 private:
     void Init();
 
-    wxDECLARE_DYNAMIC_CLASS(wxRadioBox);
+    DECLARE_DYNAMIC_CLASS(wxRadioBox)
 };
 
 #endif // _WX_MOTIF_RADIOBOX_H_

@@ -46,8 +46,8 @@ protected:
                            int sizeFlags = wxSIZE_AUTO);
 
 private:
-    wxDECLARE_EVENT_TABLE();
-    wxDECLARE_DYNAMIC_CLASS(wxPopupWindow);
+    DECLARE_EVENT_TABLE()
+    DECLARE_DYNAMIC_CLASS(wxPopupWindow)
 };
 
 #endif // __GTKPOPUPWINDOWH__

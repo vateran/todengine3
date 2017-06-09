@@ -32,26 +32,26 @@ public:
                  long style = 0,
                  const wxString &name = wxStaticBoxNameStr );
 
-    virtual void SetLabel( const wxString &label ) wxOVERRIDE;
+    virtual void SetLabel( const wxString &label );
 
     static wxVisualAttributes
     GetClassDefaultAttributes(wxWindowVariant variant = wxWINDOW_VARIANT_NORMAL);
 
     // implementation
 
-    virtual bool GTKIsTransparentForMouse() const wxOVERRIDE { return true; }
+    virtual bool GTKIsTransparentForMouse() const { return true; }
 
-    virtual void GetBordersForSizer(int *borderTop, int *borderOther) const wxOVERRIDE;
+    virtual void GetBordersForSizer(int *borderTop, int *borderOther) const;
 
-    virtual void AddChild( wxWindowBase *child ) wxOVERRIDE;
+    virtual void AddChild( wxWindowBase *child );
 
 protected:
-    virtual bool GTKWidgetNeedsMnemonic() const wxOVERRIDE;
-    virtual void GTKWidgetDoSetMnemonic(GtkWidget* w) wxOVERRIDE;
+    virtual bool GTKWidgetNeedsMnemonic() const;
+    virtual void GTKWidgetDoSetMnemonic(GtkWidget* w);
 
-    void DoApplyWidgetStyle(GtkRcStyle *style) wxOVERRIDE;
+    void DoApplyWidgetStyle(GtkRcStyle *style);
 
-    wxDECLARE_DYNAMIC_CLASS(wxStaticBox);
+    DECLARE_DYNAMIC_CLASS(wxStaticBox)
 };
 
 #endif // _WX_GTKSTATICBOX_H_

@@ -43,29 +43,29 @@ public:
 
     static bool IsTDI() { return false; }
 
-    virtual void AddChild(wxWindowBase *child) wxOVERRIDE;
-    virtual void RemoveChild(wxWindowBase *child) wxOVERRIDE;
+    virtual void AddChild(wxWindowBase *child);
+    virtual void RemoveChild(wxWindowBase *child);
 
-    virtual void ActivateNext() wxOVERRIDE { /* TODO */ }
-    virtual void ActivatePrevious() wxOVERRIDE { /* TODO */ }
+    virtual void ActivateNext() { /* TODO */ }
+    virtual void ActivatePrevious() { /* TODO */ }
 
-    virtual bool Show(bool show = true) wxOVERRIDE;
+    virtual bool Show(bool show = true);
 
 
     // Mac-specific implementation from now on
     // ---------------------------------------
 
     // Mac OS activate event
-    virtual void MacActivate(long timestamp, bool activating) wxOVERRIDE;
+    virtual void MacActivate(long timestamp, bool activating);
 
     // wxWidgets activate event
     void OnActivate(wxActivateEvent& event);
     void OnSysColourChanged(wxSysColourChangedEvent& event);
 
-    void SetMenuBar(wxMenuBar *menu_bar) wxOVERRIDE;
+    void SetMenuBar(wxMenuBar *menu_bar);
 
     // Get rect to be used to center top-level children
-    virtual void GetRectForTopLevelChildren(int *x, int *y, int *w, int *h) wxOVERRIDE;
+    virtual void GetRectForTopLevelChildren(int *x, int *y, int *w, int *h);
 
 protected:
     // common part of all ctors
@@ -88,8 +88,8 @@ protected:
 private:
     friend class WXDLLIMPEXP_FWD_CORE wxMDIChildFrame;
 
-    wxDECLARE_EVENT_TABLE();
-    wxDECLARE_DYNAMIC_CLASS(wxMDIParentFrame);
+    DECLARE_EVENT_TABLE()
+    DECLARE_DYNAMIC_CLASS(wxMDIParentFrame)
 };
 
 class WXDLLIMPEXP_CORE wxMDIChildFrame : public wxMDIChildFrameBase
@@ -132,7 +132,7 @@ protected:
     // common part of all ctors
     void Init();
 
-    wxDECLARE_DYNAMIC_CLASS(wxMDIChildFrame);
+    DECLARE_DYNAMIC_CLASS(wxMDIChildFrame)
 };
 
 class WXDLLIMPEXP_CORE wxMDIClientWindow : public wxMDIClientWindowBase
@@ -147,7 +147,7 @@ public:
 protected:
     virtual void DoGetClientSize(int *width, int *height) const;
 
-    wxDECLARE_DYNAMIC_CLASS(wxMDIClientWindow);
+    DECLARE_DYNAMIC_CLASS(wxMDIClientWindow)
 };
 
 #endif // _WX_OSX_CARBON_MDI_H_

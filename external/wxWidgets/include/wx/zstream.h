@@ -39,17 +39,17 @@ class WXDLLIMPEXP_BASE wxZlibInputStream: public wxFilterInputStream {
   wxZlibInputStream(wxInputStream *stream, int flags = wxZLIB_AUTO);
   virtual ~wxZlibInputStream();
 
-  char Peek() wxOVERRIDE { return wxInputStream::Peek(); }
-  wxFileOffset GetLength() const wxOVERRIDE { return wxInputStream::GetLength(); }
+  char Peek() { return wxInputStream::Peek(); }
+  wxFileOffset GetLength() const { return wxInputStream::GetLength(); }
 
   static bool CanHandleGZip();
 
-  bool SetDictionary(const char *data, size_t datalen);
+  bool SetDictionary(const char *data, const size_t datalen);
   bool SetDictionary(const wxMemoryBuffer &buf);
 
  protected:
-  size_t OnSysRead(void *buffer, size_t size) wxOVERRIDE;
-  wxFileOffset OnSysTell() const wxOVERRIDE { return m_pos; }
+  size_t OnSysRead(void *buffer, size_t size);
+  wxFileOffset OnSysTell() const { return m_pos; }
 
  private:
   void Init(int flags);
@@ -69,18 +69,18 @@ class WXDLLIMPEXP_BASE wxZlibOutputStream: public wxFilterOutputStream {
   wxZlibOutputStream(wxOutputStream *stream, int level = -1, int flags = wxZLIB_ZLIB);
   virtual ~wxZlibOutputStream() { Close(); }
 
-  void Sync() wxOVERRIDE { DoFlush(false); }
-  bool Close() wxOVERRIDE;
-  wxFileOffset GetLength() const wxOVERRIDE { return m_pos; }
+  void Sync() { DoFlush(false); }
+  bool Close();
+  wxFileOffset GetLength() const { return m_pos; }
 
   static bool CanHandleGZip();
 
-  bool SetDictionary(const char *data, size_t datalen);
+  bool SetDictionary(const char *data, const size_t datalen);
   bool SetDictionary(const wxMemoryBuffer &buf);
 
  protected:
-  size_t OnSysWrite(const void *buffer, size_t size) wxOVERRIDE;
-  wxFileOffset OnSysTell() const wxOVERRIDE { return m_pos; }
+  size_t OnSysWrite(const void *buffer, size_t size);
+  wxFileOffset OnSysTell() const { return m_pos; }
 
   virtual void DoFlush(bool final);
 
@@ -101,20 +101,20 @@ class WXDLLIMPEXP_BASE wxZlibClassFactory: public wxFilterClassFactory
 public:
     wxZlibClassFactory();
 
-    wxFilterInputStream *NewStream(wxInputStream& stream) const wxOVERRIDE
+    wxFilterInputStream *NewStream(wxInputStream& stream) const
         { return new wxZlibInputStream(stream); }
-    wxFilterOutputStream *NewStream(wxOutputStream& stream) const wxOVERRIDE
+    wxFilterOutputStream *NewStream(wxOutputStream& stream) const
         { return new wxZlibOutputStream(stream, -1); }
-    wxFilterInputStream *NewStream(wxInputStream *stream) const wxOVERRIDE
+    wxFilterInputStream *NewStream(wxInputStream *stream) const
         { return new wxZlibInputStream(stream); }
-    wxFilterOutputStream *NewStream(wxOutputStream *stream) const wxOVERRIDE
+    wxFilterOutputStream *NewStream(wxOutputStream *stream) const
         { return new wxZlibOutputStream(stream, -1); }
 
     const wxChar * const *GetProtocols(wxStreamProtocolType type
-                                       = wxSTREAM_PROTOCOL) const wxOVERRIDE;
+                                       = wxSTREAM_PROTOCOL) const;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxZlibClassFactory);
+    DECLARE_DYNAMIC_CLASS(wxZlibClassFactory)
 };
 
 class WXDLLIMPEXP_BASE wxGzipClassFactory: public wxFilterClassFactory
@@ -122,20 +122,20 @@ class WXDLLIMPEXP_BASE wxGzipClassFactory: public wxFilterClassFactory
 public:
     wxGzipClassFactory();
 
-    wxFilterInputStream *NewStream(wxInputStream& stream) const wxOVERRIDE
+    wxFilterInputStream *NewStream(wxInputStream& stream) const
         { return new wxZlibInputStream(stream); }
-    wxFilterOutputStream *NewStream(wxOutputStream& stream) const wxOVERRIDE
+    wxFilterOutputStream *NewStream(wxOutputStream& stream) const
         { return new wxZlibOutputStream(stream, -1); }
-    wxFilterInputStream *NewStream(wxInputStream *stream) const wxOVERRIDE
+    wxFilterInputStream *NewStream(wxInputStream *stream) const
         { return new wxZlibInputStream(stream); }
-    wxFilterOutputStream *NewStream(wxOutputStream *stream) const wxOVERRIDE
+    wxFilterOutputStream *NewStream(wxOutputStream *stream) const
         { return new wxZlibOutputStream(stream, -1); }
 
     const wxChar * const *GetProtocols(wxStreamProtocolType type
-                                       = wxSTREAM_PROTOCOL) const wxOVERRIDE;
+                                       = wxSTREAM_PROTOCOL) const;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxGzipClassFactory);
+    DECLARE_DYNAMIC_CLASS(wxGzipClassFactory)
 };
 
 WXDLLIMPEXP_BASE wxVersionInfo wxGetZlibVersionInfo();

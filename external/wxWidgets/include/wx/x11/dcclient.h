@@ -108,8 +108,6 @@ public:
 
     virtual void ComputeScaleAndOrigin();
 
-    virtual void* GetCairoContext() const wxOVERRIDE;
-
 protected:
     // implementation
     // --------------
@@ -142,7 +140,7 @@ protected:
     void Destroy();
 
 private:
-    wxDECLARE_CLASS(wxWindowDCImpl);
+    DECLARE_CLASS(wxWindowDCImpl)
 };
 
 //-----------------------------------------------------------------------------
@@ -159,7 +157,7 @@ protected:
     virtual void DoGetSize(int *width, int *height) const;
 
 private:
-    wxDECLARE_CLASS(wxClientDCImpl);
+    DECLARE_CLASS(wxClientDCImpl)
 };
 
 //-----------------------------------------------------------------------------
@@ -173,7 +171,7 @@ public:
     wxPaintDCImpl( wxDC *owner, wxWindow *win );
 
 private:
-    wxDECLARE_CLASS(wxPaintDCImpl);
+    DECLARE_CLASS(wxPaintDCImpl)
 };
 
 #endif

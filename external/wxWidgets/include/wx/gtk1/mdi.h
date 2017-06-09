@@ -69,7 +69,7 @@ public:
 private:
     void Init();
 
-    wxDECLARE_DYNAMIC_CLASS(wxMDIParentFrame);
+    DECLARE_DYNAMIC_CLASS(wxMDIParentFrame)
 };
 
 //-----------------------------------------------------------------------------
@@ -124,8 +124,8 @@ private:
 
     GtkNotebook *GTKGetNotebook() const;
 
-    wxDECLARE_EVENT_TABLE();
-    wxDECLARE_DYNAMIC_CLASS(wxMDIChildFrame);
+    DECLARE_EVENT_TABLE()
+    DECLARE_DYNAMIC_CLASS(wxMDIChildFrame)
 };
 
 //-----------------------------------------------------------------------------
@@ -141,7 +141,7 @@ public:
                               long style = wxVSCROLL | wxHSCROLL);
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxMDIClientWindow);
+    DECLARE_DYNAMIC_CLASS(wxMDIClientWindow)
 };
 
 #endif // _WX_GTK1_MDI_H_

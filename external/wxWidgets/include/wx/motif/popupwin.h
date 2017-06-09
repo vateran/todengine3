@@ -29,7 +29,7 @@ public:
 private:
     void Init() { m_isShown = false; }
 
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxPopupWindow);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxPopupWindow)
 };
 
 #endif // _WX_MOTIF_POPUPWIN_H_

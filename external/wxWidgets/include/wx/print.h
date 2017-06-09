@@ -23,10 +23,10 @@
 
 #include "wx/osx/printmac.h"
 
+#elif defined(__WXPM__)
 
-#elif defined(__WXQT__)
+#include "wx/os2/printos2.h"
 
-#include "wx/qt/printqt.h"
 #else
 
 #include "wx/generic/printps.h"

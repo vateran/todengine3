@@ -22,19 +22,14 @@
 #include "wx/control.h"
 #include "wx/treebase.h"
 #include "wx/textctrl.h" // wxTextCtrl::ms_classinfo used through wxCLASSINFO macro
-#include "wx/systhemectrl.h"
 
 class WXDLLIMPEXP_FWD_CORE wxImageList;
-
-#if !defined(__WXMSW__) || defined(__WXUNIVERSAL__)
-    #define wxHAS_GENERIC_TREECTRL
-#endif
 
 // ----------------------------------------------------------------------------
 // wxTreeCtrlBase
 // ----------------------------------------------------------------------------
 
-class WXDLLIMPEXP_CORE wxTreeCtrlBase : public wxSystemThemedControl<wxControl>
+class WXDLLIMPEXP_CORE wxTreeCtrlBase : public wxControl
 {
 public:
     wxTreeCtrlBase();
@@ -396,14 +391,14 @@ public:
     // implementation
     // --------------
 
-    virtual bool ShouldInheritColours() const wxOVERRIDE { return false; }
+    virtual bool ShouldInheritColours() const { return false; }
 
     // hint whether to calculate best size quickly or accurately
     void SetQuickBestSize(bool q) { m_quickBestSize = q; }
     bool GetQuickBestSize() const { return m_quickBestSize; }
 
 protected:
-    virtual wxSize DoGetBestSize() const wxOVERRIDE;
+    virtual wxSize DoGetBestSize() const;
 
     // common part of Get/SetItemState()
     virtual int DoGetItemState(const wxTreeItemId& item) const = 0;
@@ -461,12 +456,20 @@ private:
 // include the platform-dependent wxTreeCtrl class
 // ----------------------------------------------------------------------------
 
-#ifdef wxHAS_GENERIC_TREECTRL
+#if defined(__WXUNIVERSAL__)
     #include "wx/generic/treectlg.h"
 #elif defined(__WXMSW__)
     #include "wx/msw/treectrl.h"
-#else
-    #error "unknown native wxTreeCtrl implementation"
+#elif defined(__WXMOTIF__)
+    #include "wx/generic/treectlg.h"
+#elif defined(__WXGTK__)
+    #include "wx/generic/treectlg.h"
+#elif defined(__WXMAC__)
+    #include "wx/generic/treectlg.h"
+#elif defined(__WXCOCOA__)
+    #include "wx/generic/treectlg.h"
+#elif defined(__WXPM__)
+    #include "wx/generic/treectlg.h"
 #endif
 
 #endif // wxUSE_TREECTRL

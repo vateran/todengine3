@@ -34,30 +34,7 @@ class WXDLLIMPEXP_FWD_CORE wxFileDialogBase;
 #include "wx/msgdlg.h"
 #include "wx/filedlg.h"
 
-#include <typeinfo>
-
 class wxTestingModalHook;
-
-// This helper is used to construct the best possible name for the dialog of
-// the given type using wxRTTI for this type, if any, and the C++ RTTI for
-// either the type T statically or the dynamic type of "dlg" if it's non-null.
-template <class T>
-wxString wxGetDialogClassDescription(const wxClassInfo *ci, T* dlg = NULL)
-{
-    // We prefer to use the name from wxRTTI as it's guaranteed to be readable,
-    // unlike the name returned by type_info::name() which may need to be
-    // demangled, but if wxRTTI macros were not used for this object, it's
-    // better to return a not-very-readable-but-informative mangled name rather
-    // than a readable but useless "wxDialog".
-    if ( ci == wxCLASSINFO(wxDialog) )
-    {
-        return wxString::Format("dialog of type \"%s\"",
-                                (dlg ? typeid(*dlg) : typeid(T)).name());
-    }
-
-    // We consider that an unmangled name is clear enough to be used on its own.
-    return ci->GetClassName();
-}
 
 // Non-template base class for wxExpectModal<T> (via wxExpectModalBase).
 // Only used internally.
@@ -67,72 +44,37 @@ public:
     wxModalExpectation() : m_isOptional(false) {}
     virtual ~wxModalExpectation() {}
 
-    wxString GetDescription() const
-    {
-        return m_description.empty() ? GetDefaultDescription() : m_description;
-    }
-
     bool IsOptional() const { return m_isOptional; }
 
     virtual int Invoke(wxDialog *dlg) const = 0;
 
+    virtual wxString GetDescription() const = 0;
+
 protected:
-    // Override to return the default description of the expected dialog used
-    // if no specific description for this particular expectation is given.
-    virtual wxString GetDefaultDescription() const = 0;
-
-    // User-provided description of the dialog, may be empty.
-    wxString m_description;
-
     // Is this dialog optional, i.e. not required to be shown?
     bool m_isOptional;
 };
 
 
-// This template is specialized for some of the standard dialog classes and can
-// also be specialized outside of the library for the custom dialogs.
-//
-// All specializations must derive from wxExpectModalBase<T>.
-template<class T> class wxExpectModal;
+// This must be specialized for each type. The specialization MUST be derived
+// from wxExpectModalBase<T>.
+template<class T> class wxExpectModal {};
 
 
 /**
-    Base class for the expectation of a dialog of the given type T.
+    Base class for wxExpectModal<T> specializations.
 
-    Test code can derive ad hoc classes from this class directly and implement
-    its OnInvoked() to perform the necessary actions or derive wxExpectModal<T>
-    and implement it once if the implementation of OnInvoked() is always the
-    same, i.e. depends just on the type T.
+    Every such specialization must be derived from wxExpectModalBase; there's
+    no other use for this class than to serve as wxExpectModal<T>'s base class.
 
-    T must be a class derived from wxDialog and E is the derived class type,
-    i.e. this is an example of using CRTP. The default value of E is fine in
-    case you're using this class as a base for your wxExpectModal<>
-    specialization anyhow but also if you don't use neither Optional() nor
-    Describe() methods, as the derived class type is only needed for them.
+    T must be a class derived from wxDialog.
  */
-template<class T, class E = wxExpectModal<T> >
+template<class T>
 class wxExpectModalBase : public wxModalExpectation
 {
 public:
     typedef T DialogType;
-    typedef E ExpectationType;
-
-
-    // A note about these "modifier" methods: they return copies of this object
-    // and not a reference to the object itself (after modifying it) because
-    // this object is likely to be temporary and will be destroyed soon, while
-    // the new temporary created by these objects is bound to a const reference
-    // inside WX_TEST_IMPL_ADD_EXPECTATION() macro ensuring that its lifetime
-    // is prolonged until we can check if the expectations were met.
-    //
-    // This is also the reason these methods must be in this class and use
-    // CRTP: a copy of this object can't be created in the base class, which is
-    // abstract, and the copy must have the same type as the derived object to
-    // avoid slicing.
-    //
-    // Make sure you understand this comment in its entirety before considering
-    // modifying this code.
-
+    typedef wxExpectModal<DialogType> ExpectationType;
 
     /**
         Returns a copy of the expectation where the expected dialog is marked
@@ -148,20 +90,6 @@ public:
         return e;
     }
 
-    /**
-        Sets a description shown in the error message if the expectation fails.
-
-        Using this method with unique descriptions for the different dialogs is
-        recommended to make it easier to find out which one of the expected
-        dialogs exactly was not shown.
-     */
-    ExpectationType Describe(const wxString& description) const
-    {
-        ExpectationType e(*static_cast<const ExpectationType*>(this));
-        e.m_description = description;
-        return e;
-    }
-
 protected:
     virtual int Invoke(wxDialog *dlg) const
     {
@@ -173,9 +101,9 @@ protected:
     }
 
     /// Returns description of the expected dialog (by default, its class).
-    virtual wxString GetDefaultDescription() const
+    virtual wxString GetDescription() const
     {
-        return wxGetDialogClassDescription<T>(wxCLASSINFO(T));
+        return wxCLASSINFO(T)->GetClassName();
     }
 
     /**
@@ -189,12 +117,11 @@ protected:
 
 // wxExpectModal<T> specializations for common dialogs:
 
-template<class T>
-class wxExpectDismissableModal
-    : public wxExpectModalBase<T, wxExpectDismissableModal<T> >
+template<>
+class wxExpectModal<wxMessageDialog> : public wxExpectModalBase<wxMessageDialog>
 {
 public:
-    explicit wxExpectDismissableModal(int id)
+    wxExpectModal(int id)
     {
         switch ( id )
         {
@@ -220,61 +147,12 @@ public:
     }
 
 protected:
-    virtual int OnInvoked(T *WXUNUSED(dlg)) const
+    virtual int OnInvoked(wxMessageDialog *WXUNUSED(dlg)) const
     {
         return m_id;
     }
 
     int m_id;
-};
-
-template<>
-class wxExpectModal<wxMessageDialog>
-    : public wxExpectDismissableModal<wxMessageDialog>
-{
-public:
-    explicit wxExpectModal(int id)
-        : wxExpectDismissableModal<wxMessageDialog>(id)
-    {
-    }
-
-protected:
-    virtual wxString GetDefaultDescription() const
-    {
-        // It can be useful to show which buttons the expected message box was
-        // supposed to have, in case there could have been several of them.
-        wxString details;
-        switch ( m_id )
-        {
-            case wxID_YES:
-            case wxID_NO:
-                details = "wxYES_NO style";
-                break;
-
-            case wxID_CANCEL:
-                details = "wxCANCEL style";
-                break;
-
-            case wxID_OK:
-                details = "wxOK style";
-                break;
-
-            default:
-                details.Printf("a button with ID=%d", m_id);
-                break;
-        }
-
-        return "wxMessageDialog with " + details;
-    }
-};
-
-class wxExpectAny : public wxExpectDismissableModal<wxDialog>
-{
-public:
-    explicit wxExpectAny(int id)
-        : wxExpectDismissableModal<wxDialog>(id)
-    {
-    }
 };
 
 #if wxUSE_FILEDLG
@@ -307,14 +185,7 @@ protected:
 class wxTestingModalHook : public wxModalDialogHook
 {
 public:
-    // This object is created with the location of the macro containing it by
-    // wxTEST_DIALOG macro, otherwise it falls back to the location of this
-    // line itself, which is not very useful, so normally you should provide
-    // your own values.
-    wxTestingModalHook(const char* file = NULL,
-                       int line = 0,
-                       const char* func = NULL)
-        : m_file(file), m_line(line), m_func(func)
+    wxTestingModalHook()
     {
         Register();
     }
@@ -337,7 +208,7 @@ public:
             (
                 wxString::Format
                 (
-                    "Expected %s was not shown.",
+                    "Expected %s dialog was not shown.",
                     expect->GetDescription()
                 )
             );
@@ -370,8 +241,8 @@ protected:
                 (
                     wxString::Format
                     (
-                        "%s was shown unexpectedly, expected %s.",
-                        DescribeUnexpectedDialog(dlg),
+                        "A %s dialog was shown unexpectedly, expected %s.",
+                        dlg->GetClassInfo()->GetClassName(),
                         expect->GetDescription()
                     )
                 );
@@ -384,54 +255,20 @@ protected:
         (
             wxString::Format
             (
-                "%s was shown unexpectedly.",
-                DescribeUnexpectedDialog(dlg)
+                "A dialog (%s) was shown unexpectedly.",
+                dlg->GetClassInfo()->GetClassName()
             )
         );
         return wxID_NONE;
     }
 
 protected:
-    // This method may be overridden to provide a better description of
-    // (unexpected) dialogs, e.g. add knowledge of custom dialogs used by the
-    // program here.
-    virtual wxString DescribeUnexpectedDialog(wxDialog* dlg) const
-    {
-        // Message boxes are handled specially here just because they are so
-        // ubiquitous.
-        if ( wxMessageDialog *msgdlg = dynamic_cast<wxMessageDialog*>(dlg) )
-        {
-            return wxString::Format
-                   (
-                        "A message box \"%s\"",
-                        msgdlg->GetMessage()
-                   );
-        }
-
-        return wxString::Format
-               (
-                    "A %s with title \"%s\"",
-                    wxGetDialogClassDescription(dlg->GetClassInfo(), dlg),
-                    dlg->GetTitle()
-               );
-    }
-
-    // This method may be overridden to change the way test failures are
-    // handled. By default they result in an assertion failure which, of
-    // course, can itself be customized.
     virtual void ReportFailure(const wxString& msg)
     {
-        wxFAIL_MSG_AT( msg,
-                       m_file ? m_file : __FILE__,
-                       m_line ? m_line : __LINE__,
-                       m_func ? m_func : __WXFUNCTION__ );
+        wxFAIL_MSG( msg );
     }
 
 private:
-    const char* const m_file;
-    const int m_line;
-    const char* const m_func;
-
     std::queue<const wxModalExpectation*> m_expectations;
 
     wxDECLARE_NO_COPY_CLASS(wxTestingModalHook);
@@ -440,9 +277,7 @@ private:
 
 // Redefining this value makes it possible to customize the hook class,
 // including e.g. its error reporting.
-#ifndef wxTEST_DIALOG_HOOK_CLASS
-    #define wxTEST_DIALOG_HOOK_CLASS wxTestingModalHook
-#endif
+#define wxTEST_DIALOG_HOOK_CLASS wxTestingModalHook
 
 #define WX_TEST_IMPL_ADD_EXPECTATION(pos, expect)                              \
     const wxModalExpectation& wx_exp##pos = expect;                            \
@@ -502,15 +337,9 @@ private:
           method.
  */
 #ifdef HAVE_VARIADIC_MACROS
-
-// See wx/cpp.h for the explanations of this hack.
-#if defined(__GNUC__) && __GNUC__ == 3
-    #pragma GCC system_header
-#endif /* gcc-3.x */
-
 #define wxTEST_DIALOG(codeToRun, ...)                                          \
     {                                                                          \
-        wxTEST_DIALOG_HOOK_CLASS wx_hook(__FILE__, __LINE__, __WXFUNCTION__);  \
+        wxTEST_DIALOG_HOOK_CLASS wx_hook;                                      \
         wxCALL_FOR_EACH(WX_TEST_IMPL_ADD_EXPECTATION, __VA_ARGS__)             \
         codeToRun;                                                             \
         wx_hook.CheckUnmetExpectations();                                      \

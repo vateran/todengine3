@@ -16,7 +16,7 @@
 
 class WXDLLIMPEXP_CORE wxStaticBitmap : public wxStaticBitmapBase
 {
-    wxDECLARE_DYNAMIC_CLASS(wxStaticBitmap);
+    DECLARE_DYNAMIC_CLASS(wxStaticBitmap)
 
 public:
     wxStaticBitmap() { }

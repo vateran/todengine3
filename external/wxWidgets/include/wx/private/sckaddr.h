@@ -50,7 +50,11 @@ union wxSockAddressStorage
 // ----------------------------------------------------------------------------
 
 // helper class mapping sockaddr_xxx types to corresponding AF_XXX values
-template <class T> struct AddressFamily;
+//
+// FIXME-VC6: we could leave the template undefined if not for VC6 which
+//            absolutely does need to have a generic version defining the
+//            template "interface" to compile the code below
+template <class T> struct AddressFamily { enum { value = AF_UNSPEC }; };
 
 template <> struct AddressFamily<sockaddr_in> { enum { value = AF_INET }; };
 
@@ -245,8 +249,11 @@ private:
         m_len = len;
     }
 
+    // FIXME-VC6: VC6 doesn't grok Foo<T>() call syntax so we need the extra
+    //            dummy parameter of type T, use the macros in sckaddr.cpp to
+    //            hide it
     template <class T>
-    T *Alloc()
+    T *Alloc(T *)
     {
         DoAlloc(sizeof(T));
 
@@ -254,7 +261,7 @@ private:
     }
 
     template <class T>
-    T *Get() const
+    T *Get(T *) const
     {
         wxCHECK_MSG( static_cast<int>(m_family) == AddressFamily<T>::value,
                      NULL,

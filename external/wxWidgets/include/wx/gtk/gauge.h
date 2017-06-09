@@ -40,6 +40,11 @@ public:
                  const wxValidator& validator = wxDefaultValidator,
                  const wxString& name = wxGaugeNameStr );
 
+    void SetShadowWidth( int WXUNUSED(w) ) { }
+    void SetBezelFace( int WXUNUSED(w) ) { }
+    int GetShadowWidth() const { return 0; }
+    int GetBezelFace() const { return 0; }
+
     // determinate mode API
     void SetRange( int r );
     void SetValue( int pos );
@@ -55,7 +60,7 @@ public:
     static wxVisualAttributes
     GetClassDefaultAttributes(wxWindowVariant variant = wxWINDOW_VARIANT_NORMAL);
 
-    virtual wxVisualAttributes GetDefaultAttributes() const wxOVERRIDE;
+    virtual wxVisualAttributes GetDefaultAttributes() const;
 
     // implementation
     // -------------
@@ -68,12 +73,12 @@ protected:
     // set the gauge value to the value of m_gaugePos
     void DoSetGauge();
 
-    virtual wxSize DoGetBestSize() const wxOVERRIDE;
+    virtual wxSize DoGetBestSize() const;
 
 private:
     void Init() { m_rangeMax = m_gaugePos = 0; }
 
-    wxDECLARE_DYNAMIC_CLASS(wxGauge);
+    DECLARE_DYNAMIC_CLASS(wxGauge)
 };
 
 #endif

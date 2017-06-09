@@ -60,7 +60,7 @@ private:
 
     wxDC *m_dc;
 
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewRenderer);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewRenderer)
 };
 
 #endif // _WX_GENERIC_DVRENDERER_H_

@@ -33,9 +33,7 @@ OSStatus WXDLLIMPEXP_CORE wxMacDrawCGImage(
                                const CGRect *  inBounds,
                                CGImageRef      inImage) ;
 WX_NSImage WXDLLIMPEXP_CORE wxOSXGetNSImageFromCGImage( CGImageRef image, double scale = 1.0, bool isTemplate = false);
-WX_NSImage WXDLLIMPEXP_CORE wxOSXGetNSImageFromIconRef( WXHICON iconref );
 CGImageRef WXDLLIMPEXP_CORE wxOSXCreateCGImageFromNSImage( WX_NSImage nsimage, double *scale = NULL );
-CGImageRef WXDLLIMPEXP_CORE wxOSXGetCGImageFromNSImage( WX_NSImage nsimage, CGRect* r, CGContextRef cg);
 CGContextRef WXDLLIMPEXP_CORE wxOSXCreateBitmapContextFromNSImage( WX_NSImage nsimage, bool *isTemplate = NULL);
 
 wxBitmap WXDLLIMPEXP_CORE wxOSXCreateSystemBitmap(const wxString& id, const wxString &client, const wxSize& size);
@@ -187,7 +185,7 @@ protected:
     // events, don't resend them
     bool m_hasEditor;
 
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxWidgetCocoaImpl);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxWidgetCocoaImpl)
 };
 
 DECLARE_WXCOCOA_OBJC_CLASS( wxNSWindow );
@@ -200,74 +198,68 @@ public :
 
     virtual ~wxNonOwnedWindowCocoaImpl();
 
-    virtual void WillBeDestroyed() wxOVERRIDE;
+    virtual void WillBeDestroyed() ;
     void Create( wxWindow* parent, const wxPoint& pos, const wxSize& size,
-    long style, long extraStyle, const wxString& name ) wxOVERRIDE;
+    long style, long extraStyle, const wxString& name ) ;
     void Create( wxWindow* parent, WXWindow nativeWindow );
 
-    WXWindow GetWXWindow() const wxOVERRIDE;
-    void Raise() wxOVERRIDE;
-    void Lower() wxOVERRIDE;
-    bool Show(bool show) wxOVERRIDE;
+    WXWindow GetWXWindow() const;
+    void Raise();
+    void Lower();
+    bool Show(bool show);
 
     virtual bool ShowWithEffect(bool show,
                                 wxShowEffect effect,
-                                unsigned timeout) wxOVERRIDE;
+                                unsigned timeout);
 
-    void Update() wxOVERRIDE;
-    bool SetTransparent(wxByte alpha) wxOVERRIDE;
-    bool SetBackgroundColour(const wxColour& col ) wxOVERRIDE;
-    void SetExtraStyle( long exStyle ) wxOVERRIDE;
-    void SetWindowStyleFlag( long style ) wxOVERRIDE;
-    bool SetBackgroundStyle(wxBackgroundStyle style) wxOVERRIDE;
-    bool CanSetTransparent() wxOVERRIDE;
+    void Update();
+    bool SetTransparent(wxByte alpha);
+    bool SetBackgroundColour(const wxColour& col );
+    void SetExtraStyle( long exStyle );
+    void SetWindowStyleFlag( long style );
+    bool SetBackgroundStyle(wxBackgroundStyle style);
+    bool CanSetTransparent();
 
-    void MoveWindow(int x, int y, int width, int height) wxOVERRIDE;
-    void GetPosition( int &x, int &y ) const wxOVERRIDE;
-    void GetSize( int &width, int &height ) const wxOVERRIDE;
+    void MoveWindow(int x, int y, int width, int height);
+    void GetPosition( int &x, int &y ) const;
+    void GetSize( int &width, int &height ) const;
 
-    void GetContentArea( int &left , int &top , int &width , int &height ) const wxOVERRIDE;
-    bool SetShape(const wxRegion& region) wxOVERRIDE;
+    void GetContentArea( int &left , int &top , int &width , int &height ) const;
+    bool SetShape(const wxRegion& region);
 
-    virtual void SetTitle( const wxString& title, wxFontEncoding encoding ) wxOVERRIDE;
+    virtual void SetTitle( const wxString& title, wxFontEncoding encoding ) ;
 
-    virtual bool EnableCloseButton(bool enable) wxOVERRIDE;
-    virtual bool EnableMaximizeButton(bool enable) wxOVERRIDE;
-    virtual bool EnableMinimizeButton(bool enable) wxOVERRIDE;
+    virtual bool IsMaximized() const;
 
-    virtual bool IsMaximized() const wxOVERRIDE;
+    virtual bool IsIconized() const;
 
-    virtual bool IsIconized() const wxOVERRIDE;
+    virtual void Iconize( bool iconize );
 
-    virtual void Iconize( bool iconize ) wxOVERRIDE;
+    virtual void Maximize(bool maximize);
 
-    virtual void Maximize(bool maximize) wxOVERRIDE;
+    virtual bool IsFullScreen() const;
 
-    virtual bool IsFullScreen() const wxOVERRIDE;
+    virtual bool ShowFullScreen(bool show, long style);
 
-    bool EnableFullScreenView(bool enable) wxOVERRIDE;
+    virtual void ShowWithoutActivating();
 
-    virtual bool ShowFullScreen(bool show, long style) wxOVERRIDE;
+    virtual void RequestUserAttention(int flags);
 
-    virtual void ShowWithoutActivating() wxOVERRIDE;
+    virtual void ScreenToWindow( int *x, int *y );
 
-    virtual void RequestUserAttention(int flags) wxOVERRIDE;
+    virtual void WindowToScreen( int *x, int *y );
 
-    virtual void ScreenToWindow( int *x, int *y ) wxOVERRIDE;
+    virtual bool IsActive();
 
-    virtual void WindowToScreen( int *x, int *y ) wxOVERRIDE;
+    virtual void SetModified(bool modified);
+    virtual bool IsModified() const;
 
-    virtual bool IsActive() wxOVERRIDE;
-
-    virtual void SetModified(bool modified) wxOVERRIDE;
-    virtual bool IsModified() const wxOVERRIDE;
-
-    virtual void SetRepresentedFilename(const wxString& filename) wxOVERRIDE;
+    virtual void SetRepresentedFilename(const wxString& filename);
 
     wxNonOwnedWindow*   GetWXPeer() { return m_wxPeer; }
     
-    CGWindowLevel   GetWindowLevel() const wxOVERRIDE { return m_macWindowLevel; }
-    void            RestoreWindowLevel() wxOVERRIDE;
+    CGWindowLevel   GetWindowLevel() const { return m_macWindowLevel; }
+    void            RestoreWindowLevel();
     
     static WX_NSResponder GetNextFirstResponder() ;
     static WX_NSResponder GetFormerFirstResponder() ;
@@ -275,7 +267,7 @@ protected :
     CGWindowLevel   m_macWindowLevel;
     WXWindow        m_macWindow;
     void *          m_macFullScreenData ;
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxNonOwnedWindowCocoaImpl);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxNonOwnedWindowCocoaImpl)
 };
 
 DECLARE_WXCOCOA_OBJC_CLASS( wxNSButton );
@@ -297,8 +289,6 @@ public:
 };
 
 #ifdef __OBJC__
-
-    typedef NSRect WXRect;
     typedef void (*wxOSX_TextEventHandlerPtr)(NSView* self, SEL _cmd, NSString *event);
     typedef void (*wxOSX_EventHandlerPtr)(NSView* self, SEL _cmd, NSEvent *event);
     typedef BOOL (*wxOSX_PerformKeyEventHandlerPtr)(NSView* self, SEL _cmd, NSEvent *event);
@@ -340,7 +330,7 @@ public:
     - (void) setTextField:(NSTextField*) field;
     @end
 
-    @interface wxNSTextField : NSTextField <NSTextFieldDelegate>
+    @interface wxNSTextField : NSTextField wxOSX_10_6_AND_LATER(<NSTextFieldDelegate>)
     {
         wxNSTextFieldEditor* fieldEditor;
     }
@@ -350,14 +340,14 @@ public:
 
     @end
 
-    @interface wxNSSecureTextField : NSSecureTextField <NSTextFieldDelegate>
+    @interface wxNSSecureTextField : NSSecureTextField wxOSX_10_6_AND_LATER(<NSTextFieldDelegate>)
     {
     }
 
     @end
 
 
-    @interface wxNSTextView : NSTextView <NSTextViewDelegate>
+    @interface wxNSTextView : NSTextView wxOSX_10_6_AND_LATER(<NSTextViewDelegate>)
     {
     }
 
@@ -436,7 +426,7 @@ public:
 #ifdef __LP64__
     WXEXPORT
 #endif // 64 bit builds
-    @interface wxNSAppController : NSObject <NSApplicationDelegate>
+    @interface wxNSAppController : NSObject wxOSX_10_6_AND_LATER(<NSApplicationDelegate>)
     {
     }
 
@@ -483,7 +473,7 @@ extern ClassicCursor gMacCursors[];
 
 extern NSLayoutManager* gNSLayoutManager;
 
-#endif // wxUSE_GUI
+#endif
 
 #endif
     // _WX_PRIVATE_COCOA_H_

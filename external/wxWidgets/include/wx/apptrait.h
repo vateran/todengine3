@@ -172,8 +172,10 @@ private:
 // ABX: check __WIN32__ instead of __WXMSW__ for the same MSWBase in any Win32 port
 #if defined(__WIN32__)
     #include "wx/msw/apptbase.h"
-#elif defined(__UNIX__)
+#elif defined(__UNIX__) && !defined(__EMX__)
     #include "wx/unix/apptbase.h"
+#elif defined(__OS2__)
+    #include "wx/os2/apptbase.h"
 #else // no platform-specific methods to add to wxAppTraits
     // wxAppTraits must be a class because it was forward declared as class
     class WXDLLIMPEXP_BASE wxAppTraits : public wxAppTraitsBase
@@ -197,19 +199,19 @@ public:
 #endif // !wxUSE_CONSOLE_EVENTLOOP
 
 #if wxUSE_LOG
-    virtual wxLog *CreateLogTarget() wxOVERRIDE;
+    virtual wxLog *CreateLogTarget();
 #endif // wxUSE_LOG
-    virtual wxMessageOutput *CreateMessageOutput() wxOVERRIDE;
+    virtual wxMessageOutput *CreateMessageOutput();
 #if wxUSE_FONTMAP
-    virtual wxFontMapper *CreateFontMapper() wxOVERRIDE;
+    virtual wxFontMapper *CreateFontMapper();
 #endif // wxUSE_FONTMAP
-    virtual wxRendererNative *CreateRenderer() wxOVERRIDE;
+    virtual wxRendererNative *CreateRenderer();
 
-    virtual bool ShowAssertDialog(const wxString& msg) wxOVERRIDE;
-    virtual bool HasStderr() wxOVERRIDE;
+    virtual bool ShowAssertDialog(const wxString& msg);
+    virtual bool HasStderr();
 
     // the GetToolkitVersion for console application is always the same
-    virtual wxPortId GetToolkitVersion(int *verMaj = NULL, int *verMin = NULL) const wxOVERRIDE
+    virtual wxPortId GetToolkitVersion(int *verMaj = NULL, int *verMin = NULL) const
     {
         // no toolkits (wxBase is for console applications without GUI support)
         // NB: zero means "no toolkit", -1 means "not initialized yet"
@@ -219,8 +221,8 @@ public:
         return wxPORT_BASE;
     }
 
-    virtual bool IsUsingUniversalWidgets() const wxOVERRIDE { return false; }
-    virtual wxString GetDesktopEnvironment() const wxOVERRIDE { return wxEmptyString; }
+    virtual bool IsUsingUniversalWidgets() const { return false; }
+    virtual wxString GetDesktopEnvironment() const { return wxEmptyString; }
 };
 
 // ----------------------------------------------------------------------------
@@ -233,18 +235,18 @@ class WXDLLIMPEXP_CORE wxGUIAppTraitsBase : public wxAppTraits
 {
 public:
 #if wxUSE_LOG
-    virtual wxLog *CreateLogTarget() wxOVERRIDE;
+    virtual wxLog *CreateLogTarget();
 #endif // wxUSE_LOG
-    virtual wxMessageOutput *CreateMessageOutput() wxOVERRIDE;
+    virtual wxMessageOutput *CreateMessageOutput();
 #if wxUSE_FONTMAP
-    virtual wxFontMapper *CreateFontMapper() wxOVERRIDE;
+    virtual wxFontMapper *CreateFontMapper();
 #endif // wxUSE_FONTMAP
-    virtual wxRendererNative *CreateRenderer() wxOVERRIDE;
+    virtual wxRendererNative *CreateRenderer();
 
-    virtual bool ShowAssertDialog(const wxString& msg) wxOVERRIDE;
-    virtual bool HasStderr() wxOVERRIDE;
+    virtual bool ShowAssertDialog(const wxString& msg);
+    virtual bool HasStderr();
 
-    virtual bool IsUsingUniversalWidgets() const wxOVERRIDE
+    virtual bool IsUsingUniversalWidgets() const
     {
     #ifdef __WXUNIVERSAL__
         return true;
@@ -253,7 +255,7 @@ public:
     #endif
     }
 
-    virtual wxString GetDesktopEnvironment() const wxOVERRIDE { return wxEmptyString; }
+    virtual wxString GetDesktopEnvironment() const { return wxEmptyString; }
 };
 
 #endif // wxUSE_GUI
@@ -265,8 +267,12 @@ public:
 // ABX: check __WIN32__ instead of __WXMSW__ for the same MSWBase in any Win32 port
 #if defined(__WIN32__)
     #include "wx/msw/apptrait.h"
+#elif defined(__OS2__)
+    #include "wx/os2/apptrait.h"
 #elif defined(__UNIX__)
     #include "wx/unix/apptrait.h"
+#elif defined(__DOS__)
+    #include "wx/msdos/apptrait.h"
 #else
     #if wxUSE_GUI
         class wxGUIAppTraits : public wxGUIAppTraitsBase

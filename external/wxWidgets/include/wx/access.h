@@ -21,14 +21,14 @@
 
 #include "wx/variant.h"
 
-enum wxAccStatus
+typedef enum
 {
     wxACC_FAIL,
     wxACC_FALSE,
     wxACC_OK,
     wxACC_NOT_IMPLEMENTED,
     wxACC_NOT_SUPPORTED
-};
+} wxAccStatus;
 
 // Child ids are integer identifiers from 1 up.
 // So zero represents 'this' object.
@@ -36,7 +36,7 @@ enum wxAccStatus
 
 // Navigation constants
 
-enum wxNavDir
+typedef enum
 {
     wxNAVDIR_DOWN,
     wxNAVDIR_FIRSTCHILD,
@@ -46,11 +46,11 @@ enum wxNavDir
     wxNAVDIR_PREVIOUS,
     wxNAVDIR_RIGHT,
     wxNAVDIR_UP
-};
+} wxNavDir;
 
 // Role constants
 
-enum wxAccRole {
+typedef enum {
     wxROLE_NONE,
     wxROLE_SYSTEM_ALERT,
     wxROLE_SYSTEM_ANIMATION,
@@ -113,11 +113,11 @@ enum wxAccRole {
     wxROLE_SYSTEM_TOOLTIP,
     wxROLE_SYSTEM_WHITESPACE,
     wxROLE_SYSTEM_WINDOW
-};
+} wxAccRole;
 
 // Object types
 
-enum wxAccObject {
+typedef enum {
     wxOBJID_WINDOW =    0x00000000,
     wxOBJID_SYSMENU =   0xFFFFFFFF,
     wxOBJID_TITLEBAR =  0xFFFFFFFE,
@@ -130,7 +130,7 @@ enum wxAccObject {
     wxOBJID_CURSOR =    0xFFFFFFF7,
     wxOBJID_ALERT =     0xFFFFFFF6,
     wxOBJID_SOUND =     0xFFFFFFF5
-};
+} wxAccObject;
 
 // Accessible states
 
@@ -163,7 +163,7 @@ enum wxAccObject {
 
 // Selection flag
 
-enum wxAccSelectionFlags
+typedef enum
 {
     wxACC_SEL_NONE            = 0,
     wxACC_SEL_TAKEFOCUS       = 1,
@@ -171,7 +171,7 @@ enum wxAccSelectionFlags
     wxACC_SEL_EXTENDSELECTION = 4,
     wxACC_SEL_ADDSELECTION    = 8,
     wxACC_SEL_REMOVESELECTION = 16
-};
+} wxAccSelectionFlags;
 
 // Accessibility event identifiers
 

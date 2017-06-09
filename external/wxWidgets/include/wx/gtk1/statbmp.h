@@ -52,7 +52,7 @@ public:
 private:
     wxBitmap   m_bitmap;
 
-    wxDECLARE_DYNAMIC_CLASS(wxStaticBitmap);
+    DECLARE_DYNAMIC_CLASS(wxStaticBitmap)
 };
 
 #endif // __GTKSTATICBITMAPH__

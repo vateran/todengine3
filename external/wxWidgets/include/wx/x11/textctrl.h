@@ -307,8 +307,8 @@ protected:
     int                m_bracketY;
 
 private:
-    wxDECLARE_EVENT_TABLE();
-    wxDECLARE_DYNAMIC_CLASS(wxTextCtrl);
+    DECLARE_EVENT_TABLE()
+    DECLARE_DYNAMIC_CLASS(wxTextCtrl);
 };
 
 //-----------------------------------------------------------------------------

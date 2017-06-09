@@ -35,8 +35,12 @@
       define special symbols for different VC version instead of writing tests
       for magic numbers such as 1200, 1300 &c repeatedly
     */
-#if __VISUALC__ < 1300
-#   error "This Visual C++ version is not supported any longer (at least MSVC 2003 required)."
+#if __VISUALC__ < 1100
+#   error "This Visual C++ version is too old and not supported any longer."
+#elif __VISUALC__ < 1200
+#   define __VISUALC5__
+#elif __VISUALC__ < 1300
+#   define __VISUALC6__
 #elif __VISUALC__ < 1400
 #   define __VISUALC7__
 #elif __VISUALC__ < 1500
@@ -62,10 +66,19 @@
 
 #elif defined(__BCPLUSPLUS__) && !defined(__BORLANDC__)
 #   define __BORLANDC__
+#elif defined(__WATCOMC__)
+#elif defined(__SC__)
+#   define __SYMANTECC__
 #elif defined(__SUNPRO_CC)
 #   ifndef __SUNCC__
 #       define __SUNCC__ __SUNPRO_CC
 #   endif /* Sun CC */
+#elif defined(__SC__)
+#    ifdef __DMC__
+#         define __DIGITALMARS__
+#    else
+#         define __SYMANTEC__
+#    endif
 #endif  /* compiler */
 
 /*
@@ -116,6 +129,22 @@
     #define wxCHECK_SUNCC_VERSION(maj, min) (__SUNCC__ >= (((maj)<<8) | ((min)<<4)))
 #else
     #define wxCHECK_SUNCC_VERSION(maj, min) (0)
+#endif
+
+#ifndef __WATCOMC__
+#   define wxWATCOM_VERSION(major,minor) 0
+#   define wxCHECK_WATCOM_VERSION(major,minor) 0
+#   define wxONLY_WATCOM_EARLIER_THAN(major,minor) 0
+#   define WX_WATCOM_ONLY_CODE( x )
+#else
+#   if __WATCOMC__ < 1200
+#       error "Only Open Watcom is supported in this release"
+#   endif
+
+#   define wxWATCOM_VERSION(major,minor) ( major * 100 + minor * 10 + 1100 )
+#   define wxCHECK_WATCOM_VERSION(major,minor) ( __WATCOMC__ >= wxWATCOM_VERSION(major,minor) )
+#   define wxONLY_WATCOM_EARLIER_THAN(major,minor) ( __WATCOMC__ < wxWATCOM_VERSION(major,minor) )
+#   define WX_WATCOM_ONLY_CODE( x )  x
 #endif
 
 /*

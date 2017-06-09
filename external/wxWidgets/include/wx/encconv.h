@@ -33,6 +33,7 @@ enum
 
     wxPLATFORM_UNIX = 0,
     wxPLATFORM_WINDOWS,
+    wxPLATFORM_OS2,
     wxPLATFORM_MAC
 };
 

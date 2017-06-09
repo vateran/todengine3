@@ -19,7 +19,10 @@ class WXDLLIMPEXP_FWD_CORE wxScrollBar;
 class WXDLLIMPEXP_FWD_CORE wxPanel;
 class WXDLLIMPEXP_FWD_CORE wxNonOwnedWindow;
 
-#if wxOSX_USE_COCOA_OR_IPHONE
+#if wxOSX_USE_CARBON
+    class WXDLLIMPEXP_FWD_CORE wxMacControl ;
+    typedef wxMacControl wxOSXWidgetImpl;
+#elif wxOSX_USE_COCOA_OR_IPHONE
     class WXDLLIMPEXP_FWD_CORE wxWidgetImpl ;
     typedef wxWidgetImpl wxOSXWidgetImpl;
 #endif
@@ -27,7 +30,7 @@ class WXDLLIMPEXP_FWD_CORE wxNonOwnedWindow;
 
 class WXDLLIMPEXP_CORE wxWindowMac: public wxWindowBase
 {
-    wxDECLARE_DYNAMIC_CLASS(wxWindowMac);
+    DECLARE_DYNAMIC_CLASS(wxWindowMac)
 
     friend class wxDC;
     friend class wxPaintDC;
@@ -51,81 +54,81 @@ public:
                 long style = 0,
                 const wxString& name = wxPanelNameStr );
 
-    virtual void SendSizeEvent(int flags = 0) wxOVERRIDE;
+    virtual void SendSizeEvent(int flags = 0);
     
     // implement base class pure virtuals
-    virtual void SetLabel( const wxString& label ) wxOVERRIDE;
-    virtual wxString GetLabel() const wxOVERRIDE;
+    virtual void SetLabel( const wxString& label );
+    virtual wxString GetLabel() const;
 
-    virtual void Raise() wxOVERRIDE;
-    virtual void Lower() wxOVERRIDE;
+    virtual void Raise();
+    virtual void Lower();
 
-    virtual bool Show( bool show = true ) wxOVERRIDE;
+    virtual bool Show( bool show = true );
     virtual bool ShowWithEffect(wxShowEffect effect,
-                                unsigned timeout = 0) wxOVERRIDE
+                                unsigned timeout = 0)
     {
         return OSXShowWithEffect(true, effect, timeout);
     }
     virtual bool HideWithEffect(wxShowEffect effect,
-                                unsigned timeout = 0) wxOVERRIDE
+                                unsigned timeout = 0)
     {
         return OSXShowWithEffect(false, effect, timeout);
     }
 
-    virtual bool IsShownOnScreen() const wxOVERRIDE;
+    virtual bool IsShownOnScreen() const;
 
-    virtual void SetFocus() wxOVERRIDE;
+    virtual void SetFocus();
 
-    virtual void WarpPointer( int x, int y ) wxOVERRIDE;
+    virtual void WarpPointer( int x, int y );
 
     virtual void Refresh( bool eraseBackground = true,
-                          const wxRect *rect = NULL ) wxOVERRIDE;
+                          const wxRect *rect = NULL );
 
-    virtual void Update() wxOVERRIDE;
-    virtual void ClearBackground() wxOVERRIDE;
+    virtual void Update() ;
+    virtual void ClearBackground();
 
-    virtual bool SetCursor( const wxCursor &cursor ) wxOVERRIDE;
-    virtual bool SetFont( const wxFont &font ) wxOVERRIDE;
-    virtual bool SetBackgroundColour( const wxColour &colour ) wxOVERRIDE;
-    virtual bool SetForegroundColour( const wxColour &colour ) wxOVERRIDE;
+    virtual bool SetCursor( const wxCursor &cursor );
+    virtual bool SetFont( const wxFont &font );
+    virtual bool SetBackgroundColour( const wxColour &colour );
+    virtual bool SetForegroundColour( const wxColour &colour );
 
-    virtual bool SetBackgroundStyle(wxBackgroundStyle style) wxOVERRIDE;
+    virtual bool SetBackgroundStyle(wxBackgroundStyle style);
 
-    virtual int GetCharHeight() const wxOVERRIDE;
-    virtual int GetCharWidth() const wxOVERRIDE;
+    virtual int GetCharHeight() const;
+    virtual int GetCharWidth() const;
     
 public:
     virtual void SetScrollbar( int orient, int pos, int thumbVisible,
-                               int range, bool refresh = true ) wxOVERRIDE;
-    virtual void SetScrollPos( int orient, int pos, bool refresh = true ) wxOVERRIDE;
-    virtual int GetScrollPos( int orient ) const wxOVERRIDE;
-    virtual int GetScrollThumb( int orient ) const wxOVERRIDE;
-    virtual int GetScrollRange( int orient ) const wxOVERRIDE;
+                               int range, bool refresh = true );
+    virtual void SetScrollPos( int orient, int pos, bool refresh = true );
+    virtual int GetScrollPos( int orient ) const;
+    virtual int GetScrollThumb( int orient ) const;
+    virtual int GetScrollRange( int orient ) const;
     virtual void ScrollWindow( int dx, int dy,
-                               const wxRect* rect = NULL ) wxOVERRIDE;
-    virtual void AlwaysShowScrollbars(bool horz = true, bool vert = true) wxOVERRIDE;
-    virtual bool IsScrollbarAlwaysShown(int orient) const wxOVERRIDE
+                               const wxRect* rect = NULL );
+    virtual void AlwaysShowScrollbars(bool horz = true, bool vert = true);
+    virtual bool IsScrollbarAlwaysShown(int orient) const
     {
         return orient == wxHORIZONTAL ? m_hScrollBarAlwaysShown
                                       : m_vScrollBarAlwaysShown;
     }
 
-    virtual bool Reparent( wxWindowBase *newParent ) wxOVERRIDE;
+    virtual bool Reparent( wxWindowBase *newParent );
 
 #if wxUSE_HOTKEY && wxOSX_USE_COCOA_OR_CARBON
     // hot keys (system wide accelerators)
     // -----------------------------------
     
-    virtual bool RegisterHotKey(int hotkeyId, int modifiers, int keycode) wxOVERRIDE;
-    virtual bool UnregisterHotKey(int hotkeyId) wxOVERRIDE;
+    virtual bool RegisterHotKey(int hotkeyId, int modifiers, int keycode);
+    virtual bool UnregisterHotKey(int hotkeyId);
 #endif // wxUSE_HOTKEY
     
 #if wxUSE_DRAG_AND_DROP
-    virtual void SetDropTarget( wxDropTarget *dropTarget ) wxOVERRIDE;
+    virtual void SetDropTarget( wxDropTarget *dropTarget );
 #endif
 
     // Accept files for dragging
-    virtual void DragAcceptFiles( bool accept ) wxOVERRIDE;
+    virtual void DragAcceptFiles( bool accept );
 
     // implementation from now on
     // --------------------------
@@ -141,11 +144,11 @@ public:
     // simple accessors
     // ----------------
 
-    virtual WXWidget GetHandle() const wxOVERRIDE;
+    virtual WXWidget GetHandle() const;
 
-    virtual bool SetTransparent(wxByte alpha) wxOVERRIDE;
-    virtual bool CanSetTransparent() wxOVERRIDE;
-    virtual wxByte GetTransparent() const;
+    virtual bool SetTransparent(wxByte alpha);
+    virtual bool CanSetTransparent();
+    virtual wxByte GetTransparent() const ;
 
     // event handlers
     // --------------
@@ -154,17 +157,17 @@ public:
 
     void MacOnScroll( wxScrollEvent&event );
 
-    virtual bool AcceptsFocus() const wxOVERRIDE;
+    virtual bool AcceptsFocus() const;
 
-    virtual bool IsDoubleBuffered() const wxOVERRIDE { return true; }
+    virtual bool IsDoubleBuffered() const { return true; }
 
 public:
-    static long MacRemoveBordersFromStyle( long style );
+    static long         MacRemoveBordersFromStyle( long style ) ;
 
 public:
     // For implementation purposes:
     // sometimes decorations make the client area smaller
-    virtual wxPoint GetClientAreaOrigin() const wxOVERRIDE;
+    virtual wxPoint GetClientAreaOrigin() const;
 
     wxWindowMac *FindItem(long id) const;
     wxWindowMac *FindItemByHWND(WXHWND hWnd, bool controlOnly = false) const;
@@ -172,7 +175,7 @@ public:
     virtual void        TriggerScrollEvent( wxEventType scrollEvent ) ;
     // this should not be overridden in classes above wxWindowMac
     // because it is called from its destructor via DeleteChildren
-    virtual void        RemoveChild( wxWindowBase *child ) wxOVERRIDE;
+    virtual void        RemoveChild( wxWindowBase *child );
 
     virtual bool        MacDoRedraw( long time ) ;
     virtual void        MacPaintChildrenBorders();
@@ -233,7 +236,7 @@ public:
     virtual bool        MacClipGrandChildren() const { return false ; }
     bool                MacIsWindowScrollbar( const wxWindow* sb ) const
     { return ((wxWindow*)m_hScrollBar == sb || (wxWindow*)m_vScrollBar == sb) ; }
-    virtual bool IsClientAreaChild(const wxWindow *child) const wxOVERRIDE
+    virtual bool IsClientAreaChild(const wxWindow *child) const
     {
         return !MacIsWindowScrollbar(child) && !((wxWindow*)m_growBox==child) &&
                wxWindowBase::IsClientAreaChild(child);
@@ -288,7 +291,7 @@ public:
 
     bool                IsNativeWindowWrapper() const { return m_isNativeWindowWrapper; }
     
-    double              GetContentScaleFactor() const wxOVERRIDE;
+    double              GetContentScaleFactor() const ;
     
     // internal response to size events
     virtual void MacOnInternalSize() {}
@@ -343,40 +346,40 @@ protected:
                                  int *x, int *y,
                                  int *descent = NULL,
                                  int *externalLeading = NULL,
-                                 const wxFont *theFont = NULL ) const wxOVERRIDE;
+                                 const wxFont *theFont = NULL ) const;
 
-    virtual void DoEnable( bool enable ) wxOVERRIDE;
+    virtual void DoEnable( bool enable );
 #if wxUSE_MENUS
-    virtual bool DoPopupMenu( wxMenu *menu, int x, int y ) wxOVERRIDE;
+    virtual bool DoPopupMenu( wxMenu *menu, int x, int y );
 #endif
 
-    virtual void DoFreeze() wxOVERRIDE;
-    virtual void DoThaw() wxOVERRIDE;
+    virtual void DoFreeze();
+    virtual void DoThaw();
 
-    virtual wxSize DoGetBestSize() const wxOVERRIDE;
+    virtual wxSize DoGetBestSize() const;
     virtual wxSize DoGetSizeFromClientSize( const wxSize & size ) const;
-    virtual void DoClientToScreen( int *x, int *y ) const wxOVERRIDE;
-    virtual void DoScreenToClient( int *x, int *y ) const wxOVERRIDE;
-    virtual void DoGetPosition( int *x, int *y ) const wxOVERRIDE;
-    virtual void DoGetSize( int *width, int *height ) const wxOVERRIDE;
-    virtual void DoGetClientSize( int *width, int *height ) const wxOVERRIDE;
+    virtual void DoClientToScreen( int *x, int *y ) const;
+    virtual void DoScreenToClient( int *x, int *y ) const;
+    virtual void DoGetPosition( int *x, int *y ) const;
+    virtual void DoGetSize( int *width, int *height ) const;
+    virtual void DoGetClientSize( int *width, int *height ) const;
     virtual void DoSetSize(int x, int y,
                            int width, int height,
-                           int sizeFlags = wxSIZE_AUTO) wxOVERRIDE;
-    virtual void DoSetClientSize(int width, int height) wxOVERRIDE;
+                           int sizeFlags = wxSIZE_AUTO);
+    virtual void DoSetClientSize(int width, int height);
 
-    virtual void DoCaptureMouse() wxOVERRIDE;
-    virtual void DoReleaseMouse() wxOVERRIDE;
+    virtual void DoCaptureMouse();
+    virtual void DoReleaseMouse();
 
     // move the window to the specified location and resize it: this is called
     // from both DoSetSize() and DoSetClientSize() and would usually just call
     // ::MoveWindow() except for composite controls which will want to arrange
     // themselves inside the given rectangle
-    virtual void DoMoveWindow( int x, int y, int width, int height ) wxOVERRIDE;
-    virtual void DoSetWindowVariant( wxWindowVariant variant ) wxOVERRIDE;
+    virtual void DoMoveWindow( int x, int y, int width, int height );
+    virtual void DoSetWindowVariant( wxWindowVariant variant );
 
 #if wxUSE_TOOLTIPS
-    virtual void DoSetToolTip( wxToolTip *tip ) wxOVERRIDE;
+    virtual void DoSetToolTip( wxToolTip *tip );
 #endif
 
     // common part of Show/HideWithEffect()
@@ -394,7 +397,7 @@ private:
     void DoUpdateScrollbarVisibility();
 
     wxDECLARE_NO_COPY_CLASS(wxWindowMac);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 #endif // _WX_WINDOW_H_

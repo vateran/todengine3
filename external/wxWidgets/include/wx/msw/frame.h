@@ -11,10 +11,6 @@
 #ifndef _WX_FRAME_H_
 #define _WX_FRAME_H_
 
-#if wxUSE_TASKBARBUTTON
-class WXDLLIMPEXP_FWD_CORE wxTaskBarButton;
-#endif
-
 class WXDLLIMPEXP_CORE wxFrame : public wxFrameBase
 {
 public:
@@ -40,6 +36,7 @@ public:
                 const wxSize& size = wxDefaultSize,
                 long style = wxDEFAULT_FRAME_STYLE,
                 const wxString& name = wxFrameNameStr);
+
     virtual ~wxFrame();
 
     // implement base class pure virtuals
@@ -107,21 +104,9 @@ public:
     // normal frames but is overridden by wxMDIParentFrame
     virtual WXHMENU MSWGetActiveMenu() const { return m_hMenu; }
 
-    virtual bool HandleMenuSelect(WXWORD nItem, WXWORD nFlags, WXHMENU hMenu);
-    virtual bool DoSendMenuOpenCloseEvent(wxEventType evtType, wxMenu* menu);
-
     // Look up the menu in the menu bar.
     virtual wxMenu* MSWFindMenuFromHMENU(WXHMENU hMenu);
 #endif // wxUSE_MENUS
-
-#if wxUSE_TASKBARBUTTON
-    // Return the taskbar button of the window.
-    //
-    // The pointer returned by this method belongs to the window and will be
-    // deleted when the window itself is, do not delete it yourself. May return
-    // NULL if the initialization of taskbar button failed.
-    wxTaskBarButton* MSWGetTaskBarButton();
-#endif // wxUSE_TASKBARBUTTON
 
 protected:
     // common part of all ctors
@@ -165,10 +150,6 @@ protected:
 #if wxUSE_MENUS
     // frame menu, NULL if none
     WXHMENU m_hMenu;
-
-    // The number of currently opened menus: 0 initially, 1 when a top level
-    // menu is opened, 2 when its submenu is opened and so on.
-    int m_menuDepth;
 #endif // wxUSE_MENUS
 
 private:
@@ -179,12 +160,8 @@ private:
     // used by IconizeChildFrames(), see comments there
     bool m_wasMinimized;
 
-#if wxUSE_TASKBARBUTTON
-    wxTaskBarButton* m_taskBarButton;
-#endif
-
-    wxDECLARE_EVENT_TABLE();
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxFrame);
+    DECLARE_EVENT_TABLE()
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxFrame)
 };
 
 #endif

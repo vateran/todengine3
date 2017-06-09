@@ -43,7 +43,7 @@ public:
     // usually overridden base class virtuals
     virtual WXDWORD MSWGetStyle(long style, WXDWORD *exstyle) const;
 
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxStaticLine);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxStaticLine)
 };
 
 #endif // _WX_MSW_STATLINE_H_

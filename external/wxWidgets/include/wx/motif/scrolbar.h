@@ -14,7 +14,7 @@
 // Scrollbar item
 class WXDLLIMPEXP_CORE wxScrollBar: public wxScrollBarBase
 {
-    wxDECLARE_DYNAMIC_CLASS(wxScrollBar);
+    DECLARE_DYNAMIC_CLASS(wxScrollBar)
 
 public:
     inline wxScrollBar() { m_pageSize = 0; m_viewSize = 0; m_objectSize = 0; }

@@ -18,7 +18,7 @@
 
 class WXDLLIMPEXP_CORE wxMiniFrame: public wxFrame
 {
-    wxDECLARE_DYNAMIC_CLASS(wxMiniFrame);
+    DECLARE_DYNAMIC_CLASS(wxMiniFrame)
 
 public:
     wxMiniFrame() {}
@@ -42,13 +42,13 @@ public:
             long style = wxCAPTION | wxRESIZE_BORDER,
             const wxString& name = wxFrameNameStr);
 
-    virtual void SetTitle( const wxString &title ) wxOVERRIDE;
+    virtual void SetTitle( const wxString &title );
 
 protected:
     virtual void DoSetSizeHints( int minW, int minH,
                                  int maxW, int maxH,
-                                 int incW, int incH ) wxOVERRIDE;
-    virtual void DoGetClientSize(int* width, int* height) const wxOVERRIDE;
+                                 int incW, int incH );
+    virtual void DoGetClientSize(int* width, int* height) const;
 
  // implementation
 public:

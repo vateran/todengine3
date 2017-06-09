@@ -65,7 +65,7 @@ private:
     unsigned char m_alpha;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxColour);
+    DECLARE_DYNAMIC_CLASS(wxColour)
 };
 
 #endif // _WX_GENERIC_COLOUR_H_

@@ -65,7 +65,7 @@ public:
         m_page = c.m_page;
     }
 #endif
-    wxEvent *Clone() const wxOVERRIDE { return new wxRibbonBarEvent(*this); }
+    wxEvent *Clone() const { return new wxRibbonBarEvent(*this); }
 
     wxRibbonPage* GetPage() {return m_page;}
     void SetPage(wxRibbonPage* page) {m_page = page;}
@@ -75,7 +75,7 @@ protected:
 
 #ifndef SWIG
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxRibbonBarEvent);
+    DECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxRibbonBarEvent)
 #endif
 };
 
@@ -119,7 +119,7 @@ public:
 
     void SetTabCtrlMargins(int left, int right);
 
-    void SetArtProvider(wxRibbonArtProvider* art) wxOVERRIDE;
+    void SetArtProvider(wxRibbonArtProvider* art);
 
     bool SetActivePage(size_t page);
     bool SetActivePage(wxRibbonPage* page);
@@ -140,17 +140,15 @@ public:
     void AddPageHighlight(size_t page, bool highlight = true);
     void RemovePageHighlight(size_t page) { AddPageHighlight(page, false); }
 
-    void ShowPanels(wxRibbonDisplayMode mode);
     void ShowPanels(bool show = true);
-    void HidePanels() { ShowPanels(wxRIBBON_BAR_MINIMIZED); }
+    void HidePanels() { ShowPanels(false); }
     bool ArePanelsShown() const { return m_arePanelsShown; }
-    wxRibbonDisplayMode GetDisplayMode() const { return m_ribbon_state; }
 
-    virtual bool HasMultiplePages() const wxOVERRIDE { return true; }
+    virtual bool HasMultiplePages() const { return true; }
 
-    void SetWindowStyleFlag(long style) wxOVERRIDE;
-    long GetWindowStyleFlag() const wxOVERRIDE;
-    virtual bool Realize() wxOVERRIDE;
+    void SetWindowStyleFlag(long style);
+    long GetWindowStyleFlag() const;
+    virtual bool Realize();
 
     // Implementation only.
     bool IsToggleButtonHovered() const { return m_toggle_button_hovered; }
@@ -161,8 +159,8 @@ public:
 protected:
     friend class wxRibbonPage;
 
-    virtual wxSize DoGetBestSize() const wxOVERRIDE;
-    wxBorder GetDefaultBorder() const wxOVERRIDE { return wxBORDER_NONE; }
+    virtual wxSize DoGetBestSize() const;
+    wxBorder GetDefaultBorder() const { return wxBORDER_NONE; }
     wxRibbonPageTabInfo* HitTestTabs(wxPoint position, int* index = NULL);
     void HitTestRibbonButton(const wxRect& rect, const wxPoint& position, bool &hover_flag);
 
@@ -215,8 +213,8 @@ protected:
     wxRibbonDisplayMode m_ribbon_state;
 
 #ifndef SWIG
-    wxDECLARE_CLASS(wxRibbonBar);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_CLASS(wxRibbonBar)
+    DECLARE_EVENT_TABLE()
 #endif
 };
 

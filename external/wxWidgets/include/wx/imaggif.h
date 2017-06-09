@@ -38,17 +38,17 @@ public:
 
 #if wxUSE_STREAMS
     virtual bool LoadFile(wxImage *image, wxInputStream& stream,
-                          bool verbose = true, int index = -1) wxOVERRIDE;
+                          bool verbose = true, int index = -1);
     virtual bool SaveFile(wxImage *image, wxOutputStream& stream,
-                          bool verbose=true) wxOVERRIDE;
+                          bool verbose=true);
 
     // Save animated gif
     bool SaveAnimation(const wxImageArray& images, wxOutputStream *stream,
         bool verbose = true, int delayMilliSecs = 1000);
 
 protected:
-    virtual int DoGetImageCount(wxInputStream& stream) wxOVERRIDE;
-    virtual bool DoCanRead(wxInputStream& stream) wxOVERRIDE;
+    virtual int DoGetImageCount(wxInputStream& stream);
+    virtual bool DoCanRead(wxInputStream& stream);
 
     bool DoSaveFile(const wxImage&, wxOutputStream *, bool verbose,
         bool first, int delayMilliSecs, bool loop,
@@ -84,7 +84,7 @@ protected:
 #endif
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxGIFHandler);
+    DECLARE_DYNAMIC_CLASS(wxGIFHandler)
 };
 
 #endif // wxUSE_GIF

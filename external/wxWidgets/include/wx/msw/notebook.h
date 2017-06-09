@@ -185,12 +185,18 @@ protected:
   bool DoDrawBackground(WXHDC hDC, wxWindow *child = NULL);
 #endif // wxUSE_UXTHEME
 
-  // these function are used for reducing flicker on notebook resize
+  // these function are only used for reducing flicker on notebook resize and
+  // we don't need to do this for WinCE
+#ifndef __WXWINCE__
   void OnEraseBackground(wxEraseEvent& event);
   void OnPaint(wxPaintEvent& event);
 
   // true if we have already subclassed our updown control
   bool m_hasSubclassedUpdown;
+
+  // true if we already refreshed the current page after showing the window
+  bool m_doneUpdateHack;
+#endif // __WXWINCE__
 
 #if wxUSE_UXTHEME
   // background brush used to paint the tab control
@@ -198,8 +204,8 @@ protected:
 #endif // wxUSE_UXTHEME
 
 
-  wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxNotebook);
-  wxDECLARE_EVENT_TABLE();
+  DECLARE_DYNAMIC_CLASS_NO_COPY(wxNotebook)
+  DECLARE_EVENT_TABLE()
 };
 
 #endif // wxUSE_NOTEBOOK

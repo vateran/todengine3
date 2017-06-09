@@ -120,7 +120,7 @@ public:
                 const wxString& name = wxButtonNameStr);
 
     virtual void SetMainLabelAndNote(const wxString& mainLabel,
-                                     const wxString& note) wxOVERRIDE
+                                     const wxString& note)
     {
         wxButton::SetLabel(mainLabel + '\n' + note);
     }

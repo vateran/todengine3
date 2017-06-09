@@ -32,7 +32,7 @@
     #define wxTHREAD_SPECIFIC_DECL __thread
 // MSVC has its own version which might be supported by some other Windows
 // compilers, to be tested
-#elif defined(__VISUALC__)
+#elif wxCHECK_VISUALC_VERSION(7)
     #define wxHAS_COMPILER_TLS
     #define wxTHREAD_SPECIFIC_DECL __declspec(thread)
 #endif // compilers
@@ -56,6 +56,8 @@
 
     #if defined(__WINDOWS__)
         #include "wx/msw/tls.h"
+    #elif defined(__OS2__)
+        #include "wx/os2/tls.h"
     #elif defined(__UNIX__)
         #include "wx/unix/tls.h"
     #else
@@ -130,7 +132,7 @@
     private:
         wxTlsKey m_key;
 
-        wxDECLARE_NO_COPY_TEMPLATE_CLASS(wxTlsValue, T);
+        DECLARE_NO_COPY_TEMPLATE_CLASS(wxTlsValue, T)
     };
 
     #define wxTLS_TYPE(T) wxTlsValue<T>

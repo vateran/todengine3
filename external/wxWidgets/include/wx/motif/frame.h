@@ -120,8 +120,8 @@ private:
 
 
 
-    wxDECLARE_EVENT_TABLE();
-    wxDECLARE_DYNAMIC_CLASS(wxFrame);
+    DECLARE_EVENT_TABLE()
+    DECLARE_DYNAMIC_CLASS(wxFrame)
 };
 
 #endif // _WX_MOTIF_FRAME_H_

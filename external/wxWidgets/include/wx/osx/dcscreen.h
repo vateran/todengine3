@@ -25,7 +25,7 @@ private:
     void* m_overlayWindow;
 
 private:
-    wxDECLARE_CLASS(wxScreenDCImpl);
+    DECLARE_CLASS(wxScreenDCImpl)
     wxDECLARE_NO_COPY_CLASS(wxScreenDCImpl);
 };
 

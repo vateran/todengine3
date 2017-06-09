@@ -37,7 +37,7 @@ public:
 protected:
     long        m_result;
 
-    wxDECLARE_DYNAMIC_CLASS(wxMessageDialog);
+    DECLARE_DYNAMIC_CLASS(wxMessageDialog)
 };
 
 #endif // _WX_MSGBOXDLG_H_

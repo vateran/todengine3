@@ -21,7 +21,7 @@ public:
         wxWindowID id,
         const wxPoint& pos = wxDefaultPosition,
         const wxSize& size = wxDefaultSize,
-        long style = wxTB_DEFAULT_STYLE,
+        long style = wxTB_HORIZONTAL,
         const wxString& name = wxToolBarNameStr)
     {
         Init();
@@ -33,7 +33,7 @@ public:
         wxWindowID id,
         const wxPoint& pos = wxDefaultPosition,
         const wxSize& size = wxDefaultSize,
-        long style = wxTB_DEFAULT_STYLE,
+        long style = wxTB_HORIZONTAL,
         const wxString& name = wxToolBarNameStr);
 
     virtual ~wxToolBar();
@@ -75,7 +75,7 @@ private:
                            int width, int height,
                            int sizeFlags = wxSIZE_AUTO);
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxToolBar);
+    DECLARE_DYNAMIC_CLASS(wxToolBar)
 };
 
 #endif

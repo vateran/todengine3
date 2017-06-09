@@ -29,8 +29,8 @@ extern WXDLLIMPEXP_DATA_CORE(const char) wxListCtrlNameStr[];
 
 #if defined(__WXMSW__) && !defined(__WXUNIVERSAL__)
     #include "wx/msw/listctrl.h"
-#elif defined(__WXQT__) && !defined(__WXUNIVERSAL__)
-    #include "wx/qt/listctrl.h"
+#elif defined(__WXMAC__) && !defined(__WXUNIVERSAL__) && wxOSX_USE_CARBON
+    #include "wx/osx/listctrl.h"
 #else
     #include "wx/generic/listctrl.h"
 #endif
@@ -100,7 +100,7 @@ public:
     void ClearColumnImage(int col) { SetColumnImage(col, -1); }
 
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxListView);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxListView)
 };
 
 #endif // wxUSE_LISTCTRL

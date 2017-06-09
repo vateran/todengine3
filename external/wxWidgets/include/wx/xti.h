@@ -369,7 +369,7 @@ protected:
     void Register();
     void Unregister();
 
-    wxDECLARE_NO_COPY_CLASS(wxClassInfo);
+    DECLARE_NO_COPY_CLASS(wxClassInfo)
 };
 
 WXDLLIMPEXP_BASE wxObject *wxCreateDynamicObject(const wxString& name);

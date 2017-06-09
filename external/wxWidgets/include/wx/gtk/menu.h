@@ -23,25 +23,25 @@ public:
     ~wxMenuBar();
 
     // implement base class (pure) virtuals
-    virtual bool Append( wxMenu *menu, const wxString &title ) wxOVERRIDE;
-    virtual bool Insert(size_t pos, wxMenu *menu, const wxString& title) wxOVERRIDE;
-    virtual wxMenu *Replace(size_t pos, wxMenu *menu, const wxString& title) wxOVERRIDE;
-    virtual wxMenu *Remove(size_t pos) wxOVERRIDE;
+    virtual bool Append( wxMenu *menu, const wxString &title );
+    virtual bool Insert(size_t pos, wxMenu *menu, const wxString& title);
+    virtual wxMenu *Replace(size_t pos, wxMenu *menu, const wxString& title);
+    virtual wxMenu *Remove(size_t pos);
 
     virtual int FindMenuItem(const wxString& menuString,
-                             const wxString& itemString) const wxOVERRIDE;
-    virtual wxMenuItem* FindItem( int id, wxMenu **menu = NULL ) const wxOVERRIDE;
+                             const wxString& itemString) const;
+    virtual wxMenuItem* FindItem( int id, wxMenu **menu = NULL ) const;
 
-    virtual void EnableTop( size_t pos, bool flag ) wxOVERRIDE;
-    virtual bool IsEnabledTop(size_t pos) const wxOVERRIDE;
-    virtual void SetMenuLabel( size_t pos, const wxString& label ) wxOVERRIDE;
-    virtual wxString GetMenuLabel( size_t pos ) const wxOVERRIDE;
+    virtual void EnableTop( size_t pos, bool flag );
+    virtual bool IsEnabledTop(size_t pos) const;
+    virtual void SetMenuLabel( size_t pos, const wxString& label );
+    virtual wxString GetMenuLabel( size_t pos ) const;
 
-    void SetLayoutDirection(wxLayoutDirection dir) wxOVERRIDE;
-    wxLayoutDirection GetLayoutDirection() const wxOVERRIDE;
+    void SetLayoutDirection(wxLayoutDirection dir);
+    wxLayoutDirection GetLayoutDirection() const;
 
-    virtual void Attach(wxFrame *frame) wxOVERRIDE;
-    virtual void Detach() wxOVERRIDE;
+    virtual void Attach(wxFrame *frame);
+    virtual void Detach();
 
 private:
     // common part of Append and Insert
@@ -51,11 +51,11 @@ private:
 
     // wxMenuBar is not a top level window but it still doesn't need a parent
     // window
-    virtual bool GTKNeedsParent() const wxOVERRIDE { return false; }
+    virtual bool GTKNeedsParent() const { return false; }
 
     GtkWidget* m_menubar;
 
-    wxDECLARE_DYNAMIC_CLASS(wxMenuBar);
+    DECLARE_DYNAMIC_CLASS(wxMenuBar)
 };
 
 //-----------------------------------------------------------------------------
@@ -73,16 +73,16 @@ public:
 
     virtual ~wxMenu();
 
-    void Attach(wxMenuBarBase *menubar) wxOVERRIDE;
+    void Attach(wxMenuBarBase *menubar);
 
-    void SetLayoutDirection(wxLayoutDirection dir);
+    void SetLayoutDirection(const wxLayoutDirection dir);
     wxLayoutDirection GetLayoutDirection() const;
 
     // Returns the title, with mnemonics translated to wx format
     wxString GetTitle() const;
 
     // Sets the title, with mnemonics translated to gtk format
-    virtual void SetTitle(const wxString& title) wxOVERRIDE;
+    virtual void SetTitle(const wxString& title);
 
     // implementation GTK only
     GtkWidget       *m_menu;  // GtkMenu
@@ -91,9 +91,9 @@ public:
     bool m_popupShown;
 
 protected:
-    virtual wxMenuItem* DoAppend(wxMenuItem *item) wxOVERRIDE;
-    virtual wxMenuItem* DoInsert(size_t pos, wxMenuItem *item) wxOVERRIDE;
-    virtual wxMenuItem* DoRemove(wxMenuItem *item) wxOVERRIDE;
+    virtual wxMenuItem* DoAppend(wxMenuItem *item);
+    virtual wxMenuItem* DoInsert(size_t pos, wxMenuItem *item);
+    virtual wxMenuItem* DoRemove(wxMenuItem *item);
 
 private:
     // common code for all constructors:
@@ -103,7 +103,7 @@ private:
     void GtkAppend(wxMenuItem* item, int pos = -1);
 
 
-    wxDECLARE_DYNAMIC_CLASS(wxMenu);
+    DECLARE_DYNAMIC_CLASS(wxMenu)
 };
 
 #endif

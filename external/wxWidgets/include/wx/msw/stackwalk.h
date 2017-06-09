@@ -19,13 +19,6 @@ struct _EXCEPTION_POINTERS;
 
 // and these in dbghelp.h
 struct _SYMBOL_INFO;
-struct _SYMBOL_INFOW;
-
-#if wxUSE_UNICODE
-    #define wxSYMBOL_INFO _SYMBOL_INFOW
-#else // !wxUSE_UNICODE
-    #define wxSYMBOL_INFO _SYMBOL_INFO
-#endif // wxUSE_UNICODE/!wxUSE_UNICODE
 
 // ----------------------------------------------------------------------------
 // wxStackFrame
@@ -59,7 +52,7 @@ public:
     GetParam(size_t n, wxString *type, wxString *name, wxString *value) const;
 
     // callback used by OnGetParam(), don't call directly
-    void OnParam(wxSYMBOL_INFO *pSymInfo);
+    void OnParam(_SYMBOL_INFO *pSymInfo);
 
 protected:
     virtual void OnGetName();

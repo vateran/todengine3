@@ -60,10 +60,7 @@ protected:
     virtual bool MSWAllowsNone() const { return HasFlag(wxDP_ALLOWNONE); }
     virtual bool MSWOnDateTimeChange(const tagNMDATETIMECHANGE& dtch);
 
-private:
-    wxDateTime MSWGetControlValue() const;
-
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxDatePickerCtrl);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxDatePickerCtrl)
 };
 
 #endif // _WX_MSW_DATECTRL_H_

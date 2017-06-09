@@ -46,12 +46,9 @@ public:
 
     const wxInputStream& GetInputStream() const { return m_input; }
 
-    // base may be between 2 and 36, inclusive, or the special 0 (= C format)
-    wxUint64 Read64(int base = 10);
-    wxUint32 Read32(int base = 10);
+    wxUint32 Read32(int base = 10); // base may be between 2 and 36, inclusive, or the special 0 (= C format)
     wxUint16 Read16(int base = 10);
     wxUint8  Read8(int base = 10);
-    wxInt64  Read64S(int base = 10);
     wxInt32  Read32S(int base = 10);
     wxInt16  Read16S(int base = 10);
     wxInt8   Read8S(int base = 10);
@@ -71,14 +68,16 @@ public:
 #endif // wxUSE_UNICODE
     wxTextInputStream& operator>>(wxInt16& i);
     wxTextInputStream& operator>>(wxInt32& i);
-    wxTextInputStream& operator>>(wxInt64& i);
     wxTextInputStream& operator>>(wxUint16& i);
     wxTextInputStream& operator>>(wxUint32& i);
-    wxTextInputStream& operator>>(wxUint64& i);
     wxTextInputStream& operator>>(double& i);
     wxTextInputStream& operator>>(float& f);
 
     wxTextInputStream& operator>>( __wxTextInputManip func) { return func(*this); }
+
+#if WXWIN_COMPATIBILITY_2_6
+    wxDEPRECATED( wxString ReadString() );  // use ReadLine or ReadWord instead
+#endif // WXWIN_COMPATIBILITY_2_6
 
 protected:
     wxInputStream &m_input;
@@ -87,16 +86,7 @@ protected:
 
 #if wxUSE_UNICODE
     wxMBConv *m_conv;
-
-    // The second half of a surrogate character when using UTF-16 for wchar_t:
-    // we can't return it immediately from GetChar() when we read a Unicode
-    // code point outside of the BMP, but we can't keep it in m_lastBytes
-    // neither because it can't separately decoded, so we have a separate 1
-    // wchar_t buffer just for this case.
-#if SIZEOF_WCHAR_T == 2
-    wchar_t m_lastWChar;
-#endif // SIZEOF_WCHAR_T == 2
-#endif // wxUSE_UNICODE
+#endif
 
     bool   EatEOL(const wxChar &c);
     void   UngetLast(); // should be used instead of wxInputStream::Ungetch() because of Unicode issues
@@ -107,13 +97,13 @@ protected:
     wxDECLARE_NO_COPY_CLASS(wxTextInputStream);
 };
 
-enum wxEOL
+typedef enum
 {
   wxEOL_NATIVE,
   wxEOL_UNIX,
   wxEOL_MAC,
   wxEOL_DOS
-};
+} wxEOL;
 
 class WXDLLIMPEXP_BASE wxTextOutputStream
 {
@@ -132,16 +122,6 @@ public:
     void SetMode( wxEOL mode = wxEOL_NATIVE );
     wxEOL GetMode() { return m_mode; }
 
-    template<typename T>
-    void Write(const T& i)
-    {
-        wxString str;
-        str << i;
-
-        WriteString(str);
-    }
-
-    void Write64(wxUint64 i);
     void Write32(wxUint32 i);
     void Write16(wxUint16 i);
     void Write8(wxUint8 i);
@@ -159,10 +139,8 @@ public:
 #endif // wxUSE_UNICODE
     wxTextOutputStream& operator<<(wxInt16 c);
     wxTextOutputStream& operator<<(wxInt32 c);
-    wxTextOutputStream& operator<<(wxInt64 c);
     wxTextOutputStream& operator<<(wxUint16 c);
     wxTextOutputStream& operator<<(wxUint32 c);
-    wxTextOutputStream& operator<<(wxUint64 c);
     wxTextOutputStream& operator<<(double f);
     wxTextOutputStream& operator<<(float f);
 
@@ -174,13 +152,7 @@ protected:
 
 #if wxUSE_UNICODE
     wxMBConv *m_conv;
-
-#if SIZEOF_WCHAR_T == 2
-    // The first half of a surrogate character if one was passed to PutChar()
-    // and couldn't be output when it was called the last time.
-    wchar_t m_lastWChar;
-#endif // SIZEOF_WCHAR_T == 2
-#endif // wxUSE_UNICODE
+#endif
 
     wxDECLARE_NO_COPY_CLASS(wxTextOutputStream);
 };

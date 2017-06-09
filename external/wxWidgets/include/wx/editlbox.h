@@ -86,8 +86,8 @@ protected:
     void OnUpItem(wxCommandEvent& event);
     void OnDownItem(wxCommandEvent& event);
 
-    wxDECLARE_CLASS(wxEditableListBox);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_CLASS(wxEditableListBox)
+    DECLARE_EVENT_TABLE()
 
 private:
     void SwapItems(long i1, long i2);

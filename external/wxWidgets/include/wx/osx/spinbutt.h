@@ -69,7 +69,7 @@ protected:
     virtual wxSize DoGetBestSize() const;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxSpinButton);
+    DECLARE_DYNAMIC_CLASS(wxSpinButton)
 };
 
 #endif

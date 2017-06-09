@@ -35,20 +35,20 @@ public:
     wxFileInputStream(int fd);
     virtual ~wxFileInputStream();
 
-    virtual wxFileOffset GetLength() const wxOVERRIDE;
+    wxFileOffset GetLength() const;
 
     bool Ok() const { return IsOk(); }
-    virtual bool IsOk() const wxOVERRIDE;
-    virtual bool IsSeekable() const wxOVERRIDE { return m_file->GetKind() == wxFILE_KIND_DISK; }
+    virtual bool IsOk() const;
+    bool IsSeekable() const { return m_file->GetKind() == wxFILE_KIND_DISK; }
 
     wxFile* GetFile() const { return m_file; }
 
 protected:
     wxFileInputStream();
 
-    virtual size_t OnSysRead(void *buffer, size_t size) wxOVERRIDE;
-    virtual wxFileOffset OnSysSeek(wxFileOffset pos, wxSeekMode mode) wxOVERRIDE;
-    virtual wxFileOffset OnSysTell() const wxOVERRIDE;
+    size_t OnSysRead(void *buffer, size_t size);
+    wxFileOffset OnSysSeek(wxFileOffset pos, wxSeekMode mode);
+    wxFileOffset OnSysTell() const;
 
 protected:
     wxFile *m_file;
@@ -65,22 +65,22 @@ public:
     wxFileOutputStream(int fd);
     virtual ~wxFileOutputStream();
 
-    void Sync() wxOVERRIDE;
-    bool Close() wxOVERRIDE { return m_file_destroy ? m_file->Close() : true; }
-    virtual wxFileOffset GetLength() const wxOVERRIDE;
+    void Sync();
+    bool Close() { return m_file_destroy ? m_file->Close() : true; }
+    wxFileOffset GetLength() const;
 
     bool Ok() const { return IsOk(); }
-    virtual bool IsOk() const wxOVERRIDE;
-    virtual bool IsSeekable() const wxOVERRIDE { return m_file->GetKind() == wxFILE_KIND_DISK; }
+    virtual bool IsOk() const;
+    bool IsSeekable() const { return m_file->GetKind() == wxFILE_KIND_DISK; }
 
     wxFile* GetFile() const { return m_file; }
 
 protected:
     wxFileOutputStream();
 
-    virtual size_t OnSysWrite(const void *buffer, size_t size) wxOVERRIDE;
-    virtual wxFileOffset OnSysSeek(wxFileOffset pos, wxSeekMode mode) wxOVERRIDE;
-    virtual wxFileOffset OnSysTell() const wxOVERRIDE;
+    size_t OnSysWrite(const void *buffer, size_t size);
+    wxFileOffset OnSysSeek(wxFileOffset pos, wxSeekMode mode);
+    wxFileOffset OnSysTell() const;
 
 protected:
     wxFile *m_file;
@@ -95,18 +95,18 @@ public:
     wxTempFileOutputStream(const wxString& fileName);
     virtual ~wxTempFileOutputStream();
 
-    bool Close() wxOVERRIDE { return Commit(); }
+    bool Close() { return Commit(); }
     WXDLLIMPEXP_INLINE_BASE virtual bool Commit() { return m_file->Commit(); }
     WXDLLIMPEXP_INLINE_BASE virtual void Discard() { m_file->Discard(); }
 
-    virtual wxFileOffset GetLength() const wxOVERRIDE { return m_file->Length(); }
-    virtual bool IsSeekable() const wxOVERRIDE { return true; }
+    wxFileOffset GetLength() const { return m_file->Length(); }
+    bool IsSeekable() const { return true; }
 
 protected:
-    virtual size_t OnSysWrite(const void *buffer, size_t size) wxOVERRIDE;
-    virtual wxFileOffset OnSysSeek(wxFileOffset pos, wxSeekMode mode) wxOVERRIDE
+    size_t OnSysWrite(const void *buffer, size_t size);
+    wxFileOffset OnSysSeek(wxFileOffset pos, wxSeekMode mode)
         { return m_file->Seek(pos, mode); }
-    virtual wxFileOffset OnSysTell() const wxOVERRIDE { return m_file->Tell(); }
+    wxFileOffset OnSysTell() const { return m_file->Tell(); }
 
 private:
     wxTempFile *m_file;
@@ -119,29 +119,29 @@ class WXDLLIMPEXP_BASE wxFileStream : public wxFileInputStream,
 {
 public:
     wxFileStream(const wxString& fileName);
-    virtual bool IsOk() const wxOVERRIDE;
+    virtual bool IsOk() const;
 
     // override (some) virtual functions inherited from both classes to resolve
     // ambiguities (this wouldn't be necessary if wxStreamBase were a virtual
     // base class but it isn't)
 
-    virtual bool IsSeekable() const wxOVERRIDE
+    virtual bool IsSeekable() const
     {
         return wxFileInputStream::IsSeekable();
     }
 
-    virtual wxFileOffset GetLength() const wxOVERRIDE
+    virtual wxFileOffset GetLength() const
     {
         return wxFileInputStream::GetLength();
     }
 
 protected:
-    virtual wxFileOffset OnSysSeek(wxFileOffset pos, wxSeekMode mode) wxOVERRIDE
+    virtual wxFileOffset OnSysSeek(wxFileOffset pos, wxSeekMode mode)
     {
         return wxFileInputStream::OnSysSeek(pos, mode);
     }
 
-    virtual wxFileOffset OnSysTell() const wxOVERRIDE
+    virtual wxFileOffset OnSysTell() const
     {
         return wxFileInputStream::OnSysTell();
     }
@@ -166,20 +166,20 @@ public:
     wxFFileInputStream(FILE *file);
     virtual ~wxFFileInputStream();
 
-    virtual wxFileOffset GetLength() const wxOVERRIDE;
+    wxFileOffset GetLength() const;
 
     bool Ok() const { return IsOk(); }
-    virtual bool IsOk() const wxOVERRIDE;
-    virtual bool IsSeekable() const wxOVERRIDE { return m_file->GetKind() == wxFILE_KIND_DISK; }
+    virtual bool IsOk() const;
+    bool IsSeekable() const { return m_file->GetKind() == wxFILE_KIND_DISK; }
 
     wxFFile* GetFile() const { return m_file; }
 
 protected:
     wxFFileInputStream();
 
-    virtual size_t OnSysRead(void *buffer, size_t size) wxOVERRIDE;
-    virtual wxFileOffset OnSysSeek(wxFileOffset pos, wxSeekMode mode) wxOVERRIDE;
-    virtual wxFileOffset OnSysTell() const wxOVERRIDE;
+    size_t OnSysRead(void *buffer, size_t size);
+    wxFileOffset OnSysSeek(wxFileOffset pos, wxSeekMode mode);
+    wxFileOffset OnSysTell() const;
 
 protected:
     wxFFile *m_file;
@@ -196,22 +196,22 @@ public:
     wxFFileOutputStream(FILE *file);
     virtual ~wxFFileOutputStream();
 
-    void Sync() wxOVERRIDE;
-    bool Close() wxOVERRIDE { return m_file_destroy ? m_file->Close() : true; }
-    virtual wxFileOffset GetLength() const wxOVERRIDE;
+    void Sync();
+    bool Close() { return m_file_destroy ? m_file->Close() : true; }
+    wxFileOffset GetLength() const;
 
     bool Ok() const { return IsOk(); }
-    virtual bool IsOk() const wxOVERRIDE;
-    virtual bool IsSeekable() const wxOVERRIDE { return m_file->GetKind() == wxFILE_KIND_DISK; }
+    virtual bool IsOk() const;
+    bool IsSeekable() const { return m_file->GetKind() == wxFILE_KIND_DISK; }
 
     wxFFile* GetFile() const { return m_file; }
 
 protected:
     wxFFileOutputStream();
 
-    virtual size_t OnSysWrite(const void *buffer, size_t size) wxOVERRIDE;
-    virtual wxFileOffset OnSysSeek(wxFileOffset pos, wxSeekMode mode) wxOVERRIDE;
-    virtual wxFileOffset OnSysTell() const wxOVERRIDE;
+    size_t OnSysWrite(const void *buffer, size_t size);
+    wxFileOffset OnSysSeek(wxFileOffset pos, wxSeekMode mode);
+    wxFileOffset OnSysTell() const;
 
 protected:
     wxFFile *m_file;
@@ -229,25 +229,25 @@ public:
     // override some virtual functions to resolve ambiguities, just as in
     // wxFileStream
 
-    virtual bool IsOk() const wxOVERRIDE;
+    virtual bool IsOk() const;
 
-    virtual bool IsSeekable() const wxOVERRIDE
+    virtual bool IsSeekable() const
     {
         return wxFFileInputStream::IsSeekable();
     }
 
-    virtual wxFileOffset GetLength() const wxOVERRIDE
+    virtual wxFileOffset GetLength() const
     {
         return wxFFileInputStream::GetLength();
     }
 
 protected:
-    virtual wxFileOffset OnSysSeek(wxFileOffset pos, wxSeekMode mode) wxOVERRIDE
+    virtual wxFileOffset OnSysSeek(wxFileOffset pos, wxSeekMode mode)
     {
         return wxFFileInputStream::OnSysSeek(pos, mode);
     }
 
-    virtual wxFileOffset OnSysTell() const wxOVERRIDE
+    virtual wxFileOffset OnSysTell() const
     {
         return wxFFileInputStream::OnSysTell();
     }

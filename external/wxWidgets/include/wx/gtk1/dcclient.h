@@ -124,7 +124,7 @@ public:
     GdkWindow *GetWindow() { return m_window; }
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxWindowDCImpl);
+    DECLARE_DYNAMIC_CLASS(wxWindowDCImpl)
 };
 
 //-----------------------------------------------------------------------------
@@ -141,7 +141,7 @@ protected:
     virtual void DoGetSize(int *width, int *height) const;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxClientDCImpl);
+    DECLARE_DYNAMIC_CLASS(wxClientDCImpl)
 };
 
 //-----------------------------------------------------------------------------
@@ -155,7 +155,7 @@ public:
     wxPaintDCImpl(wxDC *owner, wxWindow *win);
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxPaintDCImpl);
+    DECLARE_DYNAMIC_CLASS(wxPaintDCImpl)
 };
 
 #endif // __GTKDCCLIENTH__

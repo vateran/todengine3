@@ -18,9 +18,7 @@
 class WXDLLIMPEXP_ADV wxDataViewCustomRenderer: public wxDataViewRenderer
 {
 public:
-    static wxString GetDefaultType() { return wxS("string"); }
-
-    wxDataViewCustomRenderer( const wxString &varianttype = GetDefaultType(),
+    wxDataViewCustomRenderer( const wxString &varianttype = wxT("string"),
                               wxDataViewCellMode mode = wxDATAVIEW_CELL_INERT,
                               int align = wxDVR_DEFAULT_ALIGNMENT );
 
@@ -37,7 +35,7 @@ public:
     }
 
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewCustomRenderer);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewCustomRenderer)
 };
 
 
@@ -48,14 +46,12 @@ private:
 class WXDLLIMPEXP_ADV wxDataViewTextRenderer: public wxDataViewRenderer
 {
 public:
-    static wxString GetDefaultType() { return wxS("string"); }
-
-    wxDataViewTextRenderer( const wxString &varianttype = GetDefaultType(),
+    wxDataViewTextRenderer( const wxString &varianttype = wxT("string"),
                             wxDataViewCellMode mode = wxDATAVIEW_CELL_INERT,
                             int align = wxDVR_DEFAULT_ALIGNMENT );
 
-    virtual bool SetValue( const wxVariant &value );
-    virtual bool GetValue( wxVariant &value ) const;
+    bool SetValue( const wxVariant &value );
+    bool GetValue( wxVariant &value ) const;
 
     virtual bool Render(wxRect cell, wxDC *dc, int state);
     virtual wxSize GetSize() const;
@@ -70,7 +66,7 @@ protected:
     wxString   m_text;
 
 protected:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewTextRenderer);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewTextRenderer)
 };
 
 // ---------------------------------------------------------
@@ -80,24 +76,22 @@ protected:
 class WXDLLIMPEXP_ADV wxDataViewBitmapRenderer: public wxDataViewRenderer
 {
 public:
-    static wxString GetDefaultType() { return wxS("wxBitmap"); }
-
-    wxDataViewBitmapRenderer( const wxString &varianttype = GetDefaultType(),
+    wxDataViewBitmapRenderer( const wxString &varianttype = wxT("wxBitmap"),
                               wxDataViewCellMode mode = wxDATAVIEW_CELL_INERT,
                               int align = wxDVR_DEFAULT_ALIGNMENT );
 
-    virtual bool SetValue( const wxVariant &value );
-    virtual bool GetValue( wxVariant &value ) const;
+    bool SetValue( const wxVariant &value );
+    bool GetValue( wxVariant &value ) const;
 
-    virtual bool Render( wxRect cell, wxDC *dc, int state );
-    virtual wxSize GetSize() const;
+    bool Render( wxRect cell, wxDC *dc, int state );
+    wxSize GetSize() const;
 
 private:
     wxIcon m_icon;
     wxBitmap m_bitmap;
 
 protected:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewBitmapRenderer);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewBitmapRenderer)
 };
 
 // ---------------------------------------------------------
@@ -107,17 +101,15 @@ protected:
 class WXDLLIMPEXP_ADV wxDataViewToggleRenderer: public wxDataViewRenderer
 {
 public:
-    static wxString GetDefaultType() { return wxS("bool"); }
-
-    wxDataViewToggleRenderer( const wxString &varianttype = GetDefaultType(),
+    wxDataViewToggleRenderer( const wxString &varianttype = wxT("bool"),
                               wxDataViewCellMode mode = wxDATAVIEW_CELL_INERT,
                               int align = wxDVR_DEFAULT_ALIGNMENT );
 
-    virtual bool SetValue( const wxVariant &value );
-    virtual bool GetValue( wxVariant &value ) const;
+    bool SetValue( const wxVariant &value );
+    bool GetValue( wxVariant &value ) const;
 
-    virtual bool Render( wxRect cell, wxDC *dc, int state );
-    virtual wxSize GetSize() const;
+    bool Render( wxRect cell, wxDC *dc, int state );
+    wxSize GetSize() const;
 
     // Implementation only, don't use nor override
     virtual bool WXActivateCell(const wxRect& cell,
@@ -129,7 +121,7 @@ private:
     bool    m_toggle;
 
 protected:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewToggleRenderer);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewToggleRenderer)
 };
 
 // ---------------------------------------------------------
@@ -139,15 +131,13 @@ protected:
 class WXDLLIMPEXP_ADV wxDataViewProgressRenderer: public wxDataViewRenderer
 {
 public:
-    static wxString GetDefaultType() { return wxS("long"); }
-
     wxDataViewProgressRenderer( const wxString &label = wxEmptyString,
-                                const wxString &varianttype = GetDefaultType(),
+                                const wxString &varianttype = wxT("long"),
                                 wxDataViewCellMode mode = wxDATAVIEW_CELL_INERT,
                                 int align = wxDVR_DEFAULT_ALIGNMENT );
 
-    virtual bool SetValue( const wxVariant &value );
-    virtual bool GetValue( wxVariant& value ) const;
+    bool SetValue( const wxVariant &value );
+    bool GetValue( wxVariant& value ) const;
 
     virtual bool Render(wxRect cell, wxDC *dc, int state);
     virtual wxSize GetSize() const;
@@ -157,7 +147,7 @@ private:
     int         m_value;
 
 protected:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewProgressRenderer);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewProgressRenderer)
 };
 
 // ---------------------------------------------------------
@@ -167,14 +157,12 @@ protected:
 class WXDLLIMPEXP_ADV wxDataViewIconTextRenderer: public wxDataViewRenderer
 {
 public:
-    static wxString GetDefaultType() { return wxS("wxDataViewIconText"); }
-
-    wxDataViewIconTextRenderer( const wxString &varianttype = GetDefaultType(),
+    wxDataViewIconTextRenderer( const wxString &varianttype = wxT("wxDataViewIconText"),
                                 wxDataViewCellMode mode = wxDATAVIEW_CELL_INERT,
                                 int align = wxDVR_DEFAULT_ALIGNMENT );
 
-    virtual bool SetValue( const wxVariant &value );
-    virtual bool GetValue( wxVariant &value ) const;
+    bool SetValue( const wxVariant &value );
+    bool GetValue( wxVariant &value ) const;
 
     virtual bool Render(wxRect cell, wxDC *dc, int state);
     virtual wxSize GetSize() const;
@@ -188,7 +176,7 @@ private:
     wxDataViewIconText   m_value;
 
 protected:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewIconTextRenderer);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxDataViewIconTextRenderer)
 };
 
 #endif // _WX_GENERIC_DVRENDERERS_H_

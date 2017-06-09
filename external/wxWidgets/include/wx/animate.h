@@ -50,7 +50,7 @@ public:
                       wxAnimationType type = wxANIMATION_TYPE_ANY) = 0;
 
 protected:
-    wxDECLARE_ABSTRACT_CLASS(wxAnimationBase);
+    DECLARE_ABSTRACT_CLASS(wxAnimationBase)
 };
 
 
@@ -106,7 +106,7 @@ protected:
     virtual void DisplayStaticImage() = 0;
 
 private:
-    wxDECLARE_ABSTRACT_CLASS(wxAnimationCtrlBase);
+    DECLARE_ABSTRACT_CLASS(wxAnimationCtrlBase)
 };
 
 

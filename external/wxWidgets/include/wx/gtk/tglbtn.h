@@ -45,24 +45,24 @@ public:
                 const wxString& name = wxCheckBoxNameStr);
 
     // Get/set the value
-    void SetValue(bool state) wxOVERRIDE;
-    bool GetValue() const wxOVERRIDE;
+    void SetValue(bool state);
+    bool GetValue() const;
 
     // Set the label
-    void SetLabel(const wxString& label) wxOVERRIDE;
+    void SetLabel(const wxString& label);
 
     static wxVisualAttributes
     GetClassDefaultAttributes(wxWindowVariant variant = wxWINDOW_VARIANT_NORMAL);
 
+protected:
     void GTKDisableEvents();
     void GTKEnableEvents();
 
-protected:
-    virtual wxSize DoGetBestSize() const wxOVERRIDE;
-    virtual void DoApplyWidgetStyle(GtkRcStyle *style) wxOVERRIDE;
+    virtual wxSize DoGetBestSize() const;
+    virtual void DoApplyWidgetStyle(GtkRcStyle *style);
 
 #if wxUSE_MARKUP
-    virtual bool DoSetLabelMarkup(const wxString& markup) wxOVERRIDE;
+    virtual bool DoSetLabelMarkup(const wxString& markup);
 #endif // wxUSE_MARKUP
 
 private:
@@ -71,7 +71,7 @@ private:
     // Return the GtkLabel used by this toggle button.
     GtkLabel *GTKGetLabel() const;
 
-    wxDECLARE_DYNAMIC_CLASS(wxToggleButton);
+    DECLARE_DYNAMIC_CLASS(wxToggleButton)
 };
 
 //-----------------------------------------------------------------------------
@@ -108,12 +108,12 @@ public:
     wxDEPRECATED_INLINE( void SetLabel(const wxBitmap& bitmap),
        SetBitmapLabel(bitmap); )
     // prevent virtual function hiding
-    virtual void SetLabel(const wxString& label) wxOVERRIDE { wxToggleButton::SetLabel(label); }
+    virtual void SetLabel(const wxString& label) { wxToggleButton::SetLabel(label); }
 
 private:
     typedef wxToggleButtonBase base_type;
 
-    wxDECLARE_DYNAMIC_CLASS(wxBitmapToggleButton);
+    DECLARE_DYNAMIC_CLASS(wxBitmapToggleButton)
 };
 
 #endif // _WX_GTK_TOGGLEBUTTON_H_

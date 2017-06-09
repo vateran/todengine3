@@ -12,11 +12,27 @@
 
 #include "wx/defs.h"
 
+// NB: This code is intentionally written without partial templates
+//     specialization, because some older compilers (notably VC6) don't
+//     support it.
+
 namespace wxPrivate
 {
 
 template <bool Cond>
-struct wxIfImpl;
+struct wxIfImpl
+
+// broken VC6 needs not just an incomplete template class declaration but a
+// "skeleton" declaration of the specialized versions below as it apparently
+// tries to look up the types in the generic template definition at some moment
+// even though it ends up by using the correct specialization in the end -- but
+// without this skeleton it doesn't recognize Result as a class at all below
+#if defined(__VISUALC__) && !wxCHECK_VISUALC_VERSION(7)
+{
+    template<typename TTrue, typename TFalse> struct Result {};
+}
+#endif // VC++ <= 6
+;
 
 // specialization for true:
 template <>

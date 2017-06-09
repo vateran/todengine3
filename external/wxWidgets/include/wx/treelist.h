@@ -313,7 +313,6 @@ public:
     void SelectAll();
     void UnselectAll();
 
-    void EnsureVisible(wxTreeListItem item);
 
     // Checkbox handling
     // -----------------
@@ -396,7 +395,7 @@ private:
     void Init();
 
     // Pure virtual method inherited from wxCompositeWindow.
-    virtual wxWindowList GetCompositeWindowParts() const wxOVERRIDE;
+    virtual wxWindowList GetCompositeWindowParts() const;
 
     // Implementation of AppendColumn().
     int DoInsertColumn(const wxString& title,
@@ -471,7 +470,7 @@ public:
     // COLUMN_SORTED event.
     unsigned GetColumn() const { return m_column; }
 
-    virtual wxEvent* Clone() const wxOVERRIDE { return new wxTreeListEvent(*this); }
+    virtual wxEvent* Clone() const { return new wxTreeListEvent(*this); }
 
 private:
     // Common part of all ctors.

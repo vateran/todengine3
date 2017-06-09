@@ -18,12 +18,12 @@ class WXDLLIMPEXP_FWD_CORE wxWindow;
 
 class WXDLLIMPEXP_XRC wxMdiXmlHandler : public wxXmlResourceHandler
 {
-    wxDECLARE_DYNAMIC_CLASS(wxMdiXmlHandler);
+    DECLARE_DYNAMIC_CLASS(wxMdiXmlHandler)
 
 public:
     wxMdiXmlHandler();
-    virtual wxObject *DoCreateResource() wxOVERRIDE;
-    virtual bool CanHandle(wxXmlNode *node) wxOVERRIDE;
+    virtual wxObject *DoCreateResource();
+    virtual bool CanHandle(wxXmlNode *node);
 
 private:
     wxWindow *CreateFrame();

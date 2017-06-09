@@ -30,7 +30,7 @@ enum
 
 class WXDLLIMPEXP_HTML wxHtmlProcessor : public wxObject
 {
-    wxDECLARE_ABSTRACT_CLASS(wxHtmlProcessor);
+    DECLARE_ABSTRACT_CLASS(wxHtmlProcessor)
 
 public:
     wxHtmlProcessor() : wxObject(), m_enabled(true) {}

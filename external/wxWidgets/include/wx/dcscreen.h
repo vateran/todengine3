@@ -27,7 +27,7 @@ public:
         { return true; }
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxScreenDC);
+    DECLARE_DYNAMIC_CLASS(wxScreenDC)
 };
 
 

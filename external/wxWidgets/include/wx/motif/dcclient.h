@@ -154,7 +154,7 @@ protected:
     int          m_currentFill ;
     int          m_autoSetting ; // See comment in dcclient.cpp
 
-    wxDECLARE_DYNAMIC_CLASS(wxWindowDCImpl);
+    DECLARE_DYNAMIC_CLASS(wxWindowDCImpl)
 };
 
 class WXDLLIMPEXP_CORE wxPaintDCImpl: public wxWindowDCImpl
@@ -165,7 +165,7 @@ public:
 
     virtual ~wxPaintDCImpl();
 
-    wxDECLARE_DYNAMIC_CLASS(wxPaintDCImpl);
+    DECLARE_DYNAMIC_CLASS(wxPaintDCImpl)
 };
 
 class WXDLLIMPEXP_CORE wxClientDCImpl: public wxWindowDCImpl
@@ -175,7 +175,7 @@ public:
     wxClientDCImpl(wxDC *owner, wxWindow* win)
         : wxWindowDCImpl(owner, win) { }
 
-    wxDECLARE_DYNAMIC_CLASS(wxClientDCImpl);
+    DECLARE_DYNAMIC_CLASS(wxClientDCImpl)
 };
 
 #endif // _WX_DCCLIENT_H_

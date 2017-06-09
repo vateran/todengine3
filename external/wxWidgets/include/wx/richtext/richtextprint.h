@@ -86,7 +86,7 @@ public:
     void SetTextColour(const wxColour& col) { m_colour = col; }
     const wxColour& GetTextColour() const { return m_colour; }
 
-    wxDECLARE_CLASS(wxRichTextHeaderFooterData);
+    DECLARE_CLASS(wxRichTextHeaderFooterData)
 
 private:
 

@@ -55,8 +55,8 @@ public:
 private:
     void OnComboBox(wxCommandEvent &event);
 
-    wxDECLARE_EVENT_TABLE();
-    wxDECLARE_DYNAMIC_CLASS(wxChoice);
+    DECLARE_EVENT_TABLE()
+    DECLARE_DYNAMIC_CLASS(wxChoice)
 };
 
 

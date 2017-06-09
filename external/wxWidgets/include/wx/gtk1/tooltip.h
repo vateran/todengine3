@@ -51,7 +51,7 @@ private:
     wxString     m_text;
     wxWindow    *m_window;
 
-    wxDECLARE_ABSTRACT_CLASS(wxToolTip);
+    DECLARE_ABSTRACT_CLASS(wxToolTip)
 };
 
 #endif // __GTKTOOLTIPH__

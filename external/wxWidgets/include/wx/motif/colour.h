@@ -17,7 +17,7 @@
 // Colour
 class WXDLLIMPEXP_CORE wxColour : public wxColourBase
 {
-    wxDECLARE_DYNAMIC_CLASS(wxColour);
+    DECLARE_DYNAMIC_CLASS(wxColour)
 public:
     // constructors
     // ------------

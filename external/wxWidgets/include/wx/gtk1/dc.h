@@ -51,7 +51,7 @@ public:
     virtual void DoGetSizeMM(int* width, int* height) const;
 
 private:
-    wxDECLARE_ABSTRACT_CLASS(wxDC);
+    DECLARE_ABSTRACT_CLASS(wxDC)
 };
 
 // this must be defined when wxDC::Blit() honours the DC origian and needed to

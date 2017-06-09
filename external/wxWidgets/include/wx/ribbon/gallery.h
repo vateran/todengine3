@@ -63,16 +63,16 @@ public:
     wxRibbonGalleryButtonState GetExtensionButtonState() const;
 
     bool IsHovered() const;
-    virtual bool IsSizingContinuous() const wxOVERRIDE;
-    virtual bool Realize() wxOVERRIDE;
-    virtual bool Layout() wxOVERRIDE;
+    virtual bool IsSizingContinuous() const;
+    virtual bool Realize();
+    virtual bool Layout();
 
-    virtual bool ScrollLines(int lines) wxOVERRIDE;
+    virtual bool ScrollLines(int lines);
     bool ScrollPixels(int pixels);
     void EnsureVisible(const wxRibbonGalleryItem* item);
 
 protected:
-    wxBorder GetDefaultBorder() const wxOVERRIDE { return wxBORDER_NONE; }
+    wxBorder GetDefaultBorder() const { return wxBORDER_NONE; }
     void CommonInit(long style);
     void CalculateMinSize();
     bool TestButtonHover(const wxRect& rect, wxPoint pos,
@@ -89,11 +89,11 @@ protected:
     void OnSize(wxSizeEvent& evt);
     int GetScrollLineSize() const;
 
-    virtual wxSize DoGetBestSize() const wxOVERRIDE;
+    virtual wxSize DoGetBestSize() const;
     virtual wxSize DoGetNextSmallerSize(wxOrientation direction,
-                                        wxSize relative_to) const wxOVERRIDE;
+                                        wxSize relative_to) const;
     virtual wxSize DoGetNextLargerSize(wxOrientation direction,
-                                       wxSize relative_to) const wxOVERRIDE;
+                                       wxSize relative_to) const;
 
     wxArrayRibbonGalleryItem m_items;
     wxRibbonGalleryItem* m_selected_item;
@@ -117,8 +117,8 @@ protected:
     bool m_hovered;
 
 #ifndef SWIG
-    wxDECLARE_CLASS(wxRibbonGallery);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_CLASS(wxRibbonGallery)
+    DECLARE_EVENT_TABLE()
 #endif
 };
 
@@ -140,7 +140,7 @@ public:
         m_item = e.m_item;
     }
 #endif
-    wxEvent *Clone() const wxOVERRIDE { return new wxRibbonGalleryEvent(*this); }
+    wxEvent *Clone() const { return new wxRibbonGalleryEvent(*this); }
 
     wxRibbonGallery* GetGallery() {return m_gallery;}
     wxRibbonGalleryItem* GetGalleryItem() {return m_item;}
@@ -153,7 +153,7 @@ protected:
 
 #ifndef SWIG
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxRibbonGalleryEvent);
+    DECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxRibbonGalleryEvent)
 #endif
 };
 
@@ -179,10 +179,13 @@ typedef void (wxEvtHandler::*wxRibbonGalleryEventFunction)(wxRibbonGalleryEvent&
 // wxpython/swig event work
 %constant wxEventType wxEVT_RIBBONGALLERY_HOVER_CHANGED;
 %constant wxEventType wxEVT_RIBBONGALLERY_SELECTED;
+%constant wxEventType wxEVT_RIBBONGALLERY_CLICKED;
+
 
 %pythoncode {
     EVT_RIBBONGALLERY_HOVER_CHANGED = wx.PyEventBinder( wxEVT_RIBBONGALLERY_HOVER_CHANGED, 1 )
     EVT_RIBBONGALLERY_SELECTED = wx.PyEventBinder( wxEVT_RIBBONGALLERY_SELECTED, 1 )
+    EVT_RIBBONGALLERY_CLICKED = wx.PyEventBinder( wxEVT_RIBBONGALLERY_CLICKED, 1 )
 }
 #endif // SWIG
 

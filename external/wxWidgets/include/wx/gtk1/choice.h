@@ -104,7 +104,7 @@ public:
     int m_selection_hack;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxChoice);
+    DECLARE_DYNAMIC_CLASS(wxChoice)
 };
 
 

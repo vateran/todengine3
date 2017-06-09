@@ -99,7 +99,7 @@ protected:
     WXColormap            m_mainColormap;
     long                  m_maxRequestSize;
 
-    wxDECLARE_DYNAMIC_CLASS(wxApp);
+    DECLARE_DYNAMIC_CLASS(wxApp)
 };
 
 #endif // _WX_X11_APP_H_

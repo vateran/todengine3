@@ -25,7 +25,7 @@ public:
 
     wxRect GetPaperRect() const;
 
-    wxDECLARE_CLASS(wxPrinterDCImpl);
+    DECLARE_CLASS(wxPrinterDCImpl)
 };
 
 #endif // _WX_DCPRINT_H_

@@ -37,7 +37,7 @@ private:
 
     wxBitmap m_bitmap;
 
-    wxDECLARE_DYNAMIC_CLASS(wxMemoryDCImpl);
+    DECLARE_DYNAMIC_CLASS(wxMemoryDCImpl)
 };
 
 #endif

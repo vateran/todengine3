@@ -22,7 +22,6 @@
 #include "wx/propdlg.h"
 #include "wx/bookctrl.h"
 #include "wx/withimages.h"
-#include "wx/colourdata.h"
 
 #if wxUSE_HTML
 #include "wx/htmllbox.h"
@@ -122,7 +121,7 @@ public:
 class WXDLLIMPEXP_RICHTEXT wxRichTextFormattingDialog: public wxPropertySheetDialog,
                                                        public wxWithImages
 {
-    wxDECLARE_CLASS(wxRichTextFormattingDialog);
+DECLARE_CLASS(wxRichTextFormattingDialog)
 DECLARE_HELP_PROVISION()
 
 public:
@@ -192,8 +191,8 @@ public:
     void SetObject(wxRichTextObject* obj) { m_object = obj; }
 
     /// Transfers the data and from to the window
-    virtual bool TransferDataToWindow() wxOVERRIDE;
-    virtual bool TransferDataFromWindow() wxOVERRIDE;
+    virtual bool TransferDataToWindow();
+    virtual bool TransferDataFromWindow();
 
     /// Apply the styles when a different tab is selected, so the previews are
     /// up to date
@@ -242,20 +241,6 @@ public:
     /// Find a page by class
     wxWindow* FindPage(wxClassInfo* info) const;
 
-    /// Whether to restore the last-selected page.
-    static bool GetRestoreLastPage() { return sm_restoreLastPage; }
-    static void SetRestoreLastPage(bool b) { sm_restoreLastPage = b; }
-
-    /// The page identifier of the last page selected (not the control id)
-    static int GetLastPage() { return sm_lastPage; }
-    static void SetLastPage(int lastPage) { sm_lastPage = lastPage; }
-
-    /// Sets the custom colour data for use by the colour dialog.
-    static void SetColourData(const wxColourData& colourData) { sm_colourData = colourData; }
-
-    /// Returns the custom colour data for use by the colour dialog.
-    static wxColourData GetColourData() { return sm_colourData; }
-
 protected:
 
     wxRichTextAttr                              m_attributes;
@@ -264,16 +249,11 @@ protected:
     wxRichTextObject*                           m_object;
     wxArrayInt                                  m_pageIds; // mapping of book control indexes to page ids
     int                                         m_options; // UI options
-    bool                                        m_ignoreUpdates;
-    static wxColourData                         sm_colourData;
 
     static wxRichTextFormattingDialogFactory*   ms_FormattingDialogFactory;
     static bool                                 sm_showToolTips;
 
-    static bool                                 sm_restoreLastPage;
-    static int                                  sm_lastPage;
-
-    wxDECLARE_EVENT_TABLE();
+DECLARE_EVENT_TABLE()
 };
 
 //-----------------------------------------------------------------------------
@@ -292,7 +272,7 @@ private:
     int m_textEffects;
 
     void OnPaint(wxPaintEvent& event);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 /*
@@ -301,7 +281,7 @@ private:
 
 class WXDLLIMPEXP_RICHTEXT wxRichTextColourSwatchCtrl: public wxControl
 {
-    wxDECLARE_CLASS(wxRichTextColourSwatchCtrl);
+    DECLARE_CLASS(wxRichTextColourSwatchCtrl)
 public:
     wxRichTextColourSwatchCtrl(wxWindow* parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0);
     ~wxRichTextColourSwatchCtrl();
@@ -312,12 +292,12 @@ public:
 
     wxColour& GetColour() { return m_colour; }
 
-    virtual wxSize DoGetBestSize() const wxOVERRIDE { return GetSize(); }
+    virtual wxSize DoGetBestSize() const { return GetSize(); }
 
 protected:
     wxColour    m_colour;
 
-    wxDECLARE_EVENT_TABLE();
+DECLARE_EVENT_TABLE()
 };
 
 /*!
@@ -327,8 +307,8 @@ protected:
 
 class WXDLLIMPEXP_RICHTEXT wxRichTextFontListBox: public wxHtmlListBox
 {
-    wxDECLARE_CLASS(wxRichTextFontListBox);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_CLASS(wxRichTextFontListBox)
+    DECLARE_EVENT_TABLE()
 
 public:
     wxRichTextFontListBox()
@@ -366,7 +346,7 @@ public:
 
 protected:
     /// Returns the HTML for this item
-    virtual wxString OnGetItem(size_t n) const wxOVERRIDE;
+    virtual wxString OnGetItem(size_t n) const;
 
 private:
 

@@ -12,9 +12,10 @@
 #ifndef _WX_WEBKIT_H
 #define _WX_WEBKIT_H
 
-#include "wx/defs.h"
+#include "wx/setup.h"
 
-#if wxUSE_WEBVIEW && wxUSE_WEBVIEW_WEBKIT && defined(__WXOSX__) 
+#if wxUSE_WEBVIEW && wxUSE_WEBVIEW_WEBKIT && (defined(__WXOSX_COCOA__) \
+                                          ||  defined(__WXOSX_CARBON__))
 
 #include "wx/control.h"
 #include "wx/webview.h"
@@ -45,47 +46,47 @@ public:
                 const wxString& strURL = wxWebViewDefaultURLStr,
                 const wxPoint& pos = wxDefaultPosition,
                 const wxSize& size = wxDefaultSize, long style = 0,
-                const wxString& name = wxWebViewNameStr) wxOVERRIDE;
+                const wxString& name = wxWebViewNameStr);
     virtual ~wxWebViewWebKit();
 
-    virtual bool CanGoBack() const wxOVERRIDE;
-    virtual bool CanGoForward() const wxOVERRIDE;
-    virtual void GoBack() wxOVERRIDE;
-    virtual void GoForward() wxOVERRIDE;
-    virtual void Reload(wxWebViewReloadFlags flags = wxWEBVIEW_RELOAD_DEFAULT) wxOVERRIDE;
-    virtual void Stop() wxOVERRIDE;
-    virtual wxString GetPageSource() const wxOVERRIDE;
-    virtual wxString GetPageText() const wxOVERRIDE;
+    virtual bool CanGoBack() const;
+    virtual bool CanGoForward() const;
+    virtual void GoBack();
+    virtual void GoForward();
+    virtual void Reload(wxWebViewReloadFlags flags = wxWEBVIEW_RELOAD_DEFAULT);
+    virtual void Stop();
+    virtual wxString GetPageSource() const;
+    virtual wxString GetPageText() const;
 
-    virtual void Print() wxOVERRIDE;
+    virtual void Print();
 
-    virtual void LoadURL(const wxString& url) wxOVERRIDE;
-    virtual wxString GetCurrentURL() const wxOVERRIDE;
-    virtual wxString GetCurrentTitle() const wxOVERRIDE;
-    virtual wxWebViewZoom GetZoom() const wxOVERRIDE;
-    virtual void SetZoom(wxWebViewZoom zoom) wxOVERRIDE;
+    virtual void LoadURL(const wxString& url);
+    virtual wxString GetCurrentURL() const;
+    virtual wxString GetCurrentTitle() const;
+    virtual wxWebViewZoom GetZoom() const;
+    virtual void SetZoom(wxWebViewZoom zoom);
 
-    virtual void SetZoomType(wxWebViewZoomType zoomType) wxOVERRIDE;
-    virtual wxWebViewZoomType GetZoomType() const wxOVERRIDE;
-    virtual bool CanSetZoomType(wxWebViewZoomType type) const wxOVERRIDE;
+    virtual void SetZoomType(wxWebViewZoomType zoomType);
+    virtual wxWebViewZoomType GetZoomType() const;
+    virtual bool CanSetZoomType(wxWebViewZoomType type) const;
 
-    virtual bool IsBusy() const wxOVERRIDE { return m_busy; }
+    virtual bool IsBusy() const { return m_busy; }
 
     //History functions
-    virtual void ClearHistory() wxOVERRIDE;
-    virtual void EnableHistory(bool enable = true) wxOVERRIDE;
-    virtual wxVector<wxSharedPtr<wxWebViewHistoryItem> > GetBackwardHistory() wxOVERRIDE;
-    virtual wxVector<wxSharedPtr<wxWebViewHistoryItem> > GetForwardHistory() wxOVERRIDE;
-    virtual void LoadHistoryItem(wxSharedPtr<wxWebViewHistoryItem> item) wxOVERRIDE;
+    virtual void ClearHistory();
+    virtual void EnableHistory(bool enable = true);
+    virtual wxVector<wxSharedPtr<wxWebViewHistoryItem> > GetBackwardHistory();
+    virtual wxVector<wxSharedPtr<wxWebViewHistoryItem> > GetForwardHistory();
+    virtual void LoadHistoryItem(wxSharedPtr<wxWebViewHistoryItem> item);
 
     //Undo / redo functionality
-    virtual bool CanUndo() const wxOVERRIDE;
-    virtual bool CanRedo() const wxOVERRIDE;
-    virtual void Undo() wxOVERRIDE;
-    virtual void Redo() wxOVERRIDE;
+    virtual bool CanUndo() const;
+    virtual bool CanRedo() const;
+    virtual void Undo();
+    virtual void Redo();
 
     //Find function
-    virtual long Find(const wxString& text, int flags = wxWEBVIEW_FIND_DEFAULT) wxOVERRIDE
+    virtual long Find(const wxString& text, int flags = wxWEBVIEW_FIND_DEFAULT) 
     { 
         wxUnusedVar(text);
         wxUnusedVar(flags);
@@ -93,31 +94,31 @@ public:
     }
 
     //Clipboard functions
-    virtual bool CanCut() const wxOVERRIDE { return true; }
-    virtual bool CanCopy() const wxOVERRIDE { return true; }
-    virtual bool CanPaste() const wxOVERRIDE { return true; }
-    virtual void Cut() wxOVERRIDE;
-    virtual void Copy() wxOVERRIDE;
-    virtual void Paste() wxOVERRIDE;
+    virtual bool CanCut() const { return true; }
+    virtual bool CanCopy() const { return true; }
+    virtual bool CanPaste() const { return true; }
+    virtual void Cut();
+    virtual void Copy();
+    virtual void Paste();
 
     //Editing functions
-    virtual void SetEditable(bool enable = true) wxOVERRIDE;
-    virtual bool IsEditable() const wxOVERRIDE;
+    virtual void SetEditable(bool enable = true);
+    virtual bool IsEditable() const;
 
     //Selection
-    virtual void DeleteSelection() wxOVERRIDE;
-    virtual bool HasSelection() const wxOVERRIDE;
-    virtual void SelectAll() wxOVERRIDE;
-    virtual wxString GetSelectedText() const wxOVERRIDE;
-    virtual wxString GetSelectedSource() const wxOVERRIDE;
-    virtual void ClearSelection() wxOVERRIDE;
+    virtual void DeleteSelection();
+    virtual bool HasSelection() const;
+    virtual void SelectAll();
+    virtual wxString GetSelectedText() const;
+    virtual wxString GetSelectedSource() const;
+    virtual void ClearSelection();
 
-    void RunScript(const wxString& javascript) wxOVERRIDE;
+    void RunScript(const wxString& javascript);
 
     //Virtual Filesystem Support
-    virtual void RegisterHandler(wxSharedPtr<wxWebViewHandler> handler) wxOVERRIDE;
+    virtual void RegisterHandler(wxSharedPtr<wxWebViewHandler> handler);
 
-    virtual void* GetNativeBackend() const wxOVERRIDE { return m_webView; }
+    virtual void* GetNativeBackend() const { return m_webView; }
 
     // ---- methods not from the parent (common) interface
     bool  CanGetPageSource() const;
@@ -134,9 +135,9 @@ public:
     void  SetWebkitZoom(float zoom);
 
     // don't hide base class virtuals
-    virtual void SetScrollPos( int orient, int pos, bool refresh = true ) wxOVERRIDE
+    virtual void SetScrollPos( int orient, int pos, bool refresh = true )
         { return wxControl::SetScrollPos(orient, pos, refresh); }
-    virtual int GetScrollPos( int orient ) const wxOVERRIDE
+    virtual int GetScrollPos( int orient ) const
         { return wxControl::GetScrollPos(orient); }
 
     //we need to resize the webview when the control size changes
@@ -148,10 +149,10 @@ public:
     bool m_nextNavigationIsNewWindow;
 
 protected:
-    virtual void DoSetPage(const wxString& html, const wxString& baseUrl) wxOVERRIDE;
+    virtual void DoSetPage(const wxString& html, const wxString& baseUrl);
 
-    wxDECLARE_EVENT_TABLE();
-    void MacVisibilityChanged() wxOVERRIDE;
+    DECLARE_EVENT_TABLE()
+    void MacVisibilityChanged();
 
 private:
     wxWindow *m_parent;

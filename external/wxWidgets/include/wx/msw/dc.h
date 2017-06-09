@@ -213,7 +213,7 @@ public:
                                         double radius);
     virtual void DoDrawEllipse(wxCoord x, wxCoord y, wxCoord width, wxCoord height);
 
-#if wxUSE_SPLINES
+#if wxUSE_SPLINES && !defined(__WXWINCE__)
     virtual void DoDrawSpline(const wxPointList *points);
 #endif
 
@@ -323,7 +323,7 @@ protected:
     static wxObjectList     sm_dcCache;
 #endif
 
-    wxDECLARE_CLASS(wxMSWDCImpl);
+    DECLARE_CLASS(wxMSWDCImpl)
     wxDECLARE_NO_COPY_CLASS(wxMSWDCImpl);
 };
 

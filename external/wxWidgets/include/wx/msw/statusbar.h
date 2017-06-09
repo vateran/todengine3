@@ -103,7 +103,7 @@ private:
     // return the various status bar metrics
     static const MSWMetrics& MSWGetMetrics();
 
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxStatusBar);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxStatusBar)
 };
 
 #endif  // wxUSE_NATIVE_STATUSBAR

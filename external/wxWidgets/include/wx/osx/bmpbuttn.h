@@ -42,7 +42,7 @@ protected:
 
     virtual wxSize DoGetBestSize() const;
 
-    wxDECLARE_DYNAMIC_CLASS(wxBitmapButton);
+    DECLARE_DYNAMIC_CLASS(wxBitmapButton)
 };
 
 #endif // _WX_OSX_BMPBUTTN_H_

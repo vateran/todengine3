@@ -214,7 +214,7 @@ public:
     void SetTargetRect(const wxRect& rect) { m_rectToScroll = rect; }
     wxRect GetTargetRect() const { return m_rectToScroll; }
 
-    virtual void DoPrepareDC(wxDC& dc) wxOVERRIDE;
+    virtual void DoPrepareDC(wxDC& dc);
 
     // are we generating the autoscroll events?
     bool IsAutoScrolling() const { return m_timerAutoScroll != NULL; }
@@ -341,13 +341,13 @@ protected:
 // methods to corresponding wxScrollHelper methods
 #define WX_FORWARD_TO_SCROLL_HELPER()                                         \
 public:                                                                       \
-    virtual void PrepareDC(wxDC& dc) wxOVERRIDE { DoPrepareDC(dc); }          \
-    virtual bool Layout() wxOVERRIDE { return ScrollLayout(); }               \
-    virtual bool CanScroll(int orient) const wxOVERRIDE                       \
+    virtual void PrepareDC(wxDC& dc) { DoPrepareDC(dc); }                     \
+    virtual bool Layout() { return ScrollLayout(); }                          \
+    virtual bool CanScroll(int orient) const                                  \
         { return IsScrollbarShown(orient); }                                  \
-    virtual void DoSetVirtualSize(int x, int y) wxOVERRIDE                    \
+    virtual void DoSetVirtualSize(int x, int y)                               \
         { ScrollDoSetVirtualSize(x, y); }                                     \
-    virtual wxSize GetBestVirtualSize() const wxOVERRIDE                      \
+    virtual wxSize GetBestVirtualSize() const                                 \
         { return ScrollGetBestVirtualSize(); }
 
 // include the declaration of the real wxScrollHelper
@@ -446,14 +446,25 @@ public:
     WX_FORWARD_TO_SCROLL_HELPER()
 
 protected:
-    virtual wxSize DoGetBestSize() const wxOVERRIDE
+    virtual wxSize DoGetBestSize() const
     {
         return FilterBestSize(this, this, T::DoGetBestSize());
     }
 
 private:
+    // VC++ 6 gives warning for the declaration of template member function
+    // without definition
+#ifndef __VISUALC6__
     wxDECLARE_NO_COPY_CLASS(wxScrolled);
+#endif
 };
+
+#ifdef __VISUALC6__
+    // disable the warning about non dll-interface class used as base for
+    // dll-interface class: it's harmless in this case
+    #pragma warning(push)
+    #pragma warning(disable:4275)
+#endif
 
 // for compatibility with existing code, we provide wxScrolledWindow
 // "typedef" for wxScrolled<wxPanel>. It's not a real typedef because we
@@ -471,9 +482,13 @@ public:
                      const wxString& name = wxPanelNameStr)
         : wxScrolled<wxPanel>(parent, winid, pos, size, style, name) {}
 
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxScrolledWindow);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxScrolledWindow)
 };
 
 typedef wxScrolled<wxWindow> wxScrolledCanvas;
+
+#ifdef __VISUALC6__
+    #pragma warning(pop)
+#endif
 
 #endif // _WX_SCROLWIN_H_BASE_

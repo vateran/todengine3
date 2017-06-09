@@ -51,8 +51,10 @@ class WXDLLIMPEXP_FWD_BASE wxArrayString;
 
 // not all compilers can deal with template Read/Write() methods, define this
 // symbol if the template functions are available
-#if !defined( __VMS ) && \
-    !(defined(__HP_aCC) && defined(__hppa))
+#if (!defined(__VISUALC__) || __VISUALC__ > 1200) && \
+    !defined( __VMS ) && \
+    !(defined(__HP_aCC) && defined(__hppa)) && \
+    !defined (__DMC__)
     #define wxHAS_CONFIG_TEMPLATE_RW
 #endif
 
@@ -303,8 +305,8 @@ public:
   bool Write(const wxString& key, float value)
     { return DoWriteDouble(key, value); }
 
-  // Causes ambiguities in under OpenVMS
-#if !defined( __VMS )
+  // Causes ambiguities in VC++ 6 and OpenVMS (at least)
+#if ( (!defined(__VISUALC__) || __VISUALC__ > 1200) && !defined( __VMS ) && !defined (__DMC__))
   // for other types, use wxToString()
   template <typename T>
   bool Write(const wxString& key, T const& value)
@@ -401,7 +403,7 @@ private:
   // Style flag
   long              m_style;
 
-  wxDECLARE_ABSTRACT_CLASS(wxConfigBase);
+  DECLARE_ABSTRACT_CLASS(wxConfigBase)
 };
 
 // a handy little class which changes current path to the path of given entry

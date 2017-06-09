@@ -52,17 +52,13 @@ public:
     wxSize GetSize() const { return wxSize(GetWidth(), GetHeight()); }
 
     WXHICON GetHICON() const;
-    
-#if wxOSX_USE_COCOA
-    WX_NSImage GetNSImage() const ;
-#endif
-    
+
 protected:
     virtual wxGDIRefData *CreateGDIRefData() const;
     virtual wxGDIRefData *CloneGDIRefData(const wxGDIRefData *data) const;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxIcon);
+    DECLARE_DYNAMIC_CLASS(wxIcon)
 
     bool LoadIconFromSystemResource(const wxString& resourceName, int desiredWidth, int desiredHeight);
     bool LoadIconFromBundleResource(const wxString& resourceName, int desiredWidth, int desiredHeight);
@@ -93,7 +89,7 @@ public:
         { return LoadFile(bitmap, name, flags, -1, -1); }
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxICONResourceHandler);
+    DECLARE_DYNAMIC_CLASS(wxICONResourceHandler)
 };
 
 #endif

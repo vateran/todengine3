@@ -13,11 +13,11 @@
 
 class WXDLLIMPEXP_CORE wxRadioButton: public wxControl
 {
-    wxDECLARE_DYNAMIC_CLASS(wxRadioButton);
-
+  DECLARE_DYNAMIC_CLASS(wxRadioButton)
+ protected:
 public:
-    wxRadioButton() {}
-    wxRadioButton(wxWindow *parent, wxWindowID id,
+    inline wxRadioButton() {}
+    inline wxRadioButton(wxWindow *parent, wxWindowID id,
            const wxString& label,
            const wxPoint& pos = wxDefaultPosition,
            const wxSize& size = wxDefaultSize, long style = 0,
@@ -43,7 +43,7 @@ public:
     void Command(wxCommandEvent& event);
     wxRadioButton *AddInCycle(wxRadioButton *cycle);
     void RemoveFromCycle();
-    wxRadioButton *NextInCycle() {return m_cycle;}
+    inline wxRadioButton *NextInCycle() {return m_cycle;}
 
     // osx specific event handling common for all osx-ports
 
@@ -61,12 +61,12 @@ WXDLLIMPEXP_DATA_CORE(extern const wxChar) wxBitmapRadioButtonNameStr[];
 
 class WXDLLIMPEXP_CORE wxBitmapRadioButton: public wxRadioButton
 {
-  wxDECLARE_DYNAMIC_CLASS(wxBitmapRadioButton);
-protected:
+  DECLARE_DYNAMIC_CLASS(wxBitmapRadioButton)
+ protected:
   wxBitmap *theButtonBitmap;
-public:
-  wxBitmapRadioButton() { theButtonBitmap = NULL; }
-  wxBitmapRadioButton(wxWindow *parent, wxWindowID id,
+ public:
+  inline wxBitmapRadioButton() { theButtonBitmap = NULL; }
+  inline wxBitmapRadioButton(wxWindow *parent, wxWindowID id,
            const wxBitmap *label,
            const wxPoint& pos = wxDefaultPosition,
            const wxSize& size = wxDefaultSize, long style = 0,

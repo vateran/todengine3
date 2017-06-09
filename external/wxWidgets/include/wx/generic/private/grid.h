@@ -92,11 +92,11 @@ public:
     {
     }
 
-    virtual wxString GetTitle() const wxOVERRIDE { return m_grid->GetColLabelValue(m_col); }
-    virtual wxBitmap GetBitmap() const wxOVERRIDE { return wxNullBitmap; }
-    virtual int GetWidth() const wxOVERRIDE { return m_grid->GetColSize(m_col); }
-    virtual int GetMinWidth() const wxOVERRIDE { return 0; }
-    virtual wxAlignment GetAlignment() const wxOVERRIDE
+    virtual wxString GetTitle() const { return m_grid->GetColLabelValue(m_col); }
+    virtual wxBitmap GetBitmap() const { return wxNullBitmap; }
+    virtual int GetWidth() const { return m_grid->GetColSize(m_col); }
+    virtual int GetMinWidth() const { return 0; }
+    virtual wxAlignment GetAlignment() const
     {
         int horz,
             vert;
@@ -105,7 +105,7 @@ public:
         return static_cast<wxAlignment>(horz);
     }
 
-    virtual int GetFlags() const wxOVERRIDE
+    virtual int GetFlags() const
     {
         // we can't know in advance whether we can sort by this column or not
         // with wxGrid API so suppose we can by default
@@ -120,12 +120,12 @@ public:
         return flags;
     }
 
-    virtual bool IsSortKey() const wxOVERRIDE
+    virtual bool IsSortKey() const
     {
         return m_grid->IsSortingBy(m_col);
     }
 
-    virtual bool IsSortOrderAscending() const wxOVERRIDE
+    virtual bool IsSortOrderAscending() const
     {
         return m_grid->IsSortOrderAscending();
     }
@@ -153,7 +153,7 @@ public:
     }
 
 protected:
-    virtual const wxHeaderColumn& GetColumn(unsigned int idx) const wxOVERRIDE
+    virtual const wxHeaderColumn& GetColumn(unsigned int idx) const
     {
         return m_columns[idx];
     }
@@ -171,7 +171,7 @@ private:
     }
 
     // override the base class method to update our m_columns array
-    virtual void OnColumnCountChanging(unsigned int count) wxOVERRIDE
+    virtual void OnColumnCountChanging(unsigned int count)
     {
         const unsigned countOld = m_columns.size();
         if ( count < countOld )
@@ -191,7 +191,7 @@ private:
     }
 
     // override to implement column auto sizing
-    virtual bool UpdateColumnWidthToFit(unsigned int idx, int widthTitle) wxOVERRIDE
+    virtual bool UpdateColumnWidthToFit(unsigned int idx, int widthTitle)
     {
         // TODO: currently grid doesn't support computing the column best width
         //       from its contents so we just use the best label width as is
@@ -201,7 +201,7 @@ private:
     }
 
     // overridden to react to the actions using the columns popup menu
-    virtual void UpdateColumnVisibility(unsigned int idx, bool show) wxOVERRIDE
+    virtual void UpdateColumnVisibility(unsigned int idx, bool show)
     {
         GetOwner()->SetColSize(idx, show ? wxGRID_AUTOSIZE : 0);
 
@@ -213,7 +213,7 @@ private:
 
     // overridden to react to the columns order changes in the customization
     // dialog
-    virtual void UpdateColumnsOrder(const wxArrayInt& order) wxOVERRIDE
+    virtual void UpdateColumnsOrder(const wxArrayInt& order)
     {
         GetOwner()->SetColumnsOrder(order);
     }
@@ -285,7 +285,7 @@ private:
 
     wxVector<wxGridHeaderColumn> m_columns;
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
     wxDECLARE_NO_COPY_CLASS(wxGridHeaderCtrl);
 };
 
@@ -304,9 +304,9 @@ public:
         m_owner = owner;
     }
 
-    virtual wxWindow *GetMainWindowOfCompositeControl() wxOVERRIDE { return m_owner; }
+    virtual wxWindow *GetMainWindowOfCompositeControl() { return m_owner; }
 
-    virtual bool AcceptsFocus() const wxOVERRIDE { return false; }
+    virtual bool AcceptsFocus() const { return false; }
 
     wxGrid *GetOwner() { return m_owner; }
 
@@ -315,7 +315,7 @@ protected:
 
     wxGrid *m_owner;
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
     wxDECLARE_NO_COPY_CLASS(wxGridSubwindow);
 };
 
@@ -333,7 +333,7 @@ private:
     void OnMouseEvent( wxMouseEvent& event );
     void OnMouseWheel( wxMouseEvent& event );
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
     wxDECLARE_NO_COPY_CLASS(wxGridRowLabelWindow);
 };
 
@@ -352,7 +352,7 @@ private:
     void OnMouseEvent( wxMouseEvent& event );
     void OnMouseWheel( wxMouseEvent& event );
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
     wxDECLARE_NO_COPY_CLASS(wxGridColLabelWindow);
 };
 
@@ -370,7 +370,7 @@ private:
     void OnMouseWheel( wxMouseEvent& event );
     void OnPaint( wxPaintEvent& event );
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
     wxDECLARE_NO_COPY_CLASS(wxGridCornerLabelWindow);
 };
 
@@ -385,9 +385,9 @@ public:
     }
 
 
-    virtual void ScrollWindow( int dx, int dy, const wxRect *rect ) wxOVERRIDE;
+    virtual void ScrollWindow( int dx, int dy, const wxRect *rect );
 
-    virtual bool AcceptsFocus() const wxOVERRIDE { return true; }
+    virtual bool AcceptsFocus() const { return true; }
 
 private:
     void OnPaint( wxPaintEvent &event );
@@ -399,7 +399,7 @@ private:
     void OnEraseBackground( wxEraseEvent& );
     void OnFocus( wxFocusEvent& );
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
     wxDECLARE_NO_COPY_CLASS(wxGridWindow);
 };
 
@@ -574,135 +574,135 @@ public:
 class wxGridRowOperations : public wxGridOperations
 {
 public:
-    virtual wxGridOperations& Dual() const wxOVERRIDE;
+    virtual wxGridOperations& Dual() const;
 
-    virtual int GetNumberOfLines(const wxGrid *grid) const wxOVERRIDE
+    virtual int GetNumberOfLines(const wxGrid *grid) const
         { return grid->GetNumberRows(); }
 
-    virtual wxGrid::wxGridSelectionModes GetSelectionMode() const wxOVERRIDE
+    virtual wxGrid::wxGridSelectionModes GetSelectionMode() const
         { return wxGrid::wxGridSelectRows; }
 
-    virtual wxGridCellCoords MakeCoords(int thisDir, int otherDir) const wxOVERRIDE
+    virtual wxGridCellCoords MakeCoords(int thisDir, int otherDir) const
         { return wxGridCellCoords(thisDir, otherDir); }
 
-    virtual int CalcScrolledPosition(wxGrid *grid, int pos) const wxOVERRIDE
+    virtual int CalcScrolledPosition(wxGrid *grid, int pos) const
         { return grid->CalcScrolledPosition(wxPoint(pos, 0)).x; }
 
-    virtual int Select(const wxGridCellCoords& c) const wxOVERRIDE { return c.GetRow(); }
-    virtual int Select(const wxPoint& pt) const wxOVERRIDE { return pt.x; }
-    virtual int Select(const wxSize& sz) const wxOVERRIDE { return sz.x; }
-    virtual int Select(const wxRect& r) const wxOVERRIDE { return r.x; }
-    virtual int& Select(wxRect& r) const wxOVERRIDE { return r.x; }
-    virtual int& SelectSize(wxRect& r) const wxOVERRIDE { return r.width; }
-    virtual wxSize MakeSize(int first, int second) const wxOVERRIDE
+    virtual int Select(const wxGridCellCoords& c) const { return c.GetRow(); }
+    virtual int Select(const wxPoint& pt) const { return pt.x; }
+    virtual int Select(const wxSize& sz) const { return sz.x; }
+    virtual int Select(const wxRect& r) const { return r.x; }
+    virtual int& Select(wxRect& r) const { return r.x; }
+    virtual int& SelectSize(wxRect& r) const { return r.width; }
+    virtual wxSize MakeSize(int first, int second) const
         { return wxSize(first, second); }
-    virtual void Set(wxGridCellCoords& coords, int line) const wxOVERRIDE
+    virtual void Set(wxGridCellCoords& coords, int line) const
         { coords.SetRow(line); }
 
-    virtual void DrawParallelLine(wxDC& dc, int start, int end, int pos) const wxOVERRIDE
+    virtual void DrawParallelLine(wxDC& dc, int start, int end, int pos) const
         { dc.DrawLine(start, pos, end, pos); }
 
-    virtual int PosToLine(const wxGrid *grid, int pos, bool clip = false) const wxOVERRIDE
+    virtual int PosToLine(const wxGrid *grid, int pos, bool clip = false) const
         { return grid->YToRow(pos, clip); }
-    virtual int GetLineStartPos(const wxGrid *grid, int line) const wxOVERRIDE
+    virtual int GetLineStartPos(const wxGrid *grid, int line) const
         { return grid->GetRowTop(line); }
-    virtual int GetLineEndPos(const wxGrid *grid, int line) const wxOVERRIDE
+    virtual int GetLineEndPos(const wxGrid *grid, int line) const
         { return grid->GetRowBottom(line); }
-    virtual int GetLineSize(const wxGrid *grid, int line) const wxOVERRIDE
+    virtual int GetLineSize(const wxGrid *grid, int line) const
         { return grid->GetRowHeight(line); }
-    virtual const wxArrayInt& GetLineEnds(const wxGrid *grid) const wxOVERRIDE
+    virtual const wxArrayInt& GetLineEnds(const wxGrid *grid) const
         { return grid->m_rowBottoms; }
-    virtual int GetDefaultLineSize(const wxGrid *grid) const wxOVERRIDE
+    virtual int GetDefaultLineSize(const wxGrid *grid) const
         { return grid->GetDefaultRowSize(); }
-    virtual int GetMinimalAcceptableLineSize(const wxGrid *grid) const wxOVERRIDE
+    virtual int GetMinimalAcceptableLineSize(const wxGrid *grid) const
         { return grid->GetRowMinimalAcceptableHeight(); }
-    virtual int GetMinimalLineSize(const wxGrid *grid, int line) const wxOVERRIDE
+    virtual int GetMinimalLineSize(const wxGrid *grid, int line) const
         { return grid->GetRowMinimalHeight(line); }
-    virtual void SetLineSize(wxGrid *grid, int line, int size) const wxOVERRIDE
+    virtual void SetLineSize(wxGrid *grid, int line, int size) const
         { grid->SetRowSize(line, size); }
-    virtual void SetDefaultLineSize(wxGrid *grid, int size, bool resizeExisting) const wxOVERRIDE
+    virtual void SetDefaultLineSize(wxGrid *grid, int size, bool resizeExisting) const
         {  grid->SetDefaultRowSize(size, resizeExisting); }
 
-    virtual int GetLineAt(const wxGrid * WXUNUSED(grid), int pos) const wxOVERRIDE
+    virtual int GetLineAt(const wxGrid * WXUNUSED(grid), int pos) const
         { return pos; } // TODO: implement row reordering
-    virtual int GetLinePos(const wxGrid * WXUNUSED(grid), int line) const wxOVERRIDE
+    virtual int GetLinePos(const wxGrid * WXUNUSED(grid), int line) const
         { return line; } // TODO: implement row reordering
 
-    virtual int GetLineBefore(const wxGrid* WXUNUSED(grid), int line) const wxOVERRIDE
+    virtual int GetLineBefore(const wxGrid* WXUNUSED(grid), int line) const
         { return line - 1; }
 
-    virtual wxWindow *GetHeaderWindow(wxGrid *grid) const wxOVERRIDE
+    virtual wxWindow *GetHeaderWindow(wxGrid *grid) const
         { return grid->GetGridRowLabelWindow(); }
-    virtual int GetHeaderWindowSize(wxGrid *grid) const wxOVERRIDE
+    virtual int GetHeaderWindowSize(wxGrid *grid) const
         { return grid->GetRowLabelSize(); }
 };
 
 class wxGridColumnOperations : public wxGridOperations
 {
 public:
-    virtual wxGridOperations& Dual() const wxOVERRIDE;
+    virtual wxGridOperations& Dual() const;
 
-    virtual int GetNumberOfLines(const wxGrid *grid) const wxOVERRIDE
+    virtual int GetNumberOfLines(const wxGrid *grid) const
         { return grid->GetNumberCols(); }
 
-    virtual wxGrid::wxGridSelectionModes GetSelectionMode() const wxOVERRIDE
+    virtual wxGrid::wxGridSelectionModes GetSelectionMode() const
         { return wxGrid::wxGridSelectColumns; }
 
-    virtual wxGridCellCoords MakeCoords(int thisDir, int otherDir) const wxOVERRIDE
+    virtual wxGridCellCoords MakeCoords(int thisDir, int otherDir) const
         { return wxGridCellCoords(otherDir, thisDir); }
 
-    virtual int CalcScrolledPosition(wxGrid *grid, int pos) const wxOVERRIDE
+    virtual int CalcScrolledPosition(wxGrid *grid, int pos) const
         { return grid->CalcScrolledPosition(wxPoint(0, pos)).y; }
 
-    virtual int Select(const wxGridCellCoords& c) const wxOVERRIDE { return c.GetCol(); }
-    virtual int Select(const wxPoint& pt) const wxOVERRIDE { return pt.y; }
-    virtual int Select(const wxSize& sz) const wxOVERRIDE { return sz.y; }
-    virtual int Select(const wxRect& r) const wxOVERRIDE { return r.y; }
-    virtual int& Select(wxRect& r) const wxOVERRIDE { return r.y; }
-    virtual int& SelectSize(wxRect& r) const wxOVERRIDE { return r.height; }
-    virtual wxSize MakeSize(int first, int second) const wxOVERRIDE
+    virtual int Select(const wxGridCellCoords& c) const { return c.GetCol(); }
+    virtual int Select(const wxPoint& pt) const { return pt.y; }
+    virtual int Select(const wxSize& sz) const { return sz.y; }
+    virtual int Select(const wxRect& r) const { return r.y; }
+    virtual int& Select(wxRect& r) const { return r.y; }
+    virtual int& SelectSize(wxRect& r) const { return r.height; }
+    virtual wxSize MakeSize(int first, int second) const
         { return wxSize(second, first); }
-    virtual void Set(wxGridCellCoords& coords, int line) const wxOVERRIDE
+    virtual void Set(wxGridCellCoords& coords, int line) const
         { coords.SetCol(line); }
 
-    virtual void DrawParallelLine(wxDC& dc, int start, int end, int pos) const wxOVERRIDE
+    virtual void DrawParallelLine(wxDC& dc, int start, int end, int pos) const
         { dc.DrawLine(pos, start, pos, end); }
 
-    virtual int PosToLine(const wxGrid *grid, int pos, bool clip = false) const wxOVERRIDE
+    virtual int PosToLine(const wxGrid *grid, int pos, bool clip = false) const
         { return grid->XToCol(pos, clip); }
-    virtual int GetLineStartPos(const wxGrid *grid, int line) const wxOVERRIDE
+    virtual int GetLineStartPos(const wxGrid *grid, int line) const
         { return grid->GetColLeft(line); }
-    virtual int GetLineEndPos(const wxGrid *grid, int line) const wxOVERRIDE
+    virtual int GetLineEndPos(const wxGrid *grid, int line) const
         { return grid->GetColRight(line); }
-    virtual int GetLineSize(const wxGrid *grid, int line) const wxOVERRIDE
+    virtual int GetLineSize(const wxGrid *grid, int line) const
         { return grid->GetColWidth(line); }
-    virtual const wxArrayInt& GetLineEnds(const wxGrid *grid) const wxOVERRIDE
+    virtual const wxArrayInt& GetLineEnds(const wxGrid *grid) const
         { return grid->m_colRights; }
-    virtual int GetDefaultLineSize(const wxGrid *grid) const wxOVERRIDE
+    virtual int GetDefaultLineSize(const wxGrid *grid) const
         { return grid->GetDefaultColSize(); }
-    virtual int GetMinimalAcceptableLineSize(const wxGrid *grid) const wxOVERRIDE
+    virtual int GetMinimalAcceptableLineSize(const wxGrid *grid) const
         { return grid->GetColMinimalAcceptableWidth(); }
-    virtual int GetMinimalLineSize(const wxGrid *grid, int line) const wxOVERRIDE
+    virtual int GetMinimalLineSize(const wxGrid *grid, int line) const
         { return grid->GetColMinimalWidth(line); }
-    virtual void SetLineSize(wxGrid *grid, int line, int size) const wxOVERRIDE
+    virtual void SetLineSize(wxGrid *grid, int line, int size) const
         { grid->SetColSize(line, size); }
-    virtual void SetDefaultLineSize(wxGrid *grid, int size, bool resizeExisting) const wxOVERRIDE
+    virtual void SetDefaultLineSize(wxGrid *grid, int size, bool resizeExisting) const
         {  grid->SetDefaultColSize(size, resizeExisting); }
 
-    virtual int GetLineAt(const wxGrid *grid, int pos) const wxOVERRIDE
+    virtual int GetLineAt(const wxGrid *grid, int pos) const
         { return grid->GetColAt(pos); }
-    virtual int GetLinePos(const wxGrid *grid, int line) const wxOVERRIDE
+    virtual int GetLinePos(const wxGrid *grid, int line) const
         { return grid->GetColPos(line); }
 
-    virtual int GetLineBefore(const wxGrid* grid, int line) const wxOVERRIDE
+    virtual int GetLineBefore(const wxGrid* grid, int line) const
     {
         int posBefore = grid->GetColPos(line) - 1;
         return posBefore >= 0 ? grid->GetColAt(posBefore) : wxNOT_FOUND;
     }
 
-    virtual wxWindow *GetHeaderWindow(wxGrid *grid) const wxOVERRIDE
+    virtual wxWindow *GetHeaderWindow(wxGrid *grid) const
         { return grid->GetGridColLabelWindow(); }
-    virtual int GetHeaderWindowSize(wxGrid *grid) const wxOVERRIDE
+    virtual int GetHeaderWindowSize(wxGrid *grid) const
         { return grid->GetColLabelSize(); }
 };
 
@@ -787,7 +787,7 @@ public:
     {
     }
 
-    virtual bool IsAtBoundary(const wxGridCellCoords& coords) const wxOVERRIDE
+    virtual bool IsAtBoundary(const wxGridCellCoords& coords) const
     {
         wxASSERT_MSG( m_oper.Select(coords) >= 0, "invalid row/column" );
 
@@ -808,7 +808,7 @@ public:
         return true;
     }
 
-    virtual void Advance(wxGridCellCoords& coords) const wxOVERRIDE
+    virtual void Advance(wxGridCellCoords& coords) const
     {
         int pos = GetLinePos(coords);
         for ( ;; )
@@ -825,7 +825,7 @@ public:
         }
     }
 
-    virtual int MoveByPixelDistance(int line, int distance) const wxOVERRIDE
+    virtual int MoveByPixelDistance(int line, int distance) const
     {
         int pos = m_oper.GetLineStartPos(m_grid, line);
         return m_oper.PosToLine(m_grid, pos - distance + 1, true);
@@ -843,7 +843,7 @@ public:
     {
     }
 
-    virtual bool IsAtBoundary(const wxGridCellCoords& coords) const wxOVERRIDE
+    virtual bool IsAtBoundary(const wxGridCellCoords& coords) const
     {
         wxASSERT_MSG( m_oper.Select(coords) < m_numLines, "invalid row/column" );
 
@@ -858,7 +858,7 @@ public:
         return true;
     }
 
-    virtual void Advance(wxGridCellCoords& coords) const wxOVERRIDE
+    virtual void Advance(wxGridCellCoords& coords) const
     {
         int pos = GetLinePos(coords);
         for ( ;; )
@@ -875,7 +875,7 @@ public:
         }
     }
 
-    virtual int MoveByPixelDistance(int line, int distance) const wxOVERRIDE
+    virtual int MoveByPixelDistance(int line, int distance) const
     {
         int pos = m_oper.GetLineStartPos(m_grid, line);
         return m_oper.PosToLine(m_grid, pos + distance, true);

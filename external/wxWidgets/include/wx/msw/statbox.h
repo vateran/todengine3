@@ -45,6 +45,7 @@ public:
 protected:
     virtual wxSize DoGetBestSize() const;
 
+#ifndef __WXWINCE__
 public:
     virtual WXLRESULT MSWWindowProc(WXUINT nMsg, WXWPARAM wParam, WXLPARAM lParam);
 
@@ -62,8 +63,9 @@ protected:
     virtual void PaintForeground(wxDC& dc, const struct tagRECT& rc);
 
     void OnPaint(wxPaintEvent& event);
+#endif // !__WXWINCE__
 
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxStaticBox);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxStaticBox)
 };
 
 #endif // _WX_MSW_STATBOX_H_

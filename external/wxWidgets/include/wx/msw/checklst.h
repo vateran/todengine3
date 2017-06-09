@@ -81,8 +81,8 @@ protected:
 
     wxSize DoGetBestClientSize() const;
 
-    wxDECLARE_EVENT_TABLE();
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxCheckListBox);
+    DECLARE_EVENT_TABLE()
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxCheckListBox)
 };
 
 #endif    //_CHECKLST_H

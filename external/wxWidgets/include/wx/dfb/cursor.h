@@ -10,13 +10,16 @@
 #ifndef _WX_DFB_CURSOR_H_
 #define _WX_DFB_CURSOR_H_
 
+#include "wx/gdiobj.h"
+#include "wx/gdicmn.h"
+
 class WXDLLIMPEXP_FWD_CORE wxBitmap;
 
 //-----------------------------------------------------------------------------
 // wxCursor
 //-----------------------------------------------------------------------------
 
-class WXDLLIMPEXP_CORE wxCursor : public wxCursorBase
+class WXDLLIMPEXP_CORE wxCursor : public wxGDIObject
 {
 public:
     wxCursor() {}
@@ -38,7 +41,7 @@ protected:
     virtual wxGDIRefData *CreateGDIRefData() const;
     virtual wxGDIRefData *CloneGDIRefData(const wxGDIRefData *data) const;
 
-    wxDECLARE_DYNAMIC_CLASS(wxCursor);
+    DECLARE_DYNAMIC_CLASS(wxCursor)
 };
 
 #endif // _WX_DFB_CURSOR_H_

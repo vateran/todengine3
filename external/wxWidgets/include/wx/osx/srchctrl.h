@@ -39,20 +39,18 @@ public:
                 const wxValidator& validator = wxDefaultValidator,
                 const wxString& name = wxSearchCtrlNameStr);
 
-#if wxUSE_MENUS
     // get/set search button menu
     // --------------------------
-    virtual void SetMenu( wxMenu* menu ) wxOVERRIDE;
-    virtual wxMenu* GetMenu() wxOVERRIDE;
-#endif  // wxUSE_MENUS
+    virtual void SetMenu( wxMenu* menu );
+    virtual wxMenu* GetMenu();
 
     // get/set search options
     // ----------------------
-    virtual void ShowSearchButton( bool show ) wxOVERRIDE;
-    virtual bool IsSearchButtonVisible() const wxOVERRIDE;
+    virtual void ShowSearchButton( bool show );
+    virtual bool IsSearchButtonVisible() const;
 
-    virtual void ShowCancelButton( bool show ) wxOVERRIDE;
-    virtual bool IsCancelButtonVisible() const wxOVERRIDE;
+    virtual void ShowCancelButton( bool show );
+    virtual bool IsCancelButtonVisible() const;
 
     // TODO: In 2.9 these should probably be virtual, and declared in the base class...
     void        SetDescriptiveText(const wxString& text);
@@ -65,20 +63,18 @@ public:
 
 protected:
 
-    wxSize DoGetBestSize() const wxOVERRIDE;
+    wxSize DoGetBestSize() const;
 
     void Init();
 
-#if wxUSE_MENUS
     wxMenu *m_menu;
-#endif  // wxUSE_MENUS
 
     wxString m_descriptiveText;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxSearchCtrl);
+    DECLARE_DYNAMIC_CLASS(wxSearchCtrl)
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 #endif // wxUSE_SEARCHCTRL

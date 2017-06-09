@@ -41,7 +41,7 @@ protected:
     wxString m_commandName;
 
 private:
-    wxDECLARE_CLASS(wxCommand);
+    DECLARE_CLASS(wxCommand)
 };
 
 // ----------------------------------------------------------------------------
@@ -132,7 +132,7 @@ protected:
     wxString      m_redoAccelerator;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxCommandProcessor);
+    DECLARE_DYNAMIC_CLASS(wxCommandProcessor)
     wxDECLARE_NO_COPY_CLASS(wxCommandProcessor);
 };
 

@@ -68,7 +68,7 @@ public:
 
     void SetCustomPaintWidth( int width );
 
-    virtual bool IsKeyPopupToggle(const wxKeyEvent& event) const wxOVERRIDE;
+    virtual bool IsKeyPopupToggle(const wxKeyEvent& event) const;
 
     static int GetFeatures() { return wxComboCtrlFeatures::All; }
 
@@ -88,15 +88,17 @@ protected:
     virtual WXWidget GetTextWidget() const { return NULL; }
 #elif defined(__WXGTK__)
 #if defined(__WXGTK20__)
-    virtual GtkEditable *GetEditable() const wxOVERRIDE { return NULL; }
-    virtual GtkEntry *GetEntry() const wxOVERRIDE { return NULL; }
+    virtual GtkEditable *GetEditable() const { return NULL; }
+    virtual GtkEntry *GetEntry() const { return NULL; }
 #endif
 #elif defined(__WXMAC__)
     // Looks like there's nothing we need to override here
+#elif defined(__WXPM__)
+    virtual WXHWND GetEditHWND() const { return NULL; }
 #endif
 
     // For better transparent background rendering
-    virtual bool HasTransparentBackground() wxOVERRIDE
+    virtual bool HasTransparentBackground()
     {
         #if wxALWAYS_NATIVE_DOUBLE_BUFFER
           #ifdef __WXGTK__
@@ -111,7 +113,7 @@ protected:
     }
 
     // Mandatory virtuals
-    virtual void OnResize() wxOVERRIDE;
+    virtual void OnResize();
 
     // Event handlers
     void OnPaintEvent( wxPaintEvent& event );
@@ -120,9 +122,9 @@ protected:
 private:
     void Init();
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 
-    wxDECLARE_DYNAMIC_CLASS(wxGenericComboCtrl);
+    DECLARE_DYNAMIC_CLASS(wxGenericComboCtrl)
 };
 
 
@@ -154,7 +156,7 @@ public:
 protected:
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxComboCtrl);
+    DECLARE_DYNAMIC_CLASS(wxComboCtrl)
 };
 
 #endif // _WX_COMBOCONTROL_H_

@@ -34,7 +34,9 @@ class FrameSite;
 #include <oleidl.h>
 #include <olectl.h>
 
+#if !defined(__WXWINCE__) || defined(__WINCE_STANDARDSDK__)
 #include <exdisp.h>
+#endif
 
 #include <docobj.h>
 

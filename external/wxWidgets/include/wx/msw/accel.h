@@ -38,7 +38,7 @@ public:
     bool Translate(wxWindow *window, WXMSG *msg) const;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxAcceleratorTable);
+    DECLARE_DYNAMIC_CLASS(wxAcceleratorTable)
 };
 
 #endif

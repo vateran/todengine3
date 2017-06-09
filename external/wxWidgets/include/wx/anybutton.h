@@ -1,9 +1,9 @@
 /////////////////////////////////////////////////////////////////////////////
 // Name:        wx/anybutton.h
 // Purpose:     wxAnyButtonBase class
-// Author:      Vadim Zeitlin
+// Author:      Vadim Zetlin
 // Created:     2000-08-15 (extracted from button.h)
-// Copyright:   (c) Vadim Zeitlin
+// Copyright:   (c) Vadim Zetlin
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
 
@@ -102,7 +102,7 @@ public:
     // Buttons on MSW can look bad if they are not native colours, because
     // then they become owner-drawn and not theme-drawn.  Disable it here
     // in wxAnyButtonBase to make it consistent.
-    virtual bool ShouldInheritColours() const wxOVERRIDE { return false; }
+    virtual bool ShouldInheritColours() const { return false; }
 
     // wxUniv-compatible and deprecated equivalents to SetBitmapXXX()
 #if WXWIN_COMPATIBILITY_2_8
@@ -135,13 +135,6 @@ public:
         State_Max
     };
 
-    // return the current setting for the "normal" state of the button, it can
-    // be different from State_Normal for a wxToggleButton
-    virtual State GetNormalState() const
-    {
-        return State_Normal;
-    }
-
     // return true if this button shouldn't show the text label, either because
     // it doesn't have it or because it was explicitly disabled with wxBU_NOTEXT
     bool DontShowLabel() const
@@ -157,7 +150,7 @@ public:
 
 protected:
     // choose the default border for this window
-    virtual wxBorder GetDefaultBorder() const wxOVERRIDE { return wxBORDER_NONE; }
+    virtual wxBorder GetDefaultBorder() const { return wxBORDER_NONE; }
 
     virtual wxBitmap DoGetBitmap(State WXUNUSED(which)) const
         { return wxBitmap(); }
@@ -193,8 +186,10 @@ protected:
 //    #include "wx/gtk1/anybutton.h"
 #elif defined(__WXMAC__)
     #include "wx/osx/anybutton.h"
-#elif defined(__WXQT__)
-    #include "wx/qt/anybutton.h"
+//#elif defined(__WXCOCOA__)
+//    #include "wx/cocoa/anybutton.h"
+//#elif defined(__WXPM__)
+//    #include "wx/os2/anybutton.h"
 #else
     typedef wxAnyButtonBase wxAnyButton;
 #endif

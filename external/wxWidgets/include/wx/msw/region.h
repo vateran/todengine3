@@ -55,7 +55,7 @@ protected:
 
     friend class WXDLLIMPEXP_FWD_CORE wxRegionIterator;
 
-    wxDECLARE_DYNAMIC_CLASS(wxRegion);
+    DECLARE_DYNAMIC_CLASS(wxRegion)
 };
 
 class WXDLLIMPEXP_CORE wxRegionIterator : public wxObject
@@ -97,7 +97,7 @@ private:
     wxRegion m_region;
     wxRect*  m_rects;
 
-    wxDECLARE_DYNAMIC_CLASS(wxRegionIterator);
+    DECLARE_DYNAMIC_CLASS(wxRegionIterator)
 };
 
 #endif // _WX_MSW_REGION_H_

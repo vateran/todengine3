@@ -14,7 +14,7 @@
 // Group box
 class WXDLLIMPEXP_CORE wxStaticBox: public wxStaticBoxBase
 {
-    wxDECLARE_DYNAMIC_CLASS(wxStaticBox);
+    DECLARE_DYNAMIC_CLASS(wxStaticBox)
 
 public:
     wxStaticBox();
@@ -51,7 +51,7 @@ private:
     WXWidget  m_labelWidget;
 
 private:
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

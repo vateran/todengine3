@@ -19,7 +19,7 @@ class WXDLLIMPEXP_FWD_CORE wxModalEventLoop ;
 // Dialog boxes
 class WXDLLIMPEXP_CORE wxDialog : public wxDialogBase
 {
-    wxDECLARE_DYNAMIC_CLASS(wxDialog);
+    DECLARE_DYNAMIC_CLASS(wxDialog)
 
 public:
     wxDialog() { Init(); }

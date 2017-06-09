@@ -18,10 +18,10 @@ class WXDLLIMPEXP_XRC wxSliderXmlHandler : public wxXmlResourceHandler
 {
 public:
     wxSliderXmlHandler();
-    virtual wxObject *DoCreateResource() wxOVERRIDE;
-    virtual bool CanHandle(wxXmlNode *node) wxOVERRIDE;
+    virtual wxObject *DoCreateResource();
+    virtual bool CanHandle(wxXmlNode *node);
 
-    wxDECLARE_DYNAMIC_CLASS(wxSliderXmlHandler);
+    DECLARE_DYNAMIC_CLASS(wxSliderXmlHandler)
 };
 
 #endif // wxUSE_XRC && wxUSE_SLIDER

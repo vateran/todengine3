@@ -86,8 +86,8 @@ private:
 
     int m_base;
 
-    wxDECLARE_DYNAMIC_CLASS(wxSpinCtrl);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_DYNAMIC_CLASS(wxSpinCtrl)
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

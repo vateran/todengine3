@@ -16,12 +16,12 @@
 
 class WXDLLIMPEXP_XRC wxAnimationCtrlXmlHandler : public wxXmlResourceHandler
 {
-    wxDECLARE_DYNAMIC_CLASS(wxAnimationCtrlXmlHandler);
+    DECLARE_DYNAMIC_CLASS(wxAnimationCtrlXmlHandler)
 
 public:
     wxAnimationCtrlXmlHandler();
-    virtual wxObject *DoCreateResource() wxOVERRIDE;
-    virtual bool CanHandle(wxXmlNode *node) wxOVERRIDE;
+    virtual wxObject *DoCreateResource();
+    virtual bool CanHandle(wxXmlNode *node);
 };
 
 #endif // wxUSE_XRC && wxUSE_ANIMATIONCTRL

@@ -49,30 +49,30 @@ public:
 
 
     // get/set
-    virtual wxColour GetHoverColour() const wxOVERRIDE;
-    virtual void SetHoverColour(const wxColour &colour) wxOVERRIDE;
+    virtual wxColour GetHoverColour() const;
+    virtual void SetHoverColour(const wxColour &colour);
 
-    virtual wxColour GetNormalColour() const wxOVERRIDE;
-    virtual void SetNormalColour(const wxColour &colour) wxOVERRIDE;
+    virtual wxColour GetNormalColour() const;
+    virtual void SetNormalColour(const wxColour &colour);
 
-    virtual wxColour GetVisitedColour() const wxOVERRIDE;
-    virtual void SetVisitedColour(const wxColour &colour) wxOVERRIDE;
+    virtual wxColour GetVisitedColour() const;
+    virtual void SetVisitedColour(const wxColour &colour);
 
-    virtual wxString GetURL() const wxOVERRIDE;
-    virtual void SetURL(const wxString &url) wxOVERRIDE;
+    virtual wxString GetURL() const;
+    virtual void SetURL(const wxString &url);
 
-    virtual void SetVisited(bool visited = true) wxOVERRIDE;
-    virtual bool GetVisited() const wxOVERRIDE;
+    virtual void SetVisited(bool visited = true);
+    virtual bool GetVisited() const;
 
-    virtual void SetLabel(const wxString &label) wxOVERRIDE;
+    virtual void SetLabel(const wxString &label);
 
 protected:
-    virtual wxSize DoGetBestSize() const wxOVERRIDE;
-    virtual wxSize DoGetBestClientSize() const wxOVERRIDE;
+    virtual wxSize DoGetBestSize() const;
+    virtual wxSize DoGetBestClientSize() const;
 
-    virtual GdkWindow *GTKGetWindow(wxArrayGdkWindows& windows) const wxOVERRIDE;
+    virtual GdkWindow *GTKGetWindow(wxArrayGdkWindows& windows) const;
 
-    wxDECLARE_DYNAMIC_CLASS(wxHyperlinkCtrl);
+    DECLARE_DYNAMIC_CLASS(wxHyperlinkCtrl)
 };
 
 #endif // _WX_GTKHYPERLINKCTRL_H_

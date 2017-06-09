@@ -1,10 +1,10 @@
 /////////////////////////////////////////////////////////////////////////////
 // Name:        wx/button.h
 // Purpose:     wxButtonBase class
-// Author:      Vadim Zeitlin
+// Author:      Vadim Zetlin
 // Modified by:
 // Created:     15.08.00
-// Copyright:   (c) Vadim Zeitlin
+// Copyright:   (c) Vadim Zetlin
 // Licence:     wxWindows licence
 /////////////////////////////////////////////////////////////////////////////
 
@@ -58,8 +58,10 @@ protected:
     #include "wx/gtk1/button.h"
 #elif defined(__WXMAC__)
     #include "wx/osx/button.h"
-#elif defined(__WXQT__)
-    #include "wx/qt/button.h"
+#elif defined(__WXCOCOA__)
+    #include "wx/cocoa/button.h"
+#elif defined(__WXPM__)
+    #include "wx/os2/button.h"
 #endif
 
 #endif // wxUSE_BUTTON

@@ -100,8 +100,6 @@ public:
     virtual void SetFocus();
     virtual bool SetFont(const wxFont& font);
     virtual bool ContainsHWND(WXHWND hWnd) const;
-    virtual bool SetForegroundColour(const wxColour& colour);
-    virtual bool SetBackgroundColour(const wxColour& colour);
 #if wxUSE_TOOLTIPS
     virtual bool HasToolTips() const;
 #endif // wxUSE_TOOLTIPS
@@ -160,7 +158,9 @@ protected:
     virtual void DoSetItemToolTip(unsigned int n, wxToolTip * tooltip);
 #endif
 
+#ifndef __WXWINCE__
     virtual WXHRGN MSWGetRegionWithoutChildren();
+#endif // __WXWINCE__
 
     // resolve ambiguity in base classes
     virtual wxBorder GetDefaultBorder() const { return wxRadioBoxBase::GetDefaultBorder(); }
@@ -181,7 +181,7 @@ protected:
     int m_selectedButton;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxRadioBox);
+    DECLARE_DYNAMIC_CLASS(wxRadioBox)
     wxDECLARE_NO_COPY_CLASS(wxRadioBox);
 };
 

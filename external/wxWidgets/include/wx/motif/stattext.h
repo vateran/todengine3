@@ -13,7 +13,7 @@
 
 class WXDLLIMPEXP_CORE wxStaticText: public wxStaticTextBase
 {
-    wxDECLARE_DYNAMIC_CLASS(wxStaticText);
+    DECLARE_DYNAMIC_CLASS(wxStaticText)
 
 public:
     wxStaticText() { }

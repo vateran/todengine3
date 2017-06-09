@@ -11,6 +11,8 @@
 #ifndef _WX_CURSOR_H_
 #define _WX_CURSOR_H_
 
+#include "wx/gdiobj.h"
+#include "wx/gdicmn.h"
 #include "wx/colour.h"
 
 class WXDLLIMPEXP_FWD_CORE wxImage;
@@ -19,7 +21,7 @@ class WXDLLIMPEXP_FWD_CORE wxImage;
 // wxCursor
 //-----------------------------------------------------------------------------
 
-class WXDLLIMPEXP_CORE wxCursor : public wxCursorBase
+class WXDLLIMPEXP_CORE wxCursor : public wxGDIObject
 {
 public:
     wxCursor();
@@ -47,7 +49,7 @@ protected:
     virtual wxGDIRefData *CloneGDIRefData(const wxGDIRefData *data) const;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxCursor);
+    DECLARE_DYNAMIC_CLASS(wxCursor)
 };
 
 #endif // _WX_CURSOR_H_

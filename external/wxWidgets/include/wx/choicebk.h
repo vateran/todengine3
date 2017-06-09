@@ -60,21 +60,21 @@ public:
                 const wxString& name = wxEmptyString);
 
 
-    virtual bool SetPageText(size_t n, const wxString& strText) wxOVERRIDE;
-    virtual wxString GetPageText(size_t n) const wxOVERRIDE;
-    virtual int GetPageImage(size_t n) const wxOVERRIDE;
-    virtual bool SetPageImage(size_t n, int imageId) wxOVERRIDE;
+    virtual bool SetPageText(size_t n, const wxString& strText);
+    virtual wxString GetPageText(size_t n) const;
+    virtual int GetPageImage(size_t n) const;
+    virtual bool SetPageImage(size_t n, int imageId);
     virtual bool InsertPage(size_t n,
                             wxWindow *page,
                             const wxString& text,
                             bool bSelect = false,
-                            int imageId = NO_IMAGE) wxOVERRIDE;
-    virtual int SetSelection(size_t n) wxOVERRIDE
+                            int imageId = NO_IMAGE);
+    virtual int SetSelection(size_t n)
         { return DoSetSelection(n, SetSelection_SendEvent); }
-    virtual int ChangeSelection(size_t n) wxOVERRIDE { return DoSetSelection(n); }
-    virtual void SetImageList(wxImageList *imageList) wxOVERRIDE;
+    virtual int ChangeSelection(size_t n) { return DoSetSelection(n); }
+    virtual void SetImageList(wxImageList *imageList);
 
-    virtual bool DeleteAllPages() wxOVERRIDE;
+    virtual bool DeleteAllPages();
 
     // returns the choice control
     wxChoice* GetChoiceCtrl() const { return (wxChoice*)m_bookctrl; }
@@ -82,28 +82,28 @@ public:
     // Override this to return true because the part of parent window
     // background between our controlling wxChoice and the page area should
     // show through.
-    virtual bool HasTransparentBackground() wxOVERRIDE { return true; }
+    virtual bool HasTransparentBackground() { return true; }
 
 protected:
-    virtual void DoSetWindowVariant(wxWindowVariant variant) wxOVERRIDE;
+    virtual void DoSetWindowVariant(wxWindowVariant variant);
 
-    virtual wxWindow *DoRemovePage(size_t page) wxOVERRIDE;
+    virtual wxWindow *DoRemovePage(size_t page);
 
-    void UpdateSelectedPage(size_t newsel) wxOVERRIDE
+    void UpdateSelectedPage(size_t newsel)
     {
         m_selection = static_cast<int>(newsel);
         GetChoiceCtrl()->Select(m_selection);
     }
 
-    wxBookCtrlEvent* CreatePageChangingEvent() const wxOVERRIDE;
-    void MakeChangedEvent(wxBookCtrlEvent &event) wxOVERRIDE;
+    wxBookCtrlEvent* CreatePageChangingEvent() const;
+    void MakeChangedEvent(wxBookCtrlEvent &event);
 
     // event handlers
     void OnChoiceSelected(wxCommandEvent& event);
 
 private:
-    wxDECLARE_EVENT_TABLE();
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxChoicebook);
+    DECLARE_EVENT_TABLE()
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxChoicebook)
 };
 
 // ----------------------------------------------------------------------------

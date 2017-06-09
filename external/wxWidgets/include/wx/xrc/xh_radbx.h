@@ -16,12 +16,12 @@
 
 class WXDLLIMPEXP_XRC wxRadioBoxXmlHandler : public wxXmlResourceHandler
 {
-    wxDECLARE_DYNAMIC_CLASS(wxRadioBoxXmlHandler);
+    DECLARE_DYNAMIC_CLASS(wxRadioBoxXmlHandler)
 
 public:
     wxRadioBoxXmlHandler();
-    virtual wxObject *DoCreateResource() wxOVERRIDE;
-    virtual bool CanHandle(wxXmlNode *node) wxOVERRIDE;
+    virtual wxObject *DoCreateResource();
+    virtual bool CanHandle(wxXmlNode *node);
 
 private:
     bool m_insideBox;

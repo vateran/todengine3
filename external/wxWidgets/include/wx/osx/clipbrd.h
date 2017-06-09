@@ -59,7 +59,7 @@ private:
     bool              m_open;
     wxCFRef<PasteboardRef> m_pasteboard;
 
-    wxDECLARE_DYNAMIC_CLASS(wxClipboard);
+    DECLARE_DYNAMIC_CLASS(wxClipboard)
 };
 
 #endif // wxUSE_CLIPBOARD

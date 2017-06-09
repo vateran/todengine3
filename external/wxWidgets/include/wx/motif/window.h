@@ -297,9 +297,9 @@ private:
     // common part of all ctors
     void Init();
 
-    wxDECLARE_DYNAMIC_CLASS(wxWindow);
+    DECLARE_DYNAMIC_CLASS(wxWindow)
     wxDECLARE_NO_COPY_CLASS(wxWindow);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 // ----------------------------------------------------------------------------

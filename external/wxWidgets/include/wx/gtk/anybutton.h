@@ -23,7 +23,7 @@ public:
         m_isPressed = false;
     }
 
-    virtual bool Enable( bool enable = true ) wxOVERRIDE;
+    virtual bool Enable( bool enable = true );
 
     // implementation
     // --------------
@@ -39,11 +39,11 @@ public:
     void GTKReleased();
 
 protected:
-    virtual GdkWindow *GTKGetWindow(wxArrayGdkWindows& windows) const wxOVERRIDE;
+    virtual GdkWindow *GTKGetWindow(wxArrayGdkWindows& windows) const;
 
-    virtual wxBitmap DoGetBitmap(State which) const wxOVERRIDE;
-    virtual void DoSetBitmap(const wxBitmap& bitmap, State which) wxOVERRIDE;
-    virtual void DoSetBitmapPosition(wxDirection dir) wxOVERRIDE;
+    virtual wxBitmap DoGetBitmap(State which) const;
+    virtual void DoSetBitmap(const wxBitmap& bitmap, State which);
+    virtual void DoSetBitmapPosition(wxDirection dir);
 
 private:
     typedef wxAnyButtonBase base_type;
@@ -54,10 +54,10 @@ private:
     // update the bitmap to correspond to the current button state
     void GTKUpdateBitmap();
 
-    // return the state whose bitmap is being currently shown (so this is
-    // different from the real current state, e.g. it could be State_Normal
-    // even if the button is pressed if no button was set for State_Pressed)
-    State GTKGetCurrentBitmapState() const;
+    // return the current button state from m_isXXX flags (which means that it
+    // might not correspond to the real current state as e.g. m_isCurrent will
+    // never be true if we don't have a valid current bitmap)
+    State GTKGetCurrentState() const;
 
     // show the given bitmap (must be valid)
     void GTKDoShowBitmap(const wxBitmap& bitmap);

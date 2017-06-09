@@ -18,7 +18,8 @@
  * support a way to do that.
  */
 
-#if defined __VISUALC__ && wxUSE_ACCESSIBILITY
+/* VC++ 5 didn't include oleacc.lib, though it came with the PSDK */
+#if defined __VISUALC__ && (wxUSE_ACCESSIBILITY || __VISUALC__ >= 1200)
 #pragma comment(lib, "oleacc")
 #endif
 

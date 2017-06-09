@@ -106,8 +106,8 @@ public:
     bool      m_processedDefault;
 
 private:
-    wxDECLARE_EVENT_TABLE();
-    wxDECLARE_DYNAMIC_CLASS(wxTextCtrl);
+    DECLARE_EVENT_TABLE()
+    DECLARE_DYNAMIC_CLASS(wxTextCtrl)
 };
 
 #endif

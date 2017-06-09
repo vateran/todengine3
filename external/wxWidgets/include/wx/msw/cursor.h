@@ -11,10 +11,12 @@
 #ifndef _WX_CURSOR_H_
 #define _WX_CURSOR_H_
 
+#include "wx/msw/gdiimage.h"
+
 class WXDLLIMPEXP_FWD_CORE wxImage;
 
 // Cursor
-class WXDLLIMPEXP_CORE wxCursor : public wxCursorBase
+class WXDLLIMPEXP_CORE wxCursor : public wxGDIImage
 {
 public:
     // constructors
@@ -27,9 +29,6 @@ public:
 #if WXWIN_COMPATIBILITY_2_8
     wxCursor(int id) { InitFromStock((wxStockCursor)id); }
 #endif
-
-    virtual wxPoint GetHotSpot() const wxOVERRIDE;
-
     virtual ~wxCursor();
 
     // implementation only
@@ -42,7 +41,7 @@ protected:
     virtual wxGDIImageRefData *CreateData() const;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxCursor);
+    DECLARE_DYNAMIC_CLASS(wxCursor)
 };
 
 #endif

@@ -28,7 +28,7 @@ class WXDLLIMPEXP_FWD_CORE wxTabView;
 
 class WXDLLIMPEXP_CORE wxTabControl: public wxObject
 {
-    wxDECLARE_DYNAMIC_CLASS(wxTabControl);
+DECLARE_DYNAMIC_CLASS(wxTabControl)
 public:
     wxTabControl(wxTabView *v = NULL);
     virtual ~wxTabControl(void);
@@ -95,7 +95,7 @@ WX_DECLARE_LIST(wxTabLayer, wxTabLayerList);
 
 class WXDLLIMPEXP_CORE wxTabView: public wxObject
 {
-    wxDECLARE_DYNAMIC_CLASS(wxTabView);
+DECLARE_DYNAMIC_CLASS(wxTabView)
 public:
   wxTabView(long style = wxTAB_STYLE_DRAW_BOX | wxTAB_STYLE_COLOUR_INTERIOR);
   virtual ~wxTabView();
@@ -267,7 +267,7 @@ protected:
 
 class WXDLLIMPEXP_CORE wxTabbedDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(wxTabbedDialog);
+    DECLARE_DYNAMIC_CLASS(wxTabbedDialog)
 
 public:
     wxTabbedDialog(wxWindow *parent,
@@ -290,7 +290,7 @@ protected:
     wxTabView*   m_tabView;
 
 private:
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 /*
@@ -299,7 +299,7 @@ private:
 
 class WXDLLIMPEXP_CORE wxTabbedPanel : public wxPanel
 {
-    wxDECLARE_DYNAMIC_CLASS(wxTabbedPanel);
+    DECLARE_DYNAMIC_CLASS(wxTabbedPanel)
 
 public:
     wxTabbedPanel(wxWindow *parent,
@@ -320,7 +320,7 @@ protected:
     wxTabView*   m_tabView;
 
 private:
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 WX_DECLARE_HASH_MAP(int, wxWindow*, wxIntegerHash, wxIntegerEqual,
@@ -328,7 +328,7 @@ WX_DECLARE_HASH_MAP(int, wxWindow*, wxIntegerHash, wxIntegerEqual,
 
 class WXDLLIMPEXP_CORE wxPanelTabView : public wxTabView
 {
-    wxDECLARE_DYNAMIC_CLASS(wxPanelTabView);
+    DECLARE_DYNAMIC_CLASS(wxPanelTabView)
 
 public:
     wxPanelTabView(wxPanel *pan, long style = wxTAB_STYLE_DRAW_BOX | wxTAB_STYLE_COLOUR_INTERIOR);

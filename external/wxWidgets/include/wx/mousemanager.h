@@ -144,7 +144,7 @@ private:
     wxPoint m_posLast;
 
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 
     wxDECLARE_NO_COPY_CLASS(wxMouseEventsManager);
 };

@@ -62,16 +62,16 @@ public:
     bool ShowExpanded();
     bool HideExpanded();
 
-    void SetArtProvider(wxRibbonArtProvider* art) wxOVERRIDE;
+    void SetArtProvider(wxRibbonArtProvider* art);
 
-    virtual bool Realize() wxOVERRIDE;
-    virtual bool Layout() wxOVERRIDE;
-    virtual wxSize GetMinSize() const wxOVERRIDE;
+    virtual bool Realize();
+    virtual bool Layout();
+    virtual wxSize GetMinSize() const;
 
-    virtual bool IsSizingContinuous() const wxOVERRIDE;
+    virtual bool IsSizingContinuous() const;
 
-    virtual void AddChild(wxWindowBase *child) wxOVERRIDE;
-    virtual void RemoveChild(wxWindowBase *child) wxOVERRIDE;
+    virtual void AddChild(wxWindowBase *child);
+    virtual void RemoveChild(wxWindowBase *child);
 
     virtual bool HasExtButton() const;
 
@@ -79,25 +79,25 @@ public:
     wxRibbonPanel* GetExpandedPanel();
 
     // Finds the best width and height given the parent's width and height
-    virtual wxSize GetBestSizeForParentSize(const wxSize& parentSize) const wxOVERRIDE;
+    virtual wxSize GetBestSizeForParentSize(const wxSize& parentSize) const;
 
     long GetFlags() { return m_flags; }
 
     void HideIfExpanded();
 
 protected:
-    virtual wxSize DoGetBestSize() const wxOVERRIDE;
+    virtual wxSize DoGetBestSize() const;
     virtual wxSize GetPanelSizerBestSize() const;
     wxSize  GetPanelSizerMinSize() const;
-    wxBorder GetDefaultBorder() const wxOVERRIDE { return wxBORDER_NONE; }
+    wxBorder GetDefaultBorder() const { return wxBORDER_NONE; }
     wxSize GetMinNotMinimisedSize() const;
 
     virtual wxSize DoGetNextSmallerSize(wxOrientation direction,
-                                      wxSize relative_to) const wxOVERRIDE;
+                                      wxSize relative_to) const;
     virtual wxSize DoGetNextLargerSize(wxOrientation direction,
-                                     wxSize relative_to) const wxOVERRIDE;
+                                     wxSize relative_to) const;
 
-    void DoSetSize(int x, int y, int width, int height, int sizeFlags = wxSIZE_AUTO) wxOVERRIDE;
+    void DoSetSize(int x, int y, int width, int height, int sizeFlags = wxSIZE_AUTO);
     void OnSize(wxSizeEvent& evt);
     void OnEraseBackground(wxEraseEvent& evt);
     void OnPaint(wxPaintEvent& evt);
@@ -112,7 +112,7 @@ protected:
 
     void TestPositionForHover(const wxPoint& pos);
     bool ShouldSendEventToDummy(wxEvent& evt);
-    virtual bool TryAfter(wxEvent& evt) wxOVERRIDE;
+    virtual bool TryAfter(wxEvent& evt);
 
     void CommonInit(const wxString& label, const wxBitmap& icon, long style);
     static wxRect GetExpandedPosition(wxRect panel,
@@ -134,8 +134,8 @@ protected:
     wxRect m_ext_button_rect;
 
 #ifndef SWIG
-    wxDECLARE_CLASS(wxRibbonPanel);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_CLASS(wxRibbonPanel)
+    DECLARE_EVENT_TABLE()
 #endif
 };
 
@@ -156,7 +156,7 @@ public:
         m_panel = e.m_panel;
     }
 #endif
-    wxEvent *Clone() const wxOVERRIDE { return new wxRibbonPanelEvent(*this); }
+    wxEvent *Clone() const { return new wxRibbonPanelEvent(*this); }
 
     wxRibbonPanel* GetPanel() {return m_panel;}
     void SetPanel(wxRibbonPanel* panel) {m_panel = panel;}
@@ -166,7 +166,7 @@ protected:
 
 #ifndef SWIG
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxRibbonPanelEvent);
+    DECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxRibbonPanelEvent)
 #endif
 };
 

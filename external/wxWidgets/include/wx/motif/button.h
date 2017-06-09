@@ -50,7 +50,7 @@ private:
     wxSize OldGetMinSize() const;
     void SetDefaultShadowThicknessAndResize();
 
-    wxDECLARE_DYNAMIC_CLASS(wxButton);
+    DECLARE_DYNAMIC_CLASS(wxButton)
 };
 
 #endif // _WX_BUTTON_H_

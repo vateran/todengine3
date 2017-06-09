@@ -20,7 +20,7 @@ class WXDLLIMPEXP_FWD_BASE wxArrayInt;
 // List box item
 class WXDLLIMPEXP_CORE wxListBox: public wxListBoxBase
 {
-    wxDECLARE_DYNAMIC_CLASS(wxListBox);
+    DECLARE_DYNAMIC_CLASS(wxListBox)
 
 public:
     wxListBox();

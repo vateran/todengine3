@@ -127,9 +127,9 @@ private:
 
     bool m_inResize;
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 
-    wxDECLARE_DYNAMIC_CLASS(wxBitmapComboBox);
+    DECLARE_DYNAMIC_CLASS(wxBitmapComboBox)
 };
 
 #endif // _WX_MSW_BMPCBOX_H_

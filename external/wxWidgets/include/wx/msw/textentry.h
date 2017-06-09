@@ -47,7 +47,6 @@ public:
     virtual void SetEditable(bool editable);
 
     virtual void SetMaxLength(unsigned long len);
-    virtual void ForceUpper();
 
 #if wxUSE_UXTHEME
     virtual bool SetHint(const wxString& hint);
@@ -98,9 +97,6 @@ private:
     friend class wxTextAutoCompleteData;
 #endif // wxUSE_OLE
 };
-
-// We don't need the generic version.
-#define wxHAS_NATIVE_TEXT_FORCEUPPER
 
 #endif // _WX_MSW_TEXTENTRY_H_
 

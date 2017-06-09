@@ -35,12 +35,12 @@ public:
     virtual ~wxWrapSizer();
 
     // override base class virtual methods
-    virtual wxSize CalcMin() wxOVERRIDE;
-    virtual void RecalcSizes() wxOVERRIDE;
+    virtual wxSize CalcMin();
+    virtual void RecalcSizes();
 
     virtual bool InformFirstDirection(int direction,
                                       int size,
-                                      int availableOtherDir) wxOVERRIDE;
+                                      int availableOtherDir);
 
 protected:
     // This method is called to decide if an item represents empty space or
@@ -93,7 +93,7 @@ protected:
 
     wxBoxSizer m_rows;       // Sizer containing multiple rows of our items
 
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxWrapSizer);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxWrapSizer)
 };
 
 #endif // _WX_WRAPSIZER_H_

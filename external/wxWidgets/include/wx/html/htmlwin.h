@@ -160,7 +160,7 @@ protected:
     /**
         Call this from EVT_LEFT_UP handler (or, alternatively, EVT_LEFT_DOWN).
 
-        @param rootCell HTML cell inside which the click occurred. This doesn't
+        @param rootCell HTML cell inside which the click occured. This doesn't
                         have to be the leaf cell, it can be e.g. toplevel
                         container, but the mouse must be inside the container's
                         area, otherwise the event would be ignored.
@@ -174,7 +174,7 @@ protected:
         Call this from OnInternalIdle of the HTML displaying window. Handles
         mouse movements and must be used together with HandleMouseMoved.
 
-        @param rootCell HTML cell inside which the click occurred. This doesn't
+        @param rootCell HTML cell inside which the click occured. This doesn't
                         have to be the leaf cell, it can be e.g. toplevel
                         container, but the mouse must be inside the container's
                         area, otherwise the event would be ignored.
@@ -235,7 +235,7 @@ class WXDLLIMPEXP_HTML wxHtmlWindow : public wxScrolledWindow,
                                       public wxHtmlWindowInterface,
                                       public wxHtmlWindowMouseHelper
 {
-    wxDECLARE_DYNAMIC_CLASS(wxHtmlWindow);
+    DECLARE_DYNAMIC_CLASS(wxHtmlWindow)
     friend class wxHtmlWinModule;
 
 public:
@@ -383,11 +383,10 @@ public:
     wxString ToText();
 #endif // wxUSE_CLIPBOARD
 
-    virtual void OnInternalIdle() wxOVERRIDE;
+    virtual void OnInternalIdle();
 
     /// Returns standard HTML cursor as used by wxHtmlWindow
     static wxCursor GetDefaultHTMLCursor(HTMLCursor type);
-    static void SetDefaultHTMLCursor(HTMLCursor type, const wxCursor& cursor);
 
 protected:
     void Init();
@@ -448,19 +447,19 @@ protected:
 
 public:
     // wxHtmlWindowInterface methods:
-    virtual void SetHTMLWindowTitle(const wxString& title) wxOVERRIDE;
-    virtual void OnHTMLLinkClicked(const wxHtmlLinkInfo& link) wxOVERRIDE;
+    virtual void SetHTMLWindowTitle(const wxString& title);
+    virtual void OnHTMLLinkClicked(const wxHtmlLinkInfo& link);
     virtual wxHtmlOpeningStatus OnHTMLOpeningURL(wxHtmlURLType type,
                                                  const wxString& url,
-                                                 wxString *redirect) const wxOVERRIDE;
+                                                 wxString *redirect) const;
     virtual wxPoint HTMLCoordsToWindow(wxHtmlCell *cell,
-                                       const wxPoint& pos) const wxOVERRIDE;
-    virtual wxWindow* GetHTMLWindow() wxOVERRIDE;
-    virtual wxColour GetHTMLBackgroundColour() const wxOVERRIDE;
-    virtual void SetHTMLBackgroundColour(const wxColour& clr) wxOVERRIDE;
-    virtual void SetHTMLBackgroundImage(const wxBitmap& bmpBg) wxOVERRIDE;
-    virtual void SetHTMLStatusText(const wxString& text) wxOVERRIDE;
-    virtual wxCursor GetHTMLCursor(HTMLCursor type) const wxOVERRIDE;
+                                       const wxPoint& pos) const;
+    virtual wxWindow* GetHTMLWindow();
+    virtual wxColour GetHTMLBackgroundColour() const;
+    virtual void SetHTMLBackgroundColour(const wxColour& clr);
+    virtual void SetHTMLBackgroundImage(const wxBitmap& bmpBg);
+    virtual void SetHTMLStatusText(const wxString& text);
+    virtual wxCursor GetHTMLCursor(HTMLCursor type) const;
 
     // implementation of SetPage()
     bool DoSetPage(const wxString& source);
@@ -553,9 +552,8 @@ private:
     // standard mouse cursors
     static wxCursor *ms_cursorLink;
     static wxCursor *ms_cursorText;
-    static wxCursor *ms_cursorDefault;
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
     wxDECLARE_NO_COPY_CLASS(wxHtmlWindow);
 };
 
@@ -593,7 +591,7 @@ public:
     bool GetLinkClicked() const { return m_bLinkWasClicked; }
 
     // default copy ctor, assignment operator and dtor are ok
-    virtual wxEvent *Clone() const wxOVERRIDE { return new wxHtmlCellEvent(*this); }
+    virtual wxEvent *Clone() const { return new wxHtmlCellEvent(*this); }
 
 private:
     wxHtmlCell *m_cell;
@@ -602,7 +600,7 @@ private:
 
     bool m_bLinkWasClicked;
 
-    wxDECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxHtmlCellEvent);
+    DECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxHtmlCellEvent)
 };
 
 
@@ -624,12 +622,12 @@ public:
     const wxHtmlLinkInfo &GetLinkInfo() const { return m_linkInfo; }
 
     // default copy ctor, assignment operator and dtor are ok
-    virtual wxEvent *Clone() const wxOVERRIDE { return new wxHtmlLinkEvent(*this); }
+    virtual wxEvent *Clone() const { return new wxHtmlLinkEvent(*this); }
 
 private:
     wxHtmlLinkInfo m_linkInfo;
 
-    wxDECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxHtmlLinkEvent);
+    DECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxHtmlLinkEvent)
 };
 
 

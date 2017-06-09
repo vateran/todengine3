@@ -235,7 +235,7 @@ protected:
     bool            m_fullScreen;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxDragImage);
+    DECLARE_DYNAMIC_CLASS(wxDragImage)
     wxDECLARE_NO_COPY_CLASS(wxDragImage);
 };
 

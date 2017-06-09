@@ -32,7 +32,7 @@ class WXDLLIMPEXP_FWD_CORE wxPixelDataBase;
 
 class WXDLLIMPEXP_CORE wxMask: public wxObject
 {
-    wxDECLARE_DYNAMIC_CLASS(wxMask);
+    DECLARE_DYNAMIC_CLASS(wxMask)
 
 public:
     wxMask();
@@ -83,7 +83,7 @@ private:
 
 class WXDLLIMPEXP_CORE wxBitmap: public wxBitmapBase
 {
-    wxDECLARE_DYNAMIC_CLASS(wxBitmap);
+    DECLARE_DYNAMIC_CLASS(wxBitmap)
 
     friend class WXDLLIMPEXP_FWD_CORE wxBitmapHandler;
 

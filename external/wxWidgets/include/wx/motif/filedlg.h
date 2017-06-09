@@ -17,7 +17,7 @@
 
 class WXDLLIMPEXP_CORE wxFileDialog: public wxFileDialogBase
 {
-    wxDECLARE_DYNAMIC_CLASS(wxFileDialog);
+    DECLARE_DYNAMIC_CLASS(wxFileDialog)
 public:
 
     // For Motif

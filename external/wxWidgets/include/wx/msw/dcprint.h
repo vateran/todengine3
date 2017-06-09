@@ -56,7 +56,7 @@ protected:
     wxPrintData m_printData;
 
 private:
-    wxDECLARE_CLASS(wxPrinterDCImpl);
+    DECLARE_CLASS(wxPrinterDCImpl)
     wxDECLARE_NO_COPY_CLASS(wxPrinterDCImpl);
 };
 

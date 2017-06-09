@@ -57,8 +57,8 @@ protected:
     void Init();
 
 private:
-    wxDECLARE_EVENT_TABLE();
-    wxDECLARE_DYNAMIC_CLASS(wxDialog);
+    DECLARE_EVENT_TABLE()
+    DECLARE_DYNAMIC_CLASS(wxDialog)
 };
 
 #endif // __GTKDIALOGH__

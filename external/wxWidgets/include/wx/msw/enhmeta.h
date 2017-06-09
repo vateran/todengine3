@@ -52,21 +52,13 @@ public:
     // this method
     bool SetClipboard(int width = 0, int height = 0);
 
-    // Detach the HENHMETAFILE from this object, i.e. don't delete the handle
-    // in the dtor -- the caller is now responsible for doing this, e.g. using
-    // Free() method below.
-    WXHANDLE Detach() { WXHANDLE h = m_hMF; m_hMF = 0; return h; }
-
-    // Destroy the given HENHMETAFILE object.
-    static void Free(WXHANDLE handle);
-
     // implementation
     WXHANDLE GetHENHMETAFILE() const { return m_hMF; }
     void SetHENHMETAFILE(WXHANDLE hMF) { Free(); m_hMF = hMF; }
 
 protected:
     void Init();
-    void Free() { Free(m_hMF); }
+    void Free();
     void Assign(const wxEnhMetaFile& mf);
 
     // we don't use these functions (but probably should) but have to implement
@@ -78,7 +70,7 @@ private:
     wxString m_filename;
     WXHANDLE m_hMF;
 
-    wxDECLARE_DYNAMIC_CLASS(wxEnhMetaFile);
+    DECLARE_DYNAMIC_CLASS(wxEnhMetaFile)
 };
 
 // ----------------------------------------------------------------------------
@@ -106,7 +98,7 @@ public:
     wxEnhMetaFile *Close();
 
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxEnhMetaFileDC);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxEnhMetaFileDC)
 };
 
 #if wxUSE_DRAG_AND_DROP

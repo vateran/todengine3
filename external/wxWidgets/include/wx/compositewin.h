@@ -44,6 +44,16 @@ public:
 
     }
 
+#ifndef __VISUALC6__
+    // FIXME-VC6: This compiler can't compile DoSetForAllParts() template function,
+    // it can't determine whether the deduced type should be "T" or "const T&". And
+    // without this function wxCompositeWindow is pretty useless so simply disable
+    // this code for it, this does mean that setting colours/fonts/... for
+    // composite controls won't work in the library compiled with it but so far
+    // this only affects the generic wxDatePickerCtrl which is not used by default
+    // under MSW anyhow so it doesn't seem to be worth it to spend time and uglify
+    // the code to fix it.
+
     // Override all wxWindow methods which must be forwarded to the composite
     // window parts.
 
@@ -94,35 +104,7 @@ public:
         return true;
     }
 
-    virtual void SetLayoutDirection(wxLayoutDirection dir)
-    {
-        BaseWindowClass::SetLayoutDirection(dir);
-
-        SetForAllParts(&wxWindowBase::SetLayoutDirection, dir);
-
-        // The child layout almost invariably depends on the layout direction,
-        // so redo it when it changes.
-        //
-        // However avoid doing it when we're called from wxWindow::Create() in
-        // wxGTK as the derived window is not fully created yet and calling its
-        // SetSize() may be unexpected. This does mean that any future calls to
-        // SetLayoutDirection(wxLayout_Default) wouldn't result in a re-layout
-        // neither, but then we're not supposed to be called with it at all.
-        if ( dir != wxLayout_Default )
-            this->SetSize(-1, -1, -1, -1, wxSIZE_AUTO | wxSIZE_FORCE);
-    }
-
 #if wxUSE_TOOLTIPS
-    virtual void DoSetToolTipText(const wxString &tip)
-    {
-        BaseWindowClass::DoSetToolTipText(tip);
-
-        // Use a variable to disambiguate between SetToolTip() overloads.
-        void (wxWindowBase::*func)(const wxString&) = &wxWindowBase::SetToolTip;
-
-        SetForAllParts(func, tip);
-    }
-
     virtual void DoSetToolTip(wxToolTip *tip)
     {
         BaseWindowClass::DoSetToolTip(tip);
@@ -130,6 +112,8 @@ public:
         SetForAllParts(&wxWindowBase::CopyToolTip, tip);
     }
 #endif // wxUSE_TOOLTIPS
+
+#endif // !__VISUALC6__
 
     virtual void SetFocus()
     {
@@ -206,8 +190,21 @@ private:
             event.Skip();
     }
 
-    template <class T, class TArg, class R>
-    void SetForAllParts(R (wxWindowBase::*func)(TArg), T arg)
+#ifndef __VISUALC6__
+    template <class T>
+    void SetForAllParts(bool (wxWindowBase::*func)(const T&), const T& arg)
+    {
+        DoSetForAllParts<const T&>(func, arg);
+    }
+
+    template <class T>
+    void SetForAllParts(bool (wxWindowBase::*func)(T*), T* arg)
+    {
+        DoSetForAllParts<T*>(func, arg);
+    }
+
+    template <class T>
+    void DoSetForAllParts(bool (wxWindowBase::*func)(T), T arg)
     {
         // Simply call the setters for all parts of this composite window.
         const wxWindowList parts = GetCompositeWindowParts();
@@ -224,6 +221,7 @@ private:
                 (child->*func)(arg);
         }
     }
+#endif // !__VISUALC6__
 
     wxDECLARE_NO_COPY_TEMPLATE_CLASS(wxCompositeWindow, W);
 };

@@ -29,7 +29,7 @@ class WXDLLIMPEXP_FWD_NET wxProtocolLog;
 // constants
 // ----------------------------------------------------------------------------
 
-enum wxProtocolError
+typedef enum
 {
     wxPROTO_NOERR = 0,
     wxPROTO_NETERR,
@@ -41,7 +41,7 @@ enum wxProtocolError
     wxPROTO_ABRT,
     wxPROTO_RCNCT,
     wxPROTO_STREAMING
-};
+} wxProtocolError;
 
 // ----------------------------------------------------------------------------
 // wxProtocol: abstract base class for all protocols
@@ -61,7 +61,7 @@ public:
 #if wxUSE_SOCKETS
     bool Reconnect();
     virtual bool Connect( const wxString& WXUNUSED(host) ) { return false; }
-    virtual bool Connect( const wxSockAddress& addr, bool WXUNUSED(wait) = true) wxOVERRIDE
+    virtual bool Connect( const wxSockAddress& addr, bool WXUNUSED(wait) = true)
         { return wxSocketClient::Connect(addr); }
 
     // read a '\r\n' terminated line from the given socket and put it in
@@ -87,7 +87,7 @@ public:
 
     // override wxSocketBase::SetTimeout function to avoid that the internal
     // m_uiDefaultTimeout goes out-of-sync:
-    virtual void SetTimeout(long seconds) wxOVERRIDE
+    virtual void SetTimeout(long seconds)
         { SetDefaultTimeout(seconds); }
 
 
@@ -128,7 +128,7 @@ protected:
 private:
     wxProtocolLog *m_log;
 
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxProtocol);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxProtocol)
 };
 
 // ----------------------------------------------------------------------------
@@ -168,7 +168,7 @@ protected:
 
     friend class wxURL;
 
-    wxDECLARE_DYNAMIC_CLASS(wxProtoInfo);
+    DECLARE_DYNAMIC_CLASS(wxProtoInfo)
     wxDECLARE_NO_COPY_CLASS(wxProtoInfo);
 };
 

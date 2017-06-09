@@ -45,10 +45,10 @@ public:
                 const wxString &name = wxStaticLineNameStr );
 
 protected:
-    virtual void DoDraw(wxControlRenderer *renderer) wxOVERRIDE;
+    virtual void DoDraw(wxControlRenderer *renderer);
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxStaticLine);
+    DECLARE_DYNAMIC_CLASS(wxStaticLine)
 };
 
 #endif // _WX_UNIV_STATLINE_H_

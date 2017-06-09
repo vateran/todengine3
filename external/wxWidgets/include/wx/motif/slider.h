@@ -16,7 +16,7 @@
 // Slider
 class WXDLLIMPEXP_CORE wxSlider: public wxSliderBase
 {
-    wxDECLARE_DYNAMIC_CLASS(wxSlider);
+    DECLARE_DYNAMIC_CLASS(wxSlider)
 
 public:
     wxSlider();
@@ -71,7 +71,7 @@ protected:
         int sizeFlags = wxSIZE_AUTO);
 
 private:
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 };
 
 #endif

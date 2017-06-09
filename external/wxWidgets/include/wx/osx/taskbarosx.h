@@ -16,7 +16,7 @@ class WXDLLIMPEXP_FWD_CORE wxMenu;
 
 class WXDLLIMPEXP_ADV wxTaskBarIcon : public wxTaskBarIconBase
 {
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxTaskBarIcon);
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxTaskBarIcon)
 public:
     wxTaskBarIcon(wxTaskBarIconType iconType = wxTBI_DEFAULT_TYPE);
     virtual ~wxTaskBarIcon();

@@ -46,7 +46,7 @@ public:
                pos, size, style, validator, name);
     }
 
-    virtual wxControl *AsControl() wxOVERRIDE { return this; }
+    virtual wxControl *AsControl() { return this; }
 
 public:     // overridable
 
@@ -57,7 +57,7 @@ public:     // overridable
 
     virtual wxEventType GetEventType() const = 0;
 
-    virtual void SetInitialDirectory(const wxString& dir) wxOVERRIDE;
+    virtual void SetInitialDirectory(const wxString& dir);
 
 public:
 
@@ -144,19 +144,19 @@ public:     // overridable
         return filedlgstyle;
     }
 
-    virtual wxDialog *CreateDialog() wxOVERRIDE;
+    virtual wxDialog *CreateDialog();
 
-    wxEventType GetEventType() const wxOVERRIDE
+    wxEventType GetEventType() const
         { return wxEVT_FILEPICKER_CHANGED; }
 
 protected:
-    void UpdateDialogPath(wxDialog *p) wxOVERRIDE
+    void UpdateDialogPath(wxDialog *p)
         { wxStaticCast(p, wxFileDialog)->SetPath(m_path); }
-    void UpdatePathFromDialog(wxDialog *p) wxOVERRIDE
+    void UpdatePathFromDialog(wxDialog *p)
         { m_path = wxStaticCast(p, wxFileDialog)->GetPath(); }
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxGenericFileButton);
+    DECLARE_DYNAMIC_CLASS(wxGenericFileButton)
 };
 
 
@@ -199,19 +199,19 @@ public:     // overridable
         return dirdlgstyle;
     }
 
-    virtual wxDialog *CreateDialog() wxOVERRIDE;
+    virtual wxDialog *CreateDialog();
 
-    wxEventType GetEventType() const wxOVERRIDE
+    wxEventType GetEventType() const
         { return wxEVT_DIRPICKER_CHANGED; }
 
 protected:
-    void UpdateDialogPath(wxDialog *p) wxOVERRIDE
+    void UpdateDialogPath(wxDialog *p)
         { wxStaticCast(p, wxDirDialog)->SetPath(m_path); }
-    void UpdatePathFromDialog(wxDialog *p) wxOVERRIDE
+    void UpdatePathFromDialog(wxDialog *p)
         { m_path = wxStaticCast(p, wxDirDialog)->GetPath(); }
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxGenericDirButton);
+    DECLARE_DYNAMIC_CLASS(wxGenericDirButton)
 };
 
 // old wxEVT_COMMAND_* constants

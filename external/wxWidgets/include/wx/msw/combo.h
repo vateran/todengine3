@@ -17,9 +17,11 @@
 
 #if wxUSE_COMBOCTRL
 
-#if wxUSE_TIMER
+#if !defined(__WXWINCE__) && wxUSE_TIMER
     #include "wx/timer.h"
     #define wxUSE_COMBOCTRL_POPUP_ANIMATION     1
+#else
+    #define wxUSE_COMBOCTRL_POPUP_ANIMATION     0
 #endif
 
 
@@ -98,15 +100,15 @@ private:
 
 #if wxUSE_COMBOCTRL_POPUP_ANIMATION
     // Popup animation related
-    wxMilliClock_t m_animStart;
+    wxLongLong  m_animStart;
     wxTimer     m_animTimer;
     wxRect      m_animRect;
     int         m_animFlags;
 #endif
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
 
-    wxDECLARE_DYNAMIC_CLASS(wxComboCtrl);
+    DECLARE_DYNAMIC_CLASS(wxComboCtrl)
 };
 
 

@@ -395,7 +395,7 @@ public:
     const wxPGAttributeStorage& GetPropertyAttributes( wxPGPropArg id ) const
     {
         // If 'id' refers to invalid property, then we will return dummy
-        // attributes (i.e. root property's attributes, which contents should
+        // attributes (ie. root property's attributes, which contents should
         // should always be empty and of no consequence).
         wxPG_PROP_ARG_CALL_PROLOG_RETVAL(m_pState->DoGetRoot()->GetAttributes());
         return p->GetAttributes();
@@ -469,7 +469,7 @@ public:
     /** Returns help string associated with a property. */
     wxString GetPropertyHelpString( wxPGPropArg id ) const
     {
-        wxPG_PROP_ARG_CALL_PROLOG_RETVAL(wxEmptyString)
+        wxPG_PROP_ARG_CALL_PROLOG_RETVAL(m_emptyString)
         return p->GetHelpString();
     }
 
@@ -533,29 +533,30 @@ public:
     bool GetPropertyValueAsBool( wxPGPropArg id ) const;
     double GetPropertyValueAsDouble( wxPGPropArg id ) const;
 
-#define wxPG_PROP_ID_GETPROPVAL_CALL_PROLOG_RETVAL(PGTypeName, DEFVAL) \
+#define wxPG_PROP_ID_GETPROPVAL_CALL_PROLOG_RETVAL(TYPENAME, DEFVAL) \
     wxPG_PROP_ARG_CALL_PROLOG_RETVAL(DEFVAL) \
+    wxString typeName(wxS(TYPENAME)); \
     wxVariant value = p->GetValue(); \
-    if ( !value.IsType(PGTypeName) ) \
+    if ( value.GetType() != typeName ) \
     { \
-        wxPGGetFailed(p, PGTypeName); \
+        wxPGGetFailed(p, typeName); \
         return DEFVAL; \
     }
 
-#define wxPG_PROP_ID_GETPROPVAL_CALL_PROLOG_RETVAL_WFALLBACK(PGTypeName, DEFVAL) \
+#define wxPG_PROP_ID_GETPROPVAL_CALL_PROLOG_RETVAL_WFALLBACK(TYPENAME, DEFVAL) \
     wxPG_PROP_ARG_CALL_PROLOG_RETVAL(DEFVAL) \
     wxVariant value = p->GetValue(); \
-    if ( !value.IsType(PGTypeName) ) \
+    if ( value.GetType() != wxS(TYPENAME) ) \
         return DEFVAL; \
 
     wxArrayString GetPropertyValueAsArrayString( wxPGPropArg id ) const
     {
-        wxPG_PROP_ID_GETPROPVAL_CALL_PROLOG_RETVAL(wxPG_VARIANT_TYPE_ARRSTRING,
+        wxPG_PROP_ID_GETPROPVAL_CALL_PROLOG_RETVAL("arrstring",
                                                    wxArrayString())
         return value.GetArrayString();
     }
 
-#if defined(wxLongLong_t) && wxUSE_LONGLONG
+#ifdef wxLongLong_t
     wxLongLong_t GetPropertyValueAsLongLong( wxPGPropArg id ) const
     {
         wxPG_PROP_ARG_CALL_PROLOG_RETVAL(0)
@@ -571,7 +572,7 @@ public:
 
     wxArrayInt GetPropertyValueAsArrayInt( wxPGPropArg id ) const
     {
-        wxPG_PROP_ID_GETPROPVAL_CALL_PROLOG_RETVAL(wxArrayInt_VariantType,
+        wxPG_PROP_ID_GETPROPVAL_CALL_PROLOG_RETVAL("wxArrayInt",
                                                    wxArrayInt())
         wxArrayInt arr;
         arr << value;
@@ -581,7 +582,7 @@ public:
 #if wxUSE_DATETIME
     wxDateTime GetPropertyValueAsDateTime( wxPGPropArg id ) const
     {
-        wxPG_PROP_ID_GETPROPVAL_CALL_PROLOG_RETVAL(wxPG_VARIANT_TYPE_DATETIME,
+        wxPG_PROP_ID_GETPROPVAL_CALL_PROLOG_RETVAL("datetime",
                                                    wxDateTime())
         return value.GetDateTime();
     }
@@ -727,7 +728,7 @@ public:
     bool IsPropertyEnabled( wxPGPropArg id ) const
     {
         wxPG_PROP_ARG_CALL_PROLOG_RETVAL(false)
-        return !p->HasFlag(wxPG_PROP_DISABLED);
+        return (!(p->GetFlags() & wxPG_PROP_DISABLED))?true:false;
     }
 
     /**
@@ -744,11 +745,7 @@ public:
     bool IsPropertyModified( wxPGPropArg id ) const
     {
         wxPG_PROP_ARG_CALL_PROLOG_RETVAL(false)
-#if WXWIN_COMPATIBILITY_3_0
-        return p->HasFlag(wxPG_PROP_MODIFIED)?true:false;
-#else
-        return p->HasFlag(wxPG_PROP_MODIFIED);
-#endif
+        return ( (p->GetFlags() & wxPG_PROP_MODIFIED) ? true : false );
     }
 
     /**
@@ -761,13 +758,13 @@ public:
     }
 
     /**
-        Returns true if property is shown (i.e. HideProperty with true not
+        Returns true if property is shown (ie hideproperty with true not
         called for it).
     */
     bool IsPropertyShown( wxPGPropArg id ) const
     {
         wxPG_PROP_ARG_CALL_PROLOG_RETVAL(false)
-        return !p->HasFlag(wxPG_PROP_HIDDEN);
+        return (!(p->GetFlags() & wxPG_PROP_HIDDEN))?true:false;
     }
 
     /** Returns true if property value is set to unspecified.
@@ -928,7 +925,7 @@ public:
         DoSetPropertyAttribute(id,attrName,value,argFlags);
     }
 
-    /** Sets property attribute for all applicable properties.
+    /** Sets property attribute for all applicapple properties.
         Be sure to use this method only after all properties have been
         added to the grid.
     */
@@ -953,19 +950,8 @@ public:
                                       int flags = wxPG_RECURSE );
 
     /** Resets text and background colours of given property.
-        @param id
-            Property name or pointer.
-
-        @param flags
-            Default is wxPG_DONT_RECURSE which causes colour to be reset
-            only for the property in question (for backward compatibility).
     */
-#if WXWIN_COMPATIBILITY_3_0
-    void SetPropertyColoursToDefault(wxPGPropArg id);
-    void SetPropertyColoursToDefault(wxPGPropArg id, int flags);
-#else
-    void SetPropertyColoursToDefault(wxPGPropArg id, int flags = wxPG_DONT_RECURSE);
-#endif // WXWIN_COMPATIBILITY_3_0
+    void SetPropertyColoursToDefault( wxPGPropArg id );
 
     /**
         Sets text colour of a property.
@@ -1039,7 +1025,7 @@ public:
     void SetPropertyEditor( wxPGPropArg id, const wxPGEditor* editor )
     {
         wxPG_PROP_ARG_CALL_PROLOG()
-        wxCHECK_RET( editor, wxS("unknown/NULL editor") );
+        wxCHECK_RET( editor, wxT("unknown/NULL editor") );
         p->SetEditor(editor);
         RefreshProperty(p);
     }
@@ -1079,12 +1065,27 @@ public:
         This is mainly for use with textctrl editor. Not all other editors fully
         support it.
         @param flags
-        By default changes are applied recursively. Set this parameter
+        By default changes are applied recursively. Set this paramter
         wxPG_DONT_RECURSE to prevent this.
     */
     void SetPropertyReadOnly( wxPGPropArg id,
                               bool set = true,
-                              int flags = wxPG_RECURSE );
+                              int flags = wxPG_RECURSE )
+    {
+        wxPG_PROP_ARG_CALL_PROLOG()
+        if ( flags & wxPG_RECURSE )
+            p->SetFlagRecursively(wxPG_PROP_READONLY, set);
+        else
+            p->ChangeFlag(wxPG_PROP_READONLY, set);
+
+        wxPropertyGridPageState* state = p->GetParentState();
+        if( state )
+        {
+            // If property is attached to the property grid
+            // then refresh the view.
+            RefreshProperty( p );
+        }
+    }
 
     /** Sets property's value to unspecified.
         If it has children (it may be category), then the same thing is done to
@@ -1228,35 +1229,19 @@ public:
         SetPropVal( id, v );
     }
 
-#if wxUSE_LONGLONG
 #ifdef wxLongLong_t
-    /** Sets value (wxLongLong_t&) of a property.
+    /** Sets value (wxLongLong&) of a property.
     */
-    void SetPropertyValue(wxPGPropArg id, wxLongLong_t value)
+    void SetPropertyValue( wxPGPropArg id, wxLongLong_t value )
     {
         wxVariant v = WXVARIANT(wxLongLong(value));
-        SetPropVal(id, v);
-    }
-#endif
-    void SetPropertyValue( wxPGPropArg id, wxLongLong value )
-    {
-        wxVariant v = WXVARIANT(value);
         SetPropVal( id, v );
     }
-#ifdef wxULongLong_t
-    /** Sets value (wxULongLong_t&) of a property.
-    */
-    void SetPropertyValue(wxPGPropArg id, wxULongLong_t value)
-    {
-        wxVariant v = WXVARIANT(wxULongLong(value));
-        SetPropVal(id, v);
-    }
-#endif
     /** Sets value (wxULongLong&) of a property.
     */
-    void SetPropertyValue( wxPGPropArg id, wxULongLong value )
+    void SetPropertyValue( wxPGPropArg id, wxULongLong_t value )
     {
-        wxVariant v = WXVARIANT(value);
+        wxVariant v = WXVARIANT(wxULongLong(value));
         SetPropVal( id, v );
     }
 #endif

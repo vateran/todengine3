@@ -9,8 +9,6 @@
 #ifndef _WX_BASE64_H_
 #define _WX_BASE64_H_
 
-#include "wx/defs.h"
-
 #if wxUSE_BASE64
 
 #include "wx/string.h"

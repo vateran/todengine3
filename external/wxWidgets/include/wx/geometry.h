@@ -49,6 +49,7 @@ public :
            wxDouble GetVectorAngle() const;
     inline void SetVectorLength( wxDouble length );
            void SetVectorAngle( wxDouble degrees );
+           void SetPolarCoordinates( wxInt32 angle , wxInt32 length );
     // set the vector length to 1.0, preserving the angle
     inline void Normalize();
 
@@ -301,6 +302,7 @@ public :
      wxDouble GetVectorAngle() const ;
     void SetVectorLength( wxDouble length );
     void SetVectorAngle( wxDouble degrees );
+    void SetPolarCoordinates( wxDouble angle , wxDouble length );
     // set the vector length to 1.0, preserving the angle
     void Normalize();
 

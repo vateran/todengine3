@@ -49,7 +49,7 @@ enum wxHtmlURLType
 // 2 tags.
 class WXDLLIMPEXP_HTML wxHtmlParser : public wxObject
 {
-    wxDECLARE_ABSTRACT_CLASS(wxHtmlParser);
+    DECLARE_ABSTRACT_CLASS(wxHtmlParser)
 
 public:
     wxHtmlParser();
@@ -215,7 +215,7 @@ protected:
 // 3. Handler restores original state of the parser
 class WXDLLIMPEXP_HTML wxHtmlTagHandler : public wxObject
 {
-    wxDECLARE_ABSTRACT_CLASS(wxHtmlTagHandler);
+    DECLARE_ABSTRACT_CLASS(wxHtmlTagHandler)
 
 public:
     wxHtmlTagHandler() : wxObject () { m_Parser = NULL; }
@@ -264,7 +264,7 @@ protected:
 // both named entities and &#xxxx entries where xxxx is Unicode code.
 class WXDLLIMPEXP_HTML wxHtmlEntitiesParser : public wxObject
 {
-    wxDECLARE_DYNAMIC_CLASS(wxHtmlEntitiesParser);
+    DECLARE_DYNAMIC_CLASS(wxHtmlEntitiesParser)
 
 public:
     wxHtmlEntitiesParser();

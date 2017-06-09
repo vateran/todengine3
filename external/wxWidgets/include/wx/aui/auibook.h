@@ -75,7 +75,7 @@ public:
         m_dragSource = c.m_dragSource;
     }
 #endif
-    wxEvent *Clone() const wxOVERRIDE { return new wxAuiNotebookEvent(*this); }
+    wxEvent *Clone() const { return new wxAuiNotebookEvent(*this); }
 
     void SetDragSource(wxAuiNotebook* s) { m_dragSource = s; }
     wxAuiNotebook* GetDragSource() const { return m_dragSource; }
@@ -85,7 +85,7 @@ private:
 
 #ifndef SWIG
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxAuiNotebookEvent);
+    DECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxAuiNotebookEvent)
 #endif
 };
 
@@ -99,7 +99,6 @@ public:
     wxBitmap bitmap;      // tab's bitmap
     wxRect rect;          // tab's hit rectangle
     bool active;          // true if the page is currently active
-    bool hover;           // true if mouse hovering over tab
 };
 
 class WXDLLIMPEXP_AUI wxAuiTabContainerButton
@@ -207,7 +206,7 @@ public:
 
 protected:
     // choose the default border for this window
-    virtual wxBorder GetDefaultBorder() const wxOVERRIDE { return wxBORDER_NONE; }
+    virtual wxBorder GetDefaultBorder() const { return wxBORDER_NONE; }
 
     void OnPaint(wxPaintEvent& evt);
     void OnEraseBackground(wxEraseEvent& evt);
@@ -235,11 +234,9 @@ protected:
     wxAuiTabContainerButton* m_hoverButton;
     wxAuiTabContainerButton* m_pressedButton;
 
-    void SetHoverTab(wxWindow* wnd);
-
 #ifndef SWIG
-    wxDECLARE_CLASS(wxAuiTabCtrl);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_CLASS(wxAuiTabCtrl)
+    DECLARE_EVENT_TABLE()
 #endif
 };
 
@@ -271,7 +268,7 @@ public:
                 const wxSize& size = wxDefaultSize,
                 long style = 0);
 
-    void SetWindowStyleFlag(long style) wxOVERRIDE;
+    void SetWindowStyleFlag(long style);
     void SetArtProvider(wxAuiTabArt* art);
     wxAuiTabArt* GetArtProvider() const;
 
@@ -289,15 +286,15 @@ public:
                     bool select = false,
                     const wxBitmap& bitmap = wxNullBitmap);
 
-    bool DeletePage(size_t page) wxOVERRIDE;
-    bool RemovePage(size_t page) wxOVERRIDE;
+    bool DeletePage(size_t page);
+    bool RemovePage(size_t page);
 
-    virtual size_t GetPageCount() const wxOVERRIDE;
-    virtual wxWindow* GetPage(size_t pageIdx) const wxOVERRIDE;
+    virtual size_t GetPageCount() const;
+    virtual wxWindow* GetPage(size_t pageIdx) const;
     int GetPageIndex(wxWindow* pageWnd) const;
 
-    bool SetPageText(size_t page, const wxString& text) wxOVERRIDE;
-    wxString GetPageText(size_t pageIdx) const wxOVERRIDE;
+    bool SetPageText(size_t page, const wxString& text);
+    wxString GetPageText(size_t pageIdx) const;
 
     bool SetPageToolTip(size_t page, const wxString& text);
     wxString GetPageToolTip(size_t pageIdx) const;
@@ -305,8 +302,8 @@ public:
     bool SetPageBitmap(size_t page, const wxBitmap& bitmap);
     wxBitmap GetPageBitmap(size_t pageIdx) const;
 
-    int SetSelection(size_t newPage) wxOVERRIDE;
-    int GetSelection() const wxOVERRIDE;
+    int SetSelection(size_t newPage);
+    int GetSelection() const;
 
     virtual void Split(size_t page, int direction);
 
@@ -322,7 +319,7 @@ public:
     void SetMeasuringFont(const wxFont& font);
 
     // Sets the tab font
-    virtual bool SetFont(const wxFont& font) wxOVERRIDE;
+    virtual bool SetFont(const wxFont& font);
 
     // Gets the tab control height
     int GetTabCtrlHeight() const;
@@ -334,36 +331,36 @@ public:
     bool ShowWindowMenu();
 
     // we do have multiple pages
-    virtual bool HasMultiplePages() const wxOVERRIDE { return true; }
+    virtual bool HasMultiplePages() const { return true; }
 
     // we don't want focus for ourselves
     // virtual bool AcceptsFocus() const { return false; }
 
     //wxBookCtrlBase functions
 
-    virtual void SetPageSize (const wxSize &size) wxOVERRIDE;
-    virtual int  HitTest (const wxPoint &pt, long *flags=NULL) const wxOVERRIDE;
+    virtual void SetPageSize (const wxSize &size);
+    virtual int  HitTest (const wxPoint &pt, long *flags=NULL) const;
 
-    virtual int GetPageImage(size_t n) const wxOVERRIDE;
-    virtual bool SetPageImage(size_t n, int imageId) wxOVERRIDE;
+    virtual int GetPageImage(size_t n) const;
+    virtual bool SetPageImage(size_t n, int imageId);
 
-    virtual int ChangeSelection(size_t n) wxOVERRIDE;
+    virtual int ChangeSelection(size_t n);
 
     virtual bool AddPage(wxWindow *page, const wxString &text, bool select, 
-                         int imageId) wxOVERRIDE;
-    virtual bool DeleteAllPages() wxOVERRIDE;
+                         int imageId);
+    virtual bool DeleteAllPages();
     virtual bool InsertPage(size_t index, wxWindow *page, const wxString &text,
-                            bool select, int imageId) wxOVERRIDE;
+                            bool select, int imageId);
 
 protected:
     // Common part of all ctors.
     void Init();
 
     // choose the default border for this window
-    virtual wxBorder GetDefaultBorder() const wxOVERRIDE { return wxBORDER_NONE; }
+    virtual wxBorder GetDefaultBorder() const { return wxBORDER_NONE; }
 
     // Redo sizing after thawing
-    virtual void DoThaw() wxOVERRIDE;
+    virtual void DoThaw();
 
     // these can be overridden
 
@@ -375,7 +372,7 @@ protected:
     virtual wxSize CalculateNewSplitSize();
 
     // remove the page and return a pointer to it
-    virtual wxWindow *DoRemovePage(size_t WXUNUSED(page)) wxOVERRIDE { return NULL; }
+    virtual wxWindow *DoRemovePage(size_t WXUNUSED(page)) { return NULL; }
 
     //A general selection function
     virtual int DoModifySelection(size_t n, bool events);
@@ -435,8 +432,8 @@ protected:
     unsigned int m_flags;
 
 #ifndef SWIG
-    wxDECLARE_CLASS(wxAuiNotebook);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_CLASS(wxAuiNotebook)
+    DECLARE_EVENT_TABLE()
 #endif
 };
 

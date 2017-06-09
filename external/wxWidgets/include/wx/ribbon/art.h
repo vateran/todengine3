@@ -131,11 +131,7 @@ enum wxRibbonArtSetting
     wxRIBBON_ART_TOOL_ACTIVE_BACKGROUND_TOP_GRADIENT_COLOUR,
     wxRIBBON_ART_TOOL_ACTIVE_BACKGROUND_COLOUR,
     wxRIBBON_ART_TOOL_ACTIVE_BACKGROUND_GRADIENT_COLOUR,
-    wxRIBBON_ART_BUTTON_BAR_LABEL_DISABLED_COLOUR,
-    wxRIBBON_ART_BUTTON_BAR_LABEL_HIGHLIGHT_COLOUR,
-    wxRIBBON_ART_BUTTON_BAR_LABEL_HIGHLIGHT_GRADIENT_COLOUR,
-    wxRIBBON_ART_BUTTON_BAR_LABEL_HIGHLIGHT_TOP_COLOUR,
-    wxRIBBON_ART_BUTTON_BAR_LABEL_HIGHLIGHT_GRADIENT_TOP_COLOUR
+    wxRIBBON_ART_BUTTON_BAR_LABEL_DISABLED_COLOUR
 };
 
 enum wxRibbonScrollButtonStyle
@@ -413,80 +409,80 @@ public:
     wxRibbonMSWArtProvider(bool set_colour_scheme = true);
     virtual ~wxRibbonMSWArtProvider();
 
-    wxRibbonArtProvider* Clone() const wxOVERRIDE;
-    void SetFlags(long flags) wxOVERRIDE;
-    long GetFlags() const wxOVERRIDE;
+    wxRibbonArtProvider* Clone() const;
+    void SetFlags(long flags);
+    long GetFlags() const;
 
-    int GetMetric(int id) const wxOVERRIDE;
-    void SetMetric(int id, int new_val) wxOVERRIDE;
-    void SetFont(int id, const wxFont& font) wxOVERRIDE;
-    wxFont GetFont(int id) const wxOVERRIDE;
-    wxColour GetColour(int id) const wxOVERRIDE;
-    void SetColour(int id, const wxColor& colour) wxOVERRIDE;
+    int GetMetric(int id) const;
+    void SetMetric(int id, int new_val);
+    void SetFont(int id, const wxFont& font);
+    wxFont GetFont(int id) const;
+    wxColour GetColour(int id) const;
+    void SetColour(int id, const wxColor& colour);
     void GetColourScheme(wxColour* primary,
                          wxColour* secondary,
-                         wxColour* tertiary) const wxOVERRIDE;
+                         wxColour* tertiary) const;
     void SetColourScheme(const wxColour& primary,
                          const wxColour& secondary,
-                         const wxColour& tertiary) wxOVERRIDE;
+                         const wxColour& tertiary);
 
     int GetTabCtrlHeight(
                         wxDC& dc,
                         wxWindow* wnd,
-                        const wxRibbonPageTabInfoArray& pages) wxOVERRIDE;
+                        const wxRibbonPageTabInfoArray& pages);
 
     void DrawTabCtrlBackground(
                         wxDC& dc,
                         wxWindow* wnd,
-                        const wxRect& rect) wxOVERRIDE;
+                        const wxRect& rect);
 
     void DrawTab(wxDC& dc,
                  wxWindow* wnd,
-                 const wxRibbonPageTabInfo& tab) wxOVERRIDE;
+                 const wxRibbonPageTabInfo& tab);
 
     void DrawTabSeparator(
                         wxDC& dc,
                         wxWindow* wnd,
                         const wxRect& rect,
-                        double visibility) wxOVERRIDE;
+                        double visibility);
 
     void DrawPageBackground(
                         wxDC& dc,
                         wxWindow* wnd,
-                        const wxRect& rect) wxOVERRIDE;
+                        const wxRect& rect);
 
     void DrawScrollButton(
                         wxDC& dc,
                         wxWindow* wnd,
                         const wxRect& rect,
-                        long style) wxOVERRIDE;
+                        long style);
 
     void DrawPanelBackground(
                         wxDC& dc,
                         wxRibbonPanel* wnd,
-                        const wxRect& rect) wxOVERRIDE;
+                        const wxRect& rect);
 
     void DrawGalleryBackground(
                         wxDC& dc,
                         wxRibbonGallery* wnd,
-                        const wxRect& rect) wxOVERRIDE;
+                        const wxRect& rect);
 
     void DrawGalleryItemBackground(
                         wxDC& dc,
                         wxRibbonGallery* wnd,
                         const wxRect& rect,
-                        wxRibbonGalleryItem* item) wxOVERRIDE;
+                        wxRibbonGalleryItem* item);
 
     void DrawMinimisedPanel(
                         wxDC& dc,
                         wxRibbonPanel* wnd,
                         const wxRect& rect,
-                        wxBitmap& bitmap) wxOVERRIDE;
+                        wxBitmap& bitmap);
 
     void DrawButtonBarBackground(
                         wxDC& dc,
                         wxWindow* wnd,
-                        const wxRect& rect) wxOVERRIDE;
+                        const wxRect& rect);
 
     void DrawButtonBarButton(
                         wxDC& dc,
@@ -496,17 +492,17 @@ public:
                         long state,
                         const wxString& label,
                         const wxBitmap& bitmap_large,
-                        const wxBitmap& bitmap_small) wxOVERRIDE;
+                        const wxBitmap& bitmap_small);
 
     void DrawToolBarBackground(
                         wxDC& dc,
                         wxWindow* wnd,
-                        const wxRect& rect) wxOVERRIDE;
+                        const wxRect& rect);
 
     void DrawToolGroupBackground(
                         wxDC& dc,
                         wxWindow* wnd,
-                        const wxRect& rect) wxOVERRIDE;
+                        const wxRect& rect);
 
     void DrawTool(
                 wxDC& dc,
@@ -514,17 +510,17 @@ public:
                 const wxRect& rect,
                 const wxBitmap& bitmap,
                 wxRibbonButtonKind kind,
-                long state) wxOVERRIDE;
+                long state);
 
     void DrawToggleButton(
                         wxDC& dc,
                         wxRibbonBar* wnd,
                         const wxRect& rect,
-                        wxRibbonDisplayMode mode) wxOVERRIDE;
+                        wxRibbonDisplayMode mode);
 
     void DrawHelpButton(wxDC& dc,
                         wxRibbonBar* wnd,
-                        const wxRect& rect) wxOVERRIDE;
+                        const wxRect& rect);
 
     void GetBarTabWidth(
                         wxDC& dc,
@@ -534,34 +530,34 @@ public:
                         int* ideal,
                         int* small_begin_need_separator,
                         int* small_must_have_separator,
-                        int* minimum) wxOVERRIDE;
+                        int* minimum);
 
     wxSize GetScrollButtonMinimumSize(
                         wxDC& dc,
                         wxWindow* wnd,
-                        long style) wxOVERRIDE;
+                        long style);
 
     wxSize GetPanelSize(
                         wxDC& dc,
                         const wxRibbonPanel* wnd,
                         wxSize client_size,
-                        wxPoint* client_offset) wxOVERRIDE;
+                        wxPoint* client_offset);
 
     wxSize GetPanelClientSize(
                         wxDC& dc,
                         const wxRibbonPanel* wnd,
                         wxSize size,
-                        wxPoint* client_offset) wxOVERRIDE;
+                        wxPoint* client_offset);
 
     wxRect GetPanelExtButtonArea(
                         wxDC& dc,
                         const wxRibbonPanel* wnd,
-                        wxRect rect) wxOVERRIDE;
+                        wxRect rect);
 
     wxSize GetGallerySize(
                         wxDC& dc,
                         const wxRibbonGallery* wnd,
-                        wxSize client_size) wxOVERRIDE;
+                        wxSize client_size);
 
     wxSize GetGalleryClientSize(
                         wxDC& dc,
@@ -570,13 +566,13 @@ public:
                         wxPoint* client_offset,
                         wxRect* scroll_up_button,
                         wxRect* scroll_down_button,
-                        wxRect* extension_button) wxOVERRIDE;
+                        wxRect* extension_button);
 
     wxRect GetPageBackgroundRedrawArea(
                         wxDC& dc,
                         const wxRibbonPage* wnd,
                         wxSize page_old_size,
-                        wxSize page_new_size) wxOVERRIDE;
+                        wxSize page_new_size);
 
     bool GetButtonBarButtonSize(
                         wxDC& dc,
@@ -588,13 +584,13 @@ public:
                         wxSize bitmap_size_small,
                         wxSize* button_size,
                         wxRect* normal_region,
-                        wxRect* dropdown_region) wxOVERRIDE;
+                        wxRect* dropdown_region);
 
     wxSize GetMinimisedPanelMinimumSize(
                         wxDC& dc,
                         const wxRibbonPanel* wnd,
                         wxSize* desired_bitmap_size,
-                        wxDirection* expanded_panel_direction) wxOVERRIDE;
+                        wxDirection* expanded_panel_direction);
 
     wxSize GetToolSize(
                         wxDC& dc,
@@ -603,11 +599,11 @@ public:
                         wxRibbonButtonKind kind,
                         bool is_first,
                         bool is_last,
-                        wxRect* dropdown_region) wxOVERRIDE;
+                        wxRect* dropdown_region);
 
-    wxRect GetBarToggleButtonArea(const wxRect& rect) wxOVERRIDE;
+    wxRect GetBarToggleButtonArea(const wxRect& rect);
 
-    wxRect GetRibbonHelpButtonArea(const wxRect& rect) wxOVERRIDE;
+    wxRect GetRibbonHelpButtonArea(const wxRect& rect);
 
 protected:
     void ReallyDrawTabSeparator(wxWindow* wnd, const wxRect& rect, double visibility);
@@ -664,10 +660,6 @@ protected:
     wxColour m_tab_hover_background_gradient_colour;
     wxColour m_tab_hover_background_top_colour;
     wxColour m_tab_hover_background_top_gradient_colour;
-    wxColour m_tab_highlight_top_colour;
-    wxColour m_tab_highlight_top_gradient_colour;
-    wxColour m_tab_highlight_colour;
-    wxColour m_tab_highlight_gradient_colour;
     wxColour m_panel_label_colour;
     wxColour m_panel_minimised_label_colour;
     wxColour m_panel_hover_label_colour;
@@ -776,52 +768,52 @@ public:
     wxRibbonAUIArtProvider();
     virtual ~wxRibbonAUIArtProvider();
 
-    wxRibbonArtProvider* Clone() const wxOVERRIDE;
+    wxRibbonArtProvider* Clone() const;
 
-    wxColour GetColour(int id) const wxOVERRIDE;
-    void SetColour(int id, const wxColor& colour) wxOVERRIDE;
+    wxColour GetColour(int id) const;
+    void SetColour(int id, const wxColor& colour);
     void SetColourScheme(const wxColour& primary,
                          const wxColour& secondary,
-                         const wxColour& tertiary) wxOVERRIDE;
-    void SetFont(int id, const wxFont& font) wxOVERRIDE;
+                         const wxColour& tertiary);
+    void SetFont(int id, const wxFont& font);
 
     wxSize GetScrollButtonMinimumSize(
                         wxDC& dc,
                         wxWindow* wnd,
-                        long style) wxOVERRIDE;
+                        long style);
 
     void DrawScrollButton(
                         wxDC& dc,
                         wxWindow* wnd,
                         const wxRect& rect,
-                        long style) wxOVERRIDE;
+                        long style);
 
     wxSize GetPanelSize(
                         wxDC& dc,
                         const wxRibbonPanel* wnd,
                         wxSize client_size,
-                        wxPoint* client_offset) wxOVERRIDE;
+                        wxPoint* client_offset);
 
     wxSize GetPanelClientSize(
                         wxDC& dc,
                         const wxRibbonPanel* wnd,
                         wxSize size,
-                        wxPoint* client_offset) wxOVERRIDE;
+                        wxPoint* client_offset);
 
     wxRect GetPanelExtButtonArea(
                         wxDC& dc,
                         const wxRibbonPanel* wnd,
-                        wxRect rect) wxOVERRIDE;
+                        wxRect rect);
 
     void DrawTabCtrlBackground(
                         wxDC& dc,
                         wxWindow* wnd,
-                        const wxRect& rect) wxOVERRIDE;
+                        const wxRect& rect);
 
     int GetTabCtrlHeight(
                         wxDC& dc,
                         wxWindow* wnd,
-                        const wxRibbonPageTabInfoArray& pages) wxOVERRIDE;
+                        const wxRibbonPageTabInfoArray& pages);
 
     void GetBarTabWidth(
                         wxDC& dc,
@@ -831,49 +823,49 @@ public:
                         int* ideal,
                         int* small_begin_need_separator,
                         int* small_must_have_separator,
-                        int* minimum) wxOVERRIDE;
+                        int* minimum);
 
     void DrawTab(wxDC& dc,
                  wxWindow* wnd,
-                 const wxRibbonPageTabInfo& tab) wxOVERRIDE;
+                 const wxRibbonPageTabInfo& tab);
 
     void DrawTabSeparator(
                         wxDC& dc,
                         wxWindow* wnd,
                         const wxRect& rect,
-                        double visibility) wxOVERRIDE;
+                        double visibility);
 
     void DrawPageBackground(
                         wxDC& dc,
                         wxWindow* wnd,
-                        const wxRect& rect) wxOVERRIDE;
+                        const wxRect& rect);
 
     void DrawPanelBackground(
                         wxDC& dc,
                         wxRibbonPanel* wnd,
-                        const wxRect& rect) wxOVERRIDE;
+                        const wxRect& rect);
 
     void DrawMinimisedPanel(
                         wxDC& dc,
                         wxRibbonPanel* wnd,
                         const wxRect& rect,
-                        wxBitmap& bitmap) wxOVERRIDE;
+                        wxBitmap& bitmap);
 
     void DrawGalleryBackground(
                         wxDC& dc,
                         wxRibbonGallery* wnd,
-                        const wxRect& rect) wxOVERRIDE;
+                        const wxRect& rect);
 
     void DrawGalleryItemBackground(
                         wxDC& dc,
                         wxRibbonGallery* wnd,
                         const wxRect& rect,
-                        wxRibbonGalleryItem* item) wxOVERRIDE;
+                        wxRibbonGalleryItem* item);
 
     void DrawButtonBarBackground(
                         wxDC& dc,
                         wxWindow* wnd,
-                        const wxRect& rect) wxOVERRIDE;
+                        const wxRect& rect);
 
     void DrawButtonBarButton(
                         wxDC& dc,
@@ -883,17 +875,17 @@ public:
                         long state,
                         const wxString& label,
                         const wxBitmap& bitmap_large,
-                        const wxBitmap& bitmap_small) wxOVERRIDE;
+                        const wxBitmap& bitmap_small);
 
     void DrawToolBarBackground(
                         wxDC& dc,
                         wxWindow* wnd,
-                        const wxRect& rect) wxOVERRIDE;
+                        const wxRect& rect);
 
     void DrawToolGroupBackground(
                         wxDC& dc,
                         wxWindow* wnd,
-                        const wxRect& rect) wxOVERRIDE;
+                        const wxRect& rect);
 
     void DrawTool(
                 wxDC& dc,
@@ -901,13 +893,13 @@ public:
                 const wxRect& rect,
                 const wxBitmap& bitmap,
                 wxRibbonButtonKind kind,
-                long state) wxOVERRIDE;
+                long state);
 
 protected:
     void DrawPartialPanelBackground(wxDC& dc, wxWindow* wnd,
         const wxRect& rect);
     void DrawGalleryButton(wxDC& dc, wxRect rect,
-        wxRibbonGalleryButtonState state, wxBitmap* bitmaps) wxOVERRIDE;
+        wxRibbonGalleryButtonState state, wxBitmap* bitmaps);
 
     wxColour m_tab_ctrl_background_colour;
     wxColour m_tab_ctrl_background_gradient_colour;
@@ -934,8 +926,10 @@ protected:
 
 #if defined(__WXMSW__)
 typedef wxRibbonMSWArtProvider wxRibbonDefaultArtProvider;
-#elif defined(__WXOSX_COCOA__) || \
-      defined(__WXOSX_IPHONE__)
+#elif defined(__WXOSX_CARBON__) || \
+      defined(__WXOSX_COCOA__) || \
+      defined(__WXOSX_IPHONE__) || \
+      defined(__WXCOCOA__)
 // TODO: Once implemented, change typedef to OSX
 // typedef wxRibbonOSXArtProvider wxRibbonDefaultArtProvider;
 typedef wxRibbonAUIArtProvider wxRibbonDefaultArtProvider;

@@ -17,7 +17,11 @@
 
 #include "wx/helpbase.h"
 
-#if defined(__WXMSW__)
+#ifdef __WXWINCE__
+    #include "wx/msw/wince/helpwce.h"
+
+    #define wxHelpController wxWinceHelpController
+#elif defined(__WXMSW__)
     #include "wx/msw/helpchm.h"
 
     #define wxHelpController wxCHMHelpController

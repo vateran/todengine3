@@ -60,7 +60,7 @@ protected:
     virtual wxSize DoGetBestSize() const;
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxRadioButton);
+    DECLARE_DYNAMIC_CLASS(wxRadioButton)
 };
 
 #endif // __GTKRADIOBUTTONH__

@@ -664,8 +664,8 @@ protected:
     void* m_reserved;
 
 #ifndef SWIG
-    wxDECLARE_EVENT_TABLE();
-    wxDECLARE_CLASS(wxAuiManager);
+    DECLARE_EVENT_TABLE()
+    DECLARE_CLASS(wxAuiManager)
 #endif // SWIG
 };
 
@@ -696,7 +696,7 @@ public:
         dc = c.dc;
     }
 #endif
-    wxEvent *Clone() const wxOVERRIDE { return new wxAuiManagerEvent(*this); }
+    wxEvent *Clone() const { return new wxAuiManagerEvent(*this); }
 
     void SetManager(wxAuiManager* mgr) { manager = mgr; }
     void SetPane(wxAuiPaneInfo* p) { pane = p; }
@@ -723,7 +723,7 @@ public:
 
 #ifndef SWIG
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxAuiManagerEvent);
+    DECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxAuiManagerEvent)
 #endif
 };
 

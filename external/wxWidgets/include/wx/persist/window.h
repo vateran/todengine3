@@ -21,16 +21,19 @@
 // ----------------------------------------------------------------------------
 
 // type-independent part of wxPersistentWindow
-class wxPersistentWindowBase : public wxPersistentObject
+class wxPersistentWindowBase :
+    wxBIND_OR_CONNECT_HACK_BASE_CLASS
+    public wxPersistentObject
 {
 public:
     wxPersistentWindowBase(wxWindow *win)
         : wxPersistentObject(win)
     {
-        win->Bind(wxEVT_DESTROY, &wxPersistentWindowBase::HandleDestroy, this);
+        wxBIND_OR_CONNECT_HACK(win, wxEVT_DESTROY, wxWindowDestroyEventHandler,
+                               wxPersistentWindowBase::HandleDestroy, this);
     }
 
-    virtual wxString GetName() const wxOVERRIDE
+    virtual wxString GetName() const
     {
         const wxString name = GetWindow()->GetName();
         wxASSERT_MSG( !name.empty(), "persistent windows should be named!" );

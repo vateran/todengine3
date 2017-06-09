@@ -54,7 +54,7 @@ public:
     int GetTimeout() const { return m_milliseconds; }
 
     // Override wxEventFilter method to hide splash screen on any user input.
-    virtual int FilterEvent(wxEvent& event) wxOVERRIDE;
+    virtual int FilterEvent(wxEvent& event);
 
 protected:
     // Common part of all ctors.
@@ -65,8 +65,8 @@ protected:
     int                     m_milliseconds;
     wxTimer                 m_timer;
 
-    wxDECLARE_DYNAMIC_CLASS(wxSplashScreen);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_DYNAMIC_CLASS(wxSplashScreen)
+    DECLARE_EVENT_TABLE()
     wxDECLARE_NO_COPY_CLASS(wxSplashScreen);
 };
 
@@ -88,7 +88,7 @@ public:
 protected:
     wxBitmap    m_bitmap;
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
     wxDECLARE_NO_COPY_CLASS(wxSplashScreenWindow);
 };
 

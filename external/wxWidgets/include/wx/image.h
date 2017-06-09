@@ -171,7 +171,7 @@ protected:
     wxBitmapType m_type;
 
 private:
-    wxDECLARE_CLASS(wxImageHandler);
+    DECLARE_CLASS(wxImageHandler)
 };
 
 //-----------------------------------------------------------------------------
@@ -408,22 +408,6 @@ public:
     // colour given.
     bool ConvertColourToAlpha( unsigned char r, unsigned char g, unsigned char b );
 
-    // Methods for controlling LoadFile() behaviour. Currently they allow to
-    // specify whether the function should log warnings if there are any
-    // problems with the image file not completely preventing it from being
-    // loaded. By default the warnings are logged, but this can be disabled
-    // either globally or for a particular image object.
-    enum
-    {
-        Load_Verbose = 1
-    };
-
-    static void SetDefaultLoadFlags(int flags);
-    static int GetDefaultLoadFlags();
-
-    void SetLoadFlags(int flags);
-    int GetLoadFlags() const;
-
     static bool CanRead( const wxString& name );
     static int GetImageCount( const wxString& name, wxBitmapType type = wxBITMAP_TYPE_ANY );
     virtual bool LoadFile( const wxString& name, wxBitmapType type = wxBITMAP_TYPE_ANY, int index = -1 );
@@ -604,8 +588,8 @@ protected:
     // note that index must be multiplied by 3 when using it with RGB array
     long XYToIndex(int x, int y) const;
 
-    virtual wxObjectRefData* CreateRefData() const wxOVERRIDE;
-    virtual wxObjectRefData* CloneRefData(const wxObjectRefData* data) const wxOVERRIDE;
+    virtual wxObjectRefData* CreateRefData() const;
+    virtual wxObjectRefData* CloneRefData(const wxObjectRefData* data) const;
 
 private:
     friend class WXDLLIMPEXP_FWD_CORE wxImageHandler;
@@ -638,7 +622,7 @@ private:
     bool DoSave(wxImageHandler& handler, wxOutputStream& stream) const;
 #endif // wxUSE_STREAMS
 
-    wxDECLARE_DYNAMIC_CLASS(wxImage);
+    DECLARE_DYNAMIC_CLASS(wxImage)
 };
 
 

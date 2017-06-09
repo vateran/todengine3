@@ -32,6 +32,9 @@ class WXDLLIMPEXP_CORE wxPen: public wxPenBase
 public:
     wxPen() {}
     wxPen(const wxColour &colour, int width = 1, wxPenStyle style = wxPENSTYLE_SOLID);
+#if FUTURE_WXWIN_COMPATIBILITY_3_0
+    wxDEPRECATED_FUTURE( wxPen(const wxColour& col, int width, int style) );
+#endif
 
     wxPen(const wxBitmap& stipple, int width);
 
@@ -57,18 +60,16 @@ public:
     wxDash* GetDash() const;
     wxBitmap *GetStipple() const;
 
-
-    wxDEPRECATED_MSG("use wxPENSTYLE_XXX constants")
-    wxPen(const wxColour& col, int width, int style);
-
-    wxDEPRECATED_MSG("use wxPENSTYLE_XXX constants")
-    void SetStyle(int style) { SetStyle((wxPenStyle)style); }
+#if FUTURE_WXWIN_COMPATIBILITY_3_0
+    wxDEPRECATED_FUTURE( void SetStyle(int style) )
+        { SetStyle((wxPenStyle)style); }
+#endif
 
 protected:
     virtual wxGDIRefData *CreateGDIRefData() const;
     virtual wxGDIRefData *CloneGDIRefData(const wxGDIRefData *data) const;
 
-    wxDECLARE_DYNAMIC_CLASS(wxPen);
+    DECLARE_DYNAMIC_CLASS(wxPen)
 };
 
 #endif // _WX_DFB_PEN_H_

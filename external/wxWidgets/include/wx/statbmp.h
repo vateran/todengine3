@@ -25,14 +25,6 @@ extern WXDLLIMPEXP_DATA_CORE(const char) wxStaticBitmapNameStr[];
 class WXDLLIMPEXP_CORE wxStaticBitmapBase : public wxControl
 {
 public:
-    enum ScaleMode
-    {
-        Scale_None,
-        Scale_Fill,
-        Scale_AspectFit,
-        Scale_AspectFill
-    };
-
     wxStaticBitmapBase() { }
     virtual ~wxStaticBitmapBase();
 
@@ -46,18 +38,16 @@ public:
         // should)
         return wxIcon();
     }
-    virtual void SetScaleMode(ScaleMode WXUNUSED(scaleMode)) { }
-    virtual ScaleMode GetScaleMode() const { return Scale_None; }
 
     // overridden base class virtuals
-    virtual bool AcceptsFocus() const wxOVERRIDE { return false; }
-    virtual bool HasTransparentBackground() wxOVERRIDE { return true; }
+    virtual bool AcceptsFocus() const { return false; }
+    virtual bool HasTransparentBackground() { return true; }
 
 protected:
     // choose the default border for this window
-    virtual wxBorder GetDefaultBorder() const wxOVERRIDE { return wxBORDER_NONE; }
+    virtual wxBorder GetDefaultBorder() const { return wxBORDER_NONE; }
 
-    virtual wxSize DoGetBestSize() const wxOVERRIDE;
+    virtual wxSize DoGetBestSize() const;
 
     wxDECLARE_NO_COPY_CLASS(wxStaticBitmapBase);
 };
@@ -74,8 +64,10 @@ protected:
     #include "wx/gtk1/statbmp.h"
 #elif defined(__WXMAC__)
     #include "wx/osx/statbmp.h"
-#elif defined(__WXQT__)
-    #include "wx/qt/statbmp.h"
+#elif defined(__WXCOCOA__)
+    #include "wx/cocoa/statbmp.h"
+#elif defined(__WXPM__)
+    #include "wx/os2/statbmp.h"
 #endif
 
 #endif // wxUSE_STATBMP

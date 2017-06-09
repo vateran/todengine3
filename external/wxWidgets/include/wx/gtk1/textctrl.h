@@ -187,8 +187,8 @@ private:
     bool        m_updateFont:1;
     bool        m_ignoreNextUpdate:1;
 
-    wxDECLARE_EVENT_TABLE();
-    wxDECLARE_DYNAMIC_CLASS(wxTextCtrl);
+    DECLARE_EVENT_TABLE()
+    DECLARE_DYNAMIC_CLASS(wxTextCtrl)
 };
 
 #endif // __GTKTEXTCTRLH__

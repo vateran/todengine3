@@ -54,7 +54,7 @@ protected:
     bool    m_status; // true if the user left-clicked
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxContextHelp);
+    DECLARE_DYNAMIC_CLASS(wxContextHelp)
 };
 
 #if wxUSE_BMPBUTTON
@@ -67,30 +67,17 @@ private:
 class WXDLLIMPEXP_CORE wxContextHelpButton : public wxBitmapButton
 {
 public:
-    wxContextHelpButton() {}
-
     wxContextHelpButton(wxWindow* parent,
                         wxWindowID id = wxID_CONTEXT_HELP,
                         const wxPoint& pos = wxDefaultPosition,
                         const wxSize& size = wxDefaultSize,
-                        long style = wxBU_AUTODRAW)
-    {
-        Create(parent, id, pos, size, style);
-    }
-
-
-    bool Create(wxWindow* parent,
-                wxWindowID id = wxID_CONTEXT_HELP,
-                const wxPoint& pos = wxDefaultPosition,
-                const wxSize& size = wxDefaultSize,
-                long style = wxBU_AUTODRAW);
-
+                        long style = wxBU_AUTODRAW);
 
     void OnContextHelp(wxCommandEvent& event);
 
 private:
-    wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxContextHelpButton);
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_DYNAMIC_CLASS_NO_COPY(wxContextHelpButton)
+    DECLARE_EVENT_TABLE()
 };
 
 #endif
@@ -204,14 +191,14 @@ class WXDLLIMPEXP_CORE wxSimpleHelpProvider : public wxHelpProvider
 {
 public:
     // implement wxHelpProvider methods
-    virtual wxString GetHelp(const wxWindowBase *window) wxOVERRIDE;
+    virtual wxString GetHelp(const wxWindowBase *window);
 
     // override ShowHelp() and not ShowHelpAtPoint() as explained above
-    virtual bool ShowHelp(wxWindowBase *window) wxOVERRIDE;
+    virtual bool ShowHelp(wxWindowBase *window);
 
-    virtual void AddHelp(wxWindowBase *window, const wxString& text) wxOVERRIDE;
-    virtual void AddHelp(wxWindowID id, const wxString& text) wxOVERRIDE;
-    virtual void RemoveHelp(wxWindowBase* window) wxOVERRIDE;
+    virtual void AddHelp(wxWindowBase *window, const wxString& text);
+    virtual void AddHelp(wxWindowID id, const wxString& text);
+    virtual void RemoveHelp(wxWindowBase* window);
 
 protected:
     // we use 2 hashes for storing the help strings associated with windows
@@ -235,7 +222,7 @@ public:
 
     // again (see above): this should be ShowHelpAtPoint() but we need to
     // override ShowHelp() to avoid breaking existing code
-    virtual bool ShowHelp(wxWindowBase *window) wxOVERRIDE;
+    virtual bool ShowHelp(wxWindowBase *window);
 
     // Other accessors
     void SetHelpController(wxHelpControllerBase* hc) { m_helpController = hc; }

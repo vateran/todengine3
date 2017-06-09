@@ -49,7 +49,7 @@ protected:
 
     virtual wxSize DoGetBestSize() const;
 
-    wxDECLARE_DYNAMIC_CLASS(wxStaticText);
+    DECLARE_DYNAMIC_CLASS(wxStaticText)
 };
 
 #endif // __GTKSTATICTEXTH__

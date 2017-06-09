@@ -31,7 +31,7 @@ public:
     wxBitmap(const wxString &filename, wxBitmapType type = wxBITMAP_DEFAULT_TYPE);
     wxBitmap(const char* const* bits);
 #if wxUSE_IMAGE
-    wxBitmap(const wxImage& image, int depth = -1, double WXUNUSED(scale) = 1.0);
+    wxBitmap(const wxImage& image, int depth = -1);
 #endif
 
     bool Create(const wxIDirectFBSurfacePtr& surface);
@@ -88,7 +88,7 @@ protected:
 
     bool CreateWithFormat(int width, int height, int dfbFormat);
 
-    wxDECLARE_DYNAMIC_CLASS(wxBitmap);
+    DECLARE_DYNAMIC_CLASS(wxBitmap)
 };
 
 #endif // _WX_DFB_BITMAP_H_

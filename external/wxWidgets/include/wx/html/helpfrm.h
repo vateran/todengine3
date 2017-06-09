@@ -67,7 +67,7 @@ class WXDLLIMPEXP_FWD_HTML wxHtmlHelpWindow;
 
 class WXDLLIMPEXP_HTML wxHtmlHelpFrame : public wxFrame
 {
-    wxDECLARE_DYNAMIC_CLASS(wxHtmlHelpFrame);
+    DECLARE_DYNAMIC_CLASS(wxHtmlHelpFrame)
 
 public:
     wxHtmlHelpFrame(wxHtmlHelpData* data = NULL) { Init(data); }
@@ -118,7 +118,7 @@ public:
 
     // we don't want to prevent the app from closing just because a help window
     // remains opened
-    virtual bool ShouldPreventAppExit() const wxOVERRIDE { return m_shouldPreventAppExit; }
+    virtual bool ShouldPreventAppExit() const { return m_shouldPreventAppExit; }
 
 protected:
     void Init(wxHtmlHelpData* data = NULL);
@@ -148,7 +148,7 @@ protected:
 
 private:
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE()
     wxDECLARE_NO_COPY_CLASS(wxHtmlHelpFrame);
 };
 

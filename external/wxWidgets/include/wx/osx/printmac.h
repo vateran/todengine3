@@ -19,9 +19,9 @@
 
 class WXDLLIMPEXP_CORE wxMacPrinter: public wxPrinterBase
 {
-    wxDECLARE_DYNAMIC_CLASS(wxMacPrinter);
+  DECLARE_DYNAMIC_CLASS(wxMacPrinter)
 
-public:
+ public:
     wxMacPrinter(wxPrintDialogData *data = NULL);
     virtual ~wxMacPrinter();
 
@@ -40,9 +40,9 @@ public:
 
 class WXDLLIMPEXP_CORE wxMacPrintPreview: public wxPrintPreviewBase
 {
-    wxDECLARE_CLASS(wxMacPrintPreview);
+  DECLARE_CLASS(wxMacPrintPreview)
 
-public:
+ public:
     wxMacPrintPreview(wxPrintout *printout,
                           wxPrintout *printoutForPrinting = NULL,
                           wxPrintDialogData *data = NULL);

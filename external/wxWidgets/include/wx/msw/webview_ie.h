@@ -143,7 +143,7 @@ public:
     void onActiveXEvent(wxActiveXEvent& evt);
     void onEraseBg(wxEraseEvent&) {}
 
-    wxDECLARE_EVENT_TABLE();
+    DECLARE_EVENT_TABLE();
 
 protected:
     virtual void DoSetPage(const wxString& html, const wxString& baseUrl);

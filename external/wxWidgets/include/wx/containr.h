@@ -137,7 +137,7 @@ class WXDLLIMPEXP_CORE wxControlContainer : public wxControlContainerBase
 {
 protected:
     // set the focus to the child which had it the last time
-    virtual bool SetFocusToChild() wxOVERRIDE;
+    virtual bool SetFocusToChild();
 };
 
 #else // !wxHAS_NATIVE_TAB_TRAVERSAL

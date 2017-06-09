@@ -21,8 +21,8 @@ class WXDLLIMPEXP_XRC wxToolbookXmlHandler : public wxXmlResourceHandler
 public:
     wxToolbookXmlHandler();
 
-    virtual wxObject *DoCreateResource() wxOVERRIDE;
-    virtual bool CanHandle(wxXmlNode *node) wxOVERRIDE;
+    virtual wxObject *DoCreateResource();
+    virtual bool CanHandle(wxXmlNode *node);
 
 private:
     bool m_isInside;

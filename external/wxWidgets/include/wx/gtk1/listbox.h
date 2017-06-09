@@ -133,7 +133,7 @@ private:
     // allocate it if it's needed (hence using pointer)
     wxSortedArrayString *m_strings;
 
-    wxDECLARE_DYNAMIC_CLASS(wxListBox);
+    DECLARE_DYNAMIC_CLASS(wxListBox)
 };
 
 #endif // __GTKLISTBOXH__

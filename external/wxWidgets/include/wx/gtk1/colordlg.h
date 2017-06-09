@@ -45,7 +45,7 @@ protected:
 
     wxColourData m_data;
 
-    wxDECLARE_DYNAMIC_CLASS(wxColourDialog);
+    DECLARE_DYNAMIC_CLASS(wxColourDialog)
 };
 
 #endif

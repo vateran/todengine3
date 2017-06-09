@@ -20,7 +20,7 @@
 template<typename T>
 struct wxIsMovable
 {
-    static const bool value = wxIsPod<T>::value;
+    wxDEFINE_TEMPLATE_BOOL_VALUE(wxIsPod<T>::value);
 };
 
 // Macro to add wxIsMovable<T> specialization for given type that marks it
@@ -28,7 +28,7 @@ struct wxIsMovable
 #define WX_DECLARE_TYPE_MOVABLE(type)                       \
     template<> struct wxIsMovable<type>                     \
     {                                                       \
-        static const bool value = true;                     \
+        wxDEFINE_TEMPLATE_BOOL_VALUE(true);                 \
     };
 
 // Our implementation of wxString is written in such way that it's safe to move

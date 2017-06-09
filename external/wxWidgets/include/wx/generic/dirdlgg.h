@@ -23,7 +23,11 @@ extern WXDLLIMPEXP_DATA_CORE(const char) wxDirDialogNameStr[];
 extern WXDLLIMPEXP_DATA_CORE(const char) wxDirSelectorPromptStr[];
 
 #ifndef wxDD_DEFAULT_STYLE
-#define wxDD_DEFAULT_STYLE      (wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
+#ifdef __WXWINCE__
+    #define wxDD_DEFAULT_STYLE      wxDEFAULT_DIALOG_STYLE
+#else
+    #define wxDD_DEFAULT_STYLE      (wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER)
+#endif
 #endif
 
 #include "wx/dialog.h"
@@ -54,12 +58,12 @@ public:
                        const wxString& name = wxDirDialogNameStr);
 
     //// Accessors
-    void SetPath(const wxString& path) wxOVERRIDE;
-    wxString GetPath() const wxOVERRIDE;
+    void SetPath(const wxString& path);
+    wxString GetPath() const;
 
     //// Overrides
-    virtual int ShowModal() wxOVERRIDE;
-    virtual void EndModal(int retCode) wxOVERRIDE;
+    virtual int ShowModal();
+    virtual void EndModal(int retCode);
 
     // this one is specific to wxGenericDirDialog
     wxTextCtrl* GetInputCtrl() const { return m_input; }
@@ -77,8 +81,8 @@ protected:
     wxGenericDirCtrl* m_dirCtrl;
     wxTextCtrl*       m_input;
 
-    wxDECLARE_EVENT_TABLE();
-    wxDECLARE_DYNAMIC_CLASS(wxGenericDirDialog);
+    DECLARE_EVENT_TABLE()
+    DECLARE_DYNAMIC_CLASS(wxGenericDirDialog)
 };
 
 #endif // _WX_DIRDLGG_H_

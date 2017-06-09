@@ -68,7 +68,6 @@ protected:
 // NOTE: this style is supported just by wxColourButtonGeneric and
 //       thus is not exposed in wxColourPickerCtrl
 #define wxCLRP_SHOW_LABEL             0x0008
-#define wxCLRP_SHOW_ALPHA             0x0010
 
 // map platform-dependent controls which implement the wxColourPickerWidgetBase
 // under the name "wxColourPickerWidget".
@@ -80,8 +79,6 @@ protected:
 #if defined(__WXGTK20__) && !defined(__WXUNIVERSAL__)
     #include "wx/gtk/clrpicker.h"
     #define wxColourPickerWidget      wxColourButton
-#elif defined(__WXQT__) && !defined(__WXUNIVERSAL__)
-    #include "wx/qt/clrpicker.h"
 #else
     #include "wx/generic/clrpickerg.h"
     #define wxColourPickerWidget      wxGenericColourButton
@@ -137,20 +134,20 @@ public:         // public API
 public:        // internal functions
 
     // update the button colour to match the text control contents
-    void UpdatePickerFromTextCtrl() wxOVERRIDE;
+    void UpdatePickerFromTextCtrl();
 
     // update the text control to match the button's colour
-    void UpdateTextCtrlFromPicker() wxOVERRIDE;
+    void UpdateTextCtrlFromPicker();
 
     // event handler for our picker
     void OnColourChange(wxColourPickerEvent &);
 
 protected:
-    virtual long GetPickerStyle(long style) const wxOVERRIDE
-        { return (style & (wxCLRP_SHOW_LABEL | wxCLRP_SHOW_ALPHA)); }
+    virtual long GetPickerStyle(long style) const
+        { return (style & wxCLRP_SHOW_LABEL); }
 
 private:
-    wxDECLARE_DYNAMIC_CLASS(wxColourPickerCtrl);
+    DECLARE_DYNAMIC_CLASS(wxColourPickerCtrl)
 };
 
 
@@ -176,12 +173,12 @@ public:
 
 
     // default copy ctor, assignment operator and dtor are ok
-    virtual wxEvent *Clone() const wxOVERRIDE { return new wxColourPickerEvent(*this); }
+    virtual wxEvent *Clone() const { return new wxColourPickerEvent(*this); }
 
 private:
     wxColour m_colour;
 
-    wxDECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxColourPickerEvent);
+    DECLARE_DYNAMIC_CLASS_NO_ASSIGN(wxColourPickerEvent)
 };
 
 // ----------------------------------------------------------------------------

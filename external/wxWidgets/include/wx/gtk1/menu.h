@@ -49,7 +49,7 @@ public:
 private:
     void Init(size_t n, wxMenu *menus[], const wxString titles[], long style);
 
-    wxDECLARE_DYNAMIC_CLASS(wxMenuBar);
+    DECLARE_DYNAMIC_CLASS(wxMenuBar)
 };
 
 //-----------------------------------------------------------------------------
@@ -94,7 +94,7 @@ private:
 
     GtkWidget *m_prevRadio;
 
-    wxDECLARE_DYNAMIC_CLASS(wxMenu);
+    DECLARE_DYNAMIC_CLASS(wxMenu)
 };
 
 #endif

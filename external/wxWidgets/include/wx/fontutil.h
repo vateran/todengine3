@@ -25,10 +25,6 @@
     #include "wx/msw/wrapwin.h"
 #endif
 
-#if defined(__WXQT__)
-    #include <QtGui/QFont>
-#endif
-
 class WXDLLIMPEXP_FWD_BASE wxArrayString;
 struct WXDLLIMPEXP_FWD_CORE wxNativeEncodingInfo;
 
@@ -117,6 +113,11 @@ public:
     wxNativeFontInfo(const LOGFONT& lf_) : lf(lf_) { }
 
     LOGFONT      lf;
+#elif defined(__WXPM__)
+    // OS/2 native structures that define a font
+    FATTRS       fa;
+    FONTMETRICS  fm;
+    FACENAMEDESC fn;
 #elif defined(__WXOSX__)
 public:
     wxNativeFontInfo(const wxNativeFontInfo& info) { Init(info); }
@@ -125,14 +126,9 @@ public:
                   wxFontStyle style,
                   wxFontWeight weight,
                   bool underlined,
-                  bool strikethrough,
                   const wxString& faceName,
                   wxFontEncoding encoding)
-    {
-        Init(size, family, style, weight,
-             underlined, strikethrough,
-             faceName, encoding);
-    }
+    { Init(size,family,style,weight,underlined,faceName,encoding); }
 
     ~wxNativeFontInfo() { Free(); }
 
@@ -153,13 +149,12 @@ public:
                   wxFontStyle style,
                   wxFontWeight weight,
                   bool underlined,
-                  bool strikethrough,
                   const wxString& faceName ,
                   wxFontEncoding encoding);
 
     void Free();
     void EnsureValid();
-    
+
     static void UpdateNamesMap(const wxString& familyname, CTFontDescriptorRef descr);
     static void UpdateNamesMap(const wxString& familyname, CTFontRef font);
 
@@ -171,6 +166,10 @@ public:
     wxUint32        m_atsuFontID;
     // the qd styles that are not intrinsic to the font above
     wxInt16         m_atsuAdditionalQDStyles;
+#if wxOSX_USE_CARBON
+    wxInt16         m_qdFontFamily;
+    wxInt16         m_qdFontStyle;
+#endif
 #endif
 
     int           m_pointSize;
@@ -182,8 +181,6 @@ public:
     wxString      m_faceName;
     wxFontEncoding m_encoding;
 public :
-#elif defined(__WXQT__)
-    QFont m_qtFont;
 #else // other platforms
     //
     //  This is a generic implementation that should work on all ports
@@ -230,6 +227,9 @@ public:
     // init with the parameters of the given font
     void InitFromFont(const wxFont& font)
     {
+#if wxUSE_PANGO
+        Init(*font.GetNativeFontInfo());
+#else
         // translate all font parameters
         SetStyle((wxFontStyle)font.GetStyle());
         SetWeight((wxFontWeight)font.GetWeight());
@@ -255,6 +255,7 @@ public:
         // deal with encoding now (it may override the font family and facename
         // so do it after setting them)
         SetEncoding(font.GetEncoding());
+#endif // !wxUSE_PANGO
     }
 
     // accessors and modifiers for the font elements

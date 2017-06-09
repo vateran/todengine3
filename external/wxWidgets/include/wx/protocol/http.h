@@ -25,13 +25,13 @@ public:
     virtual ~wxHTTP();
 
     virtual bool Connect(const wxString& host, unsigned short port);
-    virtual bool Connect(const wxString& host) wxOVERRIDE { return Connect(host, 0); }
-    virtual bool Connect(const wxSockAddress& addr, bool wait = true) wxOVERRIDE;
-    bool Abort() wxOVERRIDE;
+    virtual bool Connect(const wxString& host) { return Connect(host, 0); }
+    virtual bool Connect(const wxSockAddress& addr, bool wait);
+    bool Abort();
 
-    wxInputStream *GetInputStream(const wxString& path) wxOVERRIDE;
+    wxInputStream *GetInputStream(const wxString& path);
 
-    wxString GetContentType() const wxOVERRIDE;
+    wxString GetContentType() const;
     wxString GetHeader(const wxString& header) const;
     int GetResponse() const { return m_http_response; }
 
@@ -85,7 +85,7 @@ protected:
     wxString       m_contentType;
     int m_http_response;
 
-    wxDECLARE_DYNAMIC_CLASS(wxHTTP);
+    DECLARE_DYNAMIC_CLASS(wxHTTP)
     DECLARE_PROTOCOL(wxHTTP)
     wxDECLARE_NO_COPY_CLASS(wxHTTP);
 };
