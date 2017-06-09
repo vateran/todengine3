@@ -9,6 +9,7 @@
  * Object Pooling
  * Memory Management
  * Component-Based 
+ * Serialization
  
 # Graphics
  * OpenGL, DirectX 다 하고 싶다 ㅠㅠ
