@@ -8,6 +8,7 @@ bool Renderer::initialize()
     
     Kernel::instance()->init();
     std::list<String> paths;
+	paths.push_back(".");
     paths.push_back("../../../..");
     auto asd=FileSystem::instance()->getCurrentWorkingDirectory();
     FileSystem::instance()->setSearchPaths(paths);

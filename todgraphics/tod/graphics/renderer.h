@@ -29,8 +29,8 @@ private:
     bool clearColor;
     bool clearDepth;
     bool clearStencil;
-    float near;
-    float far;
+    //float near;
+    //float far;
     Rect viewportRect;
 };
 

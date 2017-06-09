@@ -732,9 +732,11 @@ public:
     }
 };
 
-//wxDECLARE_APP(TodEditor);
-//wxIMPLEMENT_APP(TodEditor);
+wxDECLARE_APP(TodEditor);
+wxIMPLEMENT_APP(TodEditor);
 
+
+/*
 int main(int argv, char* argc[])
 {
     REGISTER_TYPE(tod::graphics::Renderer);
@@ -744,11 +746,23 @@ int main(int argv, char* argc[])
     renderer->initialize();
     return 0;
 }
+*/
 
-
-
-
-
+/*int CALLBACK WinMain(
+  _In_ HINSTANCE hInstance,
+  _In_ HINSTANCE hPrevInstance,
+  _In_ LPSTR     lpCmdLine,
+  _In_ int       nCmdShow)
+ {
+	
+	REGISTER_TYPE(tod::graphics::Renderer);
+    
+    auto renderer = static_cast<tod::graphics::Renderer*>
+        (tod::Kernel::instance()->create("Renderer", "/sys/renderer"));
+    renderer->initialize();
+    return 0;
+ }
+ */
 
 
 

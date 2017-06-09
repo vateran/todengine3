@@ -6,8 +6,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\todeditor\todeditor.mm">
+    <ClCompile Include="..\..\todeditor\todeditor.mm">
       <Filter>Source</Filter>
-    </None>
+    </ClCompile>
   </ItemGroup>
 </Project>
