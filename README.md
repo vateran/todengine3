@@ -44,4 +44,5 @@
  * Deferred Shading
  * PBR
  * Depth of Field
+ * Multithread-Rendering
  
