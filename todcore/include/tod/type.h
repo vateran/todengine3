@@ -62,7 +62,6 @@ public:
     virtual Object* createObject()=0;
     virtual void bindProperty()=0;
     virtual void bindMethod()=0;
-    virtual Object* getSingleton() { return nullptr; }
     
     void addProperty(Property* property);
     Property* findProperty(const String& prop_name);
@@ -180,7 +179,11 @@ public:
     ClassType<TYPE, BASE, false>(base, name)
     {
     }
-    TYPE* createObject() override
+    Object* createObject() override
+    {
+        return this->createSingletonObject();
+    }
+    static TYPE* createSingletonObject()
     {
         static TYPE* new_obj = nullptr;
         if (nullptr == new_obj)
@@ -188,10 +191,6 @@ public:
             new_obj = new TYPE();
         }
         return new_obj;
-    }
-    Object* getSingleton() override
-    {
-        return TYPE::instance();
     }
 };
 

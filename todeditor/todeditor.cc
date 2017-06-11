@@ -635,6 +635,29 @@ private:
 
 const char* NodeHierarchy::EVENT_SELECTED_NODE = "EVENT_SELECTED_NODE";
 
+class RenderView : public wxWindow
+{
+public:
+    RenderView(wxWindow* parent) :
+    wxWindow(parent, wxID_ANY)
+    {
+        HWND hwnd = this->GetHWND();
+
+        this->renderer = static_cast<tod::graphics::Renderer*>
+            (tod::Kernel::instance()->create("Dx12Renderer", "/sys/renderer"));
+        this->renderer->initialize((void*)hwnd, 640, 480, true);
+
+        this->Bind(wxEVT_IDLE, [this](wxIdleEvent& event)
+        {
+            this->renderer->render(nullptr, nullptr);
+            wxMilliSleep(0);
+        });
+    }
+
+private:
+    tod::graphics::Renderer* renderer;
+};
+
 class MainFrame : public wxFrame
 {
 public:
@@ -646,15 +669,9 @@ public:
         this->auiMgr.SetArtProvider(new ArtProvider);
 
         //RenderView
-        auto render_view = new wxWindow(this, wxID_ANY);
+        auto render_view = new RenderView(this);
         this->auiMgr.AddPane(render_view, wxAuiPaneInfo().Center());
-        HWND hwnd = render_view->GetHWND();
-
-        auto renderer = static_cast<tod::graphics::Renderer*>
-            (tod::Kernel::instance()->create("Dx12Renderer", "/sys/renderer"));
-        renderer->initialize((void*)hwnd, 640, 480, true);
-
-
+        
         
         //Node Hierarchy
         this->nodeHierarchy = new NodeHierarchy(this);
@@ -682,8 +699,7 @@ public:
                              .Caption(wxT("Inspector")));
         
         this->auiMgr.Update();
-        
-        
+
         
         this->nodeHierarchy->select(tod::Kernel::instance()->getRootNode());
     }

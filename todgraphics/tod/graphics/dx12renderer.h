@@ -9,6 +9,80 @@ namespace tod::graphics
 {
 
 
+class Config : public SingletonDerive<Config, Node>
+{
+public:
+    Config() :
+        shaderDebug(false),
+        shaderOptimization(false)
+    {}
+
+    void setShaderDebug(bool value) { this->shaderDebug = value; }
+    bool isShaderDebug() { return this->shaderDebug; }
+    void setShaderOptimization(bool value) { this->shaderDebug = value; }
+    bool isShaderOptimization() { return this->shaderOptimization; }
+
+    static void bindProperty()
+    {
+        BIND_PROPERTY(bool, "shader_debug", "Shader 디버깅 활성화", setShaderDebug, isShaderDebug, false, PropertyAttr::DEFAULT);
+        BIND_PROPERTY(bool, "shader_optimization", "Shader 최적화 활성화", setShaderOptimization, isShaderOptimization, false, PropertyAttr::DEFAULT);
+    }
+
+private:
+    bool shaderDebug;
+    bool shaderOptimization;
+};
+
+
+class Dx12Shader
+{
+public:
+    void setFileName(const String& file_name)
+    {
+        this->load_shader(file_name);
+    }
+    const String& getFileName()
+    {
+        return this->fileName;
+    }
+
+private:
+    bool load_shader(const String& file_name)
+    {
+        if (!FileSystem::instance()->load(file_name,
+            [this, file_name](FileSystem::Data& data)
+        {
+            ID3DBlob* shader = nullptr;
+            ID3DBlob* error_buf = nullptr;
+
+            UINT flag = 0;
+            flag |= Config::instance()->isShaderDebug() ? D3DCOMPILE_DEBUG : 0;
+            flag |= Config::instance()->isShaderOptimization() ? D3DCOMPILE_SKIP_OPTIMIZATION : 0;
+
+            if (FAILED(D3DCompile(&data[0], data.size(), "",
+                nullptr, nullptr, "main", "ps_5_0", flag, 0,
+                &shader, &error_buf)))
+            {
+                TOD_THROW_EXCEPTION("VertexShader compile error[%s]:\n\n%s",
+                    file_name, error_buf->GetBufferPointer());
+                return false;
+            }
+
+            D3D12_SHADER_BYTECODE shader_byte_code = {};
+            shader_byte_code.BytecodeLength = shader->GetBufferSize();
+            shader_byte_code.pShaderBytecode = shader->GetBufferPointer();
+
+            return true;
+        }, FileSystem::LoadOption().string())) return false;
+
+        return true;
+    }
+
+private:
+    String fileName;
+};
+
+
 class Dx12Renderer : public Derive<Dx12Renderer, Renderer>
 {
 public:
@@ -38,9 +112,9 @@ public:
             return false;
         }
 
-        if (!init_frame_buffer(width, height, windowed)) return false;
+        if (!this->init_frame_buffer(width, height, windowed)) return false;
 
-        init_render_target();
+        if (!this->init_render_target()) return false;
 
         return true;
 
@@ -49,6 +123,11 @@ public:
     void mainloop() override
     {
     }
+
+    struct Vertex
+    {
+        Vector3 pos;
+    };
 
     bool render(Camera* camera, Node* scene_root) override
     {
@@ -189,11 +268,13 @@ private:
         swap_chain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         swap_chain_desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
         swap_chain_desc.OutputWindow = this->targetHWND;
+        swap_chain_desc.SampleDesc = sample_desc;
         swap_chain_desc.Windowed = windowed;
-        IDXGISwapChain* swap_chain;
+
+        IDXGISwapChain* swap_chain = nullptr;
         HRESULT hr;
         if (FAILED(hr = this->dxFactory->CreateSwapChain(
-            this->d3ddevice, &swap_chain_desc, &swap_chain)))
+            this->commandQueue, &swap_chain_desc, &swap_chain)))
         {
             TOD_THROW_EXCEPTION("CreateSwapChain");
             return false;
@@ -280,6 +361,86 @@ private:
             return false;
         }
 
+        CD3DX12_ROOT_SIGNATURE_DESC signature_desc;
+        signature_desc.Init(0, nullptr, 0, nullptr,
+            D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+
+        ID3DBlob* signature = nullptr;
+        if (FAILED(D3D12SerializeRootSignature(
+            &signature_desc, D3D_ROOT_SIGNATURE_VERSION_1,
+            &signature, nullptr)))
+        {
+            TOD_THROW_EXCEPTION("D3D12SerializeRootSignature");
+            return false;
+        }
+
+        if (FAILED(this->d3ddevice->CreateRootSignature(
+            0, signature->GetBufferPointer(), signature->GetBufferSize(),
+            IID_PPV_ARGS(&this->rootSignature))))
+        {
+            TOD_THROW_EXCEPTION("D3D12SerializeRootSignature");
+            return false;
+        }
+
+
+
+        //VertexShader 생성(이 부분은 DX12Shader 로 빼야 함)
+        {   
+            const char* file_name = "file://VertexShader.hlsl";
+            if (!FileSystem::instance()->load(file_name,
+                [this, file_name](FileSystem::Data& data)
+            {
+                ID3DBlob* shader = nullptr;
+                ID3DBlob* error_buf = nullptr;
+                if (FAILED(D3DCompile(&data[0], data.size(), "",
+                    nullptr, nullptr, "main", "vs_5_0",
+                    D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0,
+                    &shader, &error_buf)))
+                {
+                    TOD_THROW_EXCEPTION("VertexShader compile error[%s]:\n\n%s",
+                        file_name, error_buf->GetBufferPointer());
+                    return false;
+                }
+
+                D3D12_SHADER_BYTECODE shader_byte_code = {};
+                shader_byte_code.BytecodeLength = shader->GetBufferSize();
+                shader_byte_code.pShaderBytecode = shader->GetBufferPointer();
+
+                return true;
+            }, FileSystem::LoadOption().string())) return false;
+
+            
+        }
+
+
+        //PixelShader 생성(이 부분은 DX12Shader 로 빼야 함)
+        {
+            const char* file_name = "file://PixelShader.hlsl";
+            if (!FileSystem::instance()->load(file_name,
+                [this, file_name](FileSystem::Data& data)
+            {
+                ID3DBlob* shader = nullptr;
+                ID3DBlob* error_buf = nullptr;
+                if (FAILED(D3DCompile(&data[0], data.size(), "",
+                    nullptr, nullptr, "main", "ps_5_0",
+                    D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, 0,
+                    &shader, &error_buf)))
+                {
+                    TOD_THROW_EXCEPTION("VertexShader compile error[%s]:\n\n%s",
+                        file_name, error_buf->GetBufferPointer());
+                    return false;
+                }
+
+                D3D12_SHADER_BYTECODE shader_byte_code = {};
+                shader_byte_code.BytecodeLength = shader->GetBufferSize();
+                shader_byte_code.pShaderBytecode = shader->GetBufferPointer();
+
+                return true;
+            }, FileSystem::LoadOption().string())) return false;
+        }
+
+
+
         this->commandList->Close();
 
         return true;
@@ -353,6 +514,7 @@ private:
     ID3D12CommandAllocator* commandAllocator[NUM_FRAME_BUFFER];
     ID3D12GraphicsCommandList* commandList;
     ID3D12Fence* fence[NUM_FRAME_BUFFER];
+    ID3D12RootSignature* rootSignature;
     HANDLE fenceEvent;
     int rtvDescriptorSize;
     int curFrame;

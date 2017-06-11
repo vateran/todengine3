@@ -89,6 +89,14 @@ public:
     typedef SingletonType<SelfType, BaseType> ObjectType;
     
 public:
+    const std::string& getName() override
+    {
+        return TypeNameDemangler::getName<TYPE>();
+    }
+    static TYPE* instance()
+    {
+        return ObjectType::createSingletonObject();
+    }
     static Type* get_type()
     {
         static ObjectType* s_type = nullptr;

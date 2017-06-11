@@ -69,3 +69,4 @@
 Debug
 /external/wxWidgets/include/wx/msw/wince
 /external/wxWidgets/include/wx/os2
+/build/msvc/.vs/todengine/v15
