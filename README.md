@@ -46,7 +46,7 @@
  * Depth of Field
  * Multithread-Rendering
  
- #컴파일
+ # 컴파일
   * Visual Studio 2015
   * Windows 10 SDK 설치(for DirectX12)
   * ~/todengine3/build/msvc 에 있는 todengine.sln
