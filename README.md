@@ -53,4 +53,9 @@
   * XCode8
     * ~/todengine3/build/xcode 에 있는 todengine.xcworkspace
 
- 
+ # TodEditor 실행
+  * Visual Studio 2015
+    * todeditor 프로젝트 > 속성 > 작업 디렉터리 > $(ProjectDir)..\..\bin 로 변경
+    * todeditor 를 '시작 프로젝트'로 변경
+    * 실행
+
