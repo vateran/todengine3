@@ -4,12 +4,15 @@
     <Filter Include="Source">
       <UniqueIdentifier>{82f49255-e5db-4145-ad79-3bd36ef62996}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\d3d12">
+      <UniqueIdentifier>{e01d2878-09ea-4cd1-9f08-875c8b883370}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\opengl">
+      <UniqueIdentifier>{644b331d-158b-4add-82bb-d011cac495a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\todgraphics\tod\graphics\matrix44.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\todgraphics\tod\graphics\openglrenderer.h">
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todgraphics\tod\graphics\renderer.h">
@@ -21,28 +24,34 @@
     <ClInclude Include="..\..\todgraphics\tod\graphics\vector3.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\todgraphics\tod\graphics\dx12renderer.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\todgraphics\tod\graphics\main.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx12renderer.h">
+      <Filter>Source\d3d12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\openglrenderer.h">
+      <Filter>Source\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\d3dx12.h">
+      <Filter>Source\d3d12</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\todgraphics\tod\graphics\openglrenderer.cc">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\todgraphics\tod\graphics\renderer.cc">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\todgraphics\tod\graphics\todmath.cc">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\todgraphics\tod\graphics\dx12renderer.cc">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\todgraphics\tod\graphics\main.cc">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx12renderer.cc">
+      <Filter>Source\d3d12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\openglrenderer.cc">
+      <Filter>Source\opengl</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

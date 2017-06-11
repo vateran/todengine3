@@ -28,3 +28,4 @@ typedef unsigned __int64 uint64;
 #define SAFE_RELEASE(p) if (p) { p->release(); p = nullptr; }
 #define SAFE_DELETE(p) if (p) { delete p; p = nullptr; }
 #define SAFE_ARRAY_DELETE(p) if (p) { delete [] p; p = nullptr; }
+#define SAFE_COM_RELEASE(p) if (p) { p->Release(); p = nullptr; }

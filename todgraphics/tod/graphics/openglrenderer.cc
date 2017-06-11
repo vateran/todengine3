@@ -202,7 +202,8 @@ namespace tod::graphics
     
     
 //-----------------------------------------------------------------------------
-bool OpenGlRenderer::initialize(void* window_handle)
+bool OpenGlRenderer::initialize
+(void* window_handle, int width, int height, bool windowed)
 {
     // start GL context and O/S window using the GLFW helper library
     if (!glfwInit()) {

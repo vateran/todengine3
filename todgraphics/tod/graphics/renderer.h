@@ -343,7 +343,7 @@ class Renderer : public Derive<Renderer, Node>
 public:
     Camera camera;
     
-    virtual bool initialize(void* window_handle);
+    virtual bool initialize(void* window_handle, int width, int height, bool windowed);
     
     virtual void mainloop()
     {

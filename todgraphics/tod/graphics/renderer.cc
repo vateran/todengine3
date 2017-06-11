@@ -2,7 +2,8 @@
 namespace tod::graphics
 {
 
-bool Renderer::initialize(void* window_handle)
+bool Renderer::initialize
+(void* window_handle, int width, int height, bool windowed)
 {
     Matrix44 m;
     

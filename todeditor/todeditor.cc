@@ -652,7 +652,7 @@ public:
 
         auto renderer = static_cast<tod::graphics::Renderer*>
             (tod::Kernel::instance()->create("Dx12Renderer", "/sys/renderer"));
-        renderer->initialize((void*)hwnd);
+        renderer->initialize((void*)hwnd, 640, 480, true);
 
 
         

@@ -16,6 +16,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\d3dx12.h" />
     <ClInclude Include="..\..\todgraphics\tod\graphics\dx12renderer.h" />
     <ClInclude Include="..\..\todgraphics\tod\graphics\main.h" />
     <ClInclude Include="..\..\todgraphics\tod\graphics\matrix44.h" />
