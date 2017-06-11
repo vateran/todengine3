@@ -642,7 +642,7 @@ public:
     wxWindow(parent, wxID_ANY)
     {
         this->renderer = static_cast<tod::graphics::Renderer*>
-            (tod::Kernel::instance()->create("Dx12Renderer", "/sys/renderer"));
+            (tod::Kernel::instance()->create("OpenGlRenderer", "/sys/renderer"));
         this->renderer->initialize((void*)this->GetHandle(), 640, 480, true);
 
         this->Bind(wxEVT_IDLE, [this](wxIdleEvent& event)
