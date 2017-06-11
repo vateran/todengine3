@@ -47,6 +47,10 @@
  * Multithread-Rendering
  
  #컴파일
-  #Visual Studio 2015
-   # 
+  * Visual Studio 2015
+   * Windows 10 SDK 설치(for DirectX12)
+   * ~/todengine3/build/msvc 에 있는 todengine.sln
+  * XCode8
+   * ~/todengine3/build/xcode 에 있는 todengine.xcworkspace
+
  
