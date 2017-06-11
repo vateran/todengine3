@@ -69,7 +69,7 @@ wxPoint wxFromNSPoint( UIView* parent, const CGPoint& p )
 // c++ impl
 //
 
-wxIMPLEMENT_DYNAMIC_CLASS(wxNonOwnedWindowIPhoneImpl , wxNonOwnedWindowImpl);
+IMPLEMENT_DYNAMIC_CLASS( wxNonOwnedWindowIPhoneImpl , wxNonOwnedWindowImpl )
 
 wxNonOwnedWindowIPhoneImpl::wxNonOwnedWindowIPhoneImpl( wxNonOwnedWindow* nonownedwnd) :
     wxNonOwnedWindowImpl(nonownedwnd)
@@ -282,11 +282,6 @@ void wxNonOwnedWindowIPhoneImpl::Maximize(bool maximize)
 bool wxNonOwnedWindowIPhoneImpl::IsFullScreen() const
 {
     return m_macFullScreenData != NULL ;
-}
-
-bool wxNonOwnedWindowIPhoneImpl::EnableFullScreenView(bool WXUNUSED(enable))
-{
-    return true;
 }
 
 bool wxNonOwnedWindowIPhoneImpl::ShowFullScreen(bool show, long style)

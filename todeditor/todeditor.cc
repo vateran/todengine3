@@ -641,11 +641,9 @@ public:
     RenderView(wxWindow* parent) :
     wxWindow(parent, wxID_ANY)
     {
-        HWND hwnd = this->GetHWND();
-
         this->renderer = static_cast<tod::graphics::Renderer*>
             (tod::Kernel::instance()->create("Dx12Renderer", "/sys/renderer"));
-        this->renderer->initialize((void*)hwnd, 640, 480, true);
+        this->renderer->initialize((void*)this->GetHandle(), 640, 480, true);
 
         this->Bind(wxEVT_IDLE, [this](wxIdleEvent& event)
         {

@@ -101,7 +101,7 @@ public :
     ~wxNSSearchFieldControl();
 
     // search field options
-    virtual void ShowSearchButton( bool show ) wxOVERRIDE
+    virtual void ShowSearchButton( bool show )
     {
         if ( show )
             [m_searchFieldCell resetSearchButtonCell];
@@ -110,12 +110,12 @@ public :
         [m_searchField setNeedsDisplay:YES];
     }
 
-    virtual bool IsSearchButtonVisible() const wxOVERRIDE
+    virtual bool IsSearchButtonVisible() const
     {
         return [m_searchFieldCell searchButtonCell] != nil;
     }
 
-    virtual void ShowCancelButton( bool show ) wxOVERRIDE
+    virtual void ShowCancelButton( bool show )
     {
         if ( show )
             [m_searchFieldCell resetCancelButtonCell];
@@ -124,12 +124,12 @@ public :
         [m_searchField setNeedsDisplay:YES];
     }
 
-    virtual bool IsCancelButtonVisible() const wxOVERRIDE
+    virtual bool IsCancelButtonVisible() const
     {
         return [m_searchFieldCell cancelButtonCell] != nil;
     }
 
-    virtual void SetSearchMenu( wxMenu* menu ) wxOVERRIDE
+    virtual void SetSearchMenu( wxMenu* menu )
     {
         if ( menu )
             [m_searchFieldCell setSearchMenuTemplate:menu->GetHMenu()];
@@ -138,18 +138,18 @@ public :
         [m_searchField setNeedsDisplay:YES];
     }
 
-    virtual void SetDescriptiveText(const wxString& text) wxOVERRIDE
+    virtual void SetDescriptiveText(const wxString& text)
     {
         [m_searchFieldCell setPlaceholderString:
             wxCFStringRef( text , m_wxPeer->GetFont().GetEncoding() ).AsNSString()];
     }
 
-    virtual bool SetFocus() wxOVERRIDE
+    virtual bool SetFocus()
     {
        return  wxNSTextFieldControl::SetFocus();
     }
 
-    void controlAction( WXWidget WXUNUSED(slf), void *WXUNUSED(_cmd), void *WXUNUSED(sender)) wxOVERRIDE
+    void controlAction( WXWidget WXUNUSED(slf), void *WXUNUSED(_cmd), void *WXUNUSED(sender))
     {
         wxSearchCtrl* wxpeer = (wxSearchCtrl*) GetWXPeer();
         if ( wxpeer )

@@ -80,10 +80,6 @@ wxGUIEventLoop::wxGUIEventLoop()
 {
 }
 
-wxGUIEventLoop::~wxGUIEventLoop()
-{
-}
-
 void wxGUIEventLoop::OSXDoRun()
 {
     if ( IsMain() )

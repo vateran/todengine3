@@ -116,34 +116,27 @@ protected :
 
 NSView* wxMacEditHelper::ms_viewCurrentlyEdited = nil;
 
-// an NSFormatter used to implement SetMaxLength() and ForceUpper() methods
-@interface wxTextEntryFormatter : NSFormatter
+// a minimal NSFormatter that just avoids getting too long entries
+@interface wxMaximumLengthFormatter : NSFormatter
 {
     int maxLength;
     wxTextEntry* field;
-    bool forceUpper;
 }
 
 @end
 
-@implementation wxTextEntryFormatter
+@implementation wxMaximumLengthFormatter
 
 - (id)init 
 {
     self = [super init];
     maxLength = 0;
-    forceUpper = false;
     return self;
 }
 
 - (void) setMaxLength:(int) maxlen 
 {
     maxLength = maxlen;
-}
-
-- (void) forceUpper
-{
-    forceUpper = true;
 }
 
 - (NSString *)stringForObjectValue:(id)anObject 
@@ -162,25 +155,12 @@ NSView* wxMacEditHelper::ms_viewCurrentlyEdited = nil;
 - (BOOL)isPartialStringValid:(NSString **)partialStringPtr proposedSelectedRange:(NSRangePointer)proposedSelRangePtr 
               originalString:(NSString *)origString originalSelectedRange:(NSRange)origSelRange errorDescription:(NSString **)error
 {
-    if ( maxLength > 0 )
+    int len = [*partialStringPtr length];
+    if ( maxLength > 0 && len > maxLength )
     {
-        if ( [*partialStringPtr length] > maxLength )
-        {
-            field->SendMaxLenEvent();
-            return NO;
-        }
+        field->SendMaxLenEvent();
+        return NO;
     }
-
-    if ( forceUpper )
-    {
-        NSString* upper = [*partialStringPtr uppercaseString];
-        if ( ![*partialStringPtr isEqual:upper] )
-        {
-            *partialStringPtr = upper;
-            return NO;
-        }
-    }
-
     return YES;
 }
 
@@ -412,23 +392,6 @@ NSView* wxMacEditHelper::ms_viewCurrentlyEdited = nil;
         impl->DoNotifyFocusLost();
 }
 
--(BOOL)textView:(NSTextView *)aTextView clickedOnLink:(id)link atIndex:(NSUInteger)charIndex
-{
-    wxWidgetCocoaImpl* impl = (wxWidgetCocoaImpl* ) wxWidgetImpl::FindFromWXWidget( aTextView );
-    if ( impl  )
-    {
-        wxWindow* wxpeer = (wxWindow*) impl->GetWXPeer();
-        if ( wxpeer )
-        {
-            wxMouseEvent evtMouse( wxEVT_LEFT_DOWN );
-            wxTextUrlEvent event( wxpeer->GetId(), evtMouse, (long int)charIndex, (long int)charIndex );
-            event.SetEventObject( wxpeer );
-            wxpeer->HandleWindowEvent( event );
-        }
-    }
-    return NO;
-}
-
 @end
 
 @implementation wxNSTextField
@@ -620,8 +583,7 @@ wxNSTextViewControl::wxNSTextViewControl( wxTextCtrl *wxPeer, WXWidget w, long s
     [tv setVerticallyResizable:YES];
     [tv setHorizontallyResizable:hasHScroll];
     [tv setAutoresizingMask:NSViewWidthSizable];
-    [tv setAutomaticDashSubstitutionEnabled:false];
-    
+
     if ( hasHScroll )
     {
         [[tv textContainer] setContainerSize:NSMakeSize(FLT_MAX, FLT_MAX)];
@@ -640,11 +602,6 @@ wxNSTextViewControl::wxNSTextViewControl( wxTextCtrl *wxPeer, WXWidget w, long s
     if ( !wxPeer->HasFlag(wxTE_RICH | wxTE_RICH2) )
     {
         [tv setRichText:NO];
-    }
-
-    if ( wxPeer->HasFlag(wxTE_AUTO_URL) )
-    {
-        [tv setAutomaticLinkDetectionEnabled:YES];
     }
 
     [m_scrollView setDocumentView: tv];
@@ -668,15 +625,6 @@ bool wxNSTextViewControl::CanFocus() const
     return true;
 }
 
-void wxNSTextViewControl::insertText(NSString* text, WXWidget slf, void *_cmd)
-{
-    if ( m_lastKeyDownEvent ==NULL || !DoHandleCharEvent(m_lastKeyDownEvent, text) )
-    {
-        wxOSX_TextEventHandlerPtr superimpl = (wxOSX_TextEventHandlerPtr) [[slf superclass] instanceMethodForSelector:(SEL)_cmd];
-        superimpl(slf, (SEL)_cmd, text);
-    }
-}
-
 wxString wxNSTextViewControl::GetStringValue() const
 {
     if (m_textView)
@@ -694,14 +642,7 @@ void wxNSTextViewControl::SetStringValue( const wxString &str)
     wxMacEditHelper helper(m_textView);
 
     if (m_textView)
-    {
         [m_textView setString: wxCFStringRef( st , m_wxPeer->GetFont().GetEncoding() ).AsNSString()];
-        if ( m_wxPeer->HasFlag(wxTE_AUTO_URL) )
-        {
-            // Make sure that any URLs in the new text are highlighted.
-            [m_textView checkTextInDocument:nil];
-        }
-    }
 }
 
 void wxNSTextViewControl::Copy()
@@ -895,7 +836,7 @@ wxNSTextFieldControl::wxNSTextFieldControl(wxWindow *wxPeer,
 
 void wxNSTextFieldControl::Init(WXWidget w)
 {
-    NSTextField <NSTextFieldDelegate> *tf = (NSTextField <NSTextFieldDelegate>*) w;
+    NSTextField wxOSX_10_6_AND_LATER(<NSTextFieldDelegate>) *tf = (NSTextField wxOSX_10_6_AND_LATER(<NSTextFieldDelegate>)*) w;
     m_textField = tf;
     [m_textField setDelegate: tf];
     m_selStart = m_selEnd = 0;
@@ -919,30 +860,12 @@ void wxNSTextFieldControl::SetStringValue( const wxString &str)
     [m_textField setStringValue: wxCFStringRef( str , m_wxPeer->GetFont().GetEncoding() ).AsNSString()];
 }
 
-wxTextEntryFormatter* wxNSTextFieldControl::GetFormatter()
-{
-    // We only ever call setFormatter with wxTextEntryFormatter, so the cast is
-    // safe.
-    wxTextEntryFormatter*
-        formatter = (wxTextEntryFormatter*)[m_textField formatter];
-    if ( !formatter )
-    {
-        formatter = [[[wxTextEntryFormatter alloc] init] autorelease];
-        [formatter setTextEntry:GetTextEntry()];
-        [m_textField setFormatter:formatter];
-    }
-
-    return formatter;
-}
-
 void wxNSTextFieldControl::SetMaxLength(unsigned long len)
 {
-    [GetFormatter() setMaxLength:len];
-}
-
-void wxNSTextFieldControl::ForceUpper()
-{
-    [GetFormatter() forceUpper];
+    wxMaximumLengthFormatter* formatter = [[[wxMaximumLengthFormatter alloc] init] autorelease];
+    [formatter setMaxLength:len];
+    [formatter setTextEntry:GetTextEntry()];
+    [m_textField setFormatter:formatter];
 }
 
 void wxNSTextFieldControl::Copy()
@@ -1093,6 +1016,18 @@ bool wxNSTextFieldControl::becomeFirstResponder(WXWidget slf, void *_cmd)
     s_widgetBecomingFirstResponder = slf;
     bool retval = wxWidgetCocoaImpl::becomeFirstResponder(slf, _cmd);
     s_widgetBecomingFirstResponder = nil;
+    if ( retval )
+    {
+        NSText* editor = [m_textField currentEditor];
+        if ( editor )
+        {
+            long textLength = [[m_textField stringValue] length];
+            m_selStart = wxMin(textLength,wxMax(m_selStart,0)) ;
+            m_selEnd = wxMax(0,wxMin(textLength,m_selEnd)) ;
+            
+            [editor setSelectedRange:NSMakeRange(m_selStart, m_selEnd-m_selStart)];
+        }
+    }
     return retval;
 }
 
@@ -1173,6 +1108,8 @@ wxWidgetImplType* wxWidgetImpl::CreateTextControl( wxTextCtrl* wxpeer,
             // we have to emulate this
             [v setBezeled:NO];
             [v setBordered:NO];
+            if ( UMAGetSystemVersion() < 0x1070 )
+                c->SetNeedsFocusRect( true );
         }
         else
         {

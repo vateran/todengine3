@@ -1,4 +1,4 @@
-#if defined(_WIN32)
+#if defined(_WIN32) || defined(__OS2__)
 #include "jconfig.vc"
 #else
 
@@ -46,7 +46,9 @@
 
 /* use wxWidgets' configure */
 /* #define INLINE __inline__ */
-#if defined(__WATCOMC__)
+#if defined(__VISAGECPP__) && (__IBMCPP__ >= 400 || __IBMC__ >= 400)
+#define INLINE
+#elif defined(__WATCOMC__)
 #define INLINE
 #else
 #define INLINE inline

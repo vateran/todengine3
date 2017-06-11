@@ -22,7 +22,7 @@
 #include "wx/modalhook.h"
 
 
-wxIMPLEMENT_CLASS(wxMessageDialog, wxDialog);
+IMPLEMENT_CLASS(wxMessageDialog, wxDialog)
 
 
 wxMessageDialog::wxMessageDialog(wxWindow *parent,

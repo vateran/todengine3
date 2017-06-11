@@ -60,10 +60,10 @@
 
     [super setEnabled: flag]; 
     
-    if (![self drawsBackground]) {
-        // Static text is drawn incorrectly when disabled.
-        // For an explanation, see
-        // http://www.cocoabuilder.com/archive/message/cocoa/2006/7/21/168028
+    if (![self drawsBackground]) { 
+        // Static text is drawn incorrectly when disabled. 
+        // For an explanation, see 
+        // http://www.cocoabuilder.com/archive/message/cocoa/2006/7/21/168028 
         if (flag)
         { 
             if (m_textColor)
@@ -76,7 +76,7 @@
                 [m_textColor release];
                 m_textColor = [[self textColor] retain];
             }
-            [self setTextColor: [NSColor disabledControlTextColor]]; 
+            [self setTextColor: [NSColor disabledControlTextColor]];
         } 
     } 
 } 
@@ -91,7 +91,7 @@ public:
         m_lineBreak = lineBreak;
     }
 
-    virtual void SetLabel(const wxString& title, wxFontEncoding encoding) wxOVERRIDE
+    virtual void SetLabel(const wxString& title, wxFontEncoding encoding)
     {
         wxCFStringRef text( title , encoding );
 
@@ -102,7 +102,7 @@ public:
     }
 
 #if wxUSE_MARKUP
-    virtual void SetLabelMarkup( const wxString& markup) wxOVERRIDE
+    virtual void SetLabelMarkup( const wxString& markup)
     {
         wxMarkupToAttrString toAttr(GetWXPeer(), markup);
 
@@ -155,8 +155,8 @@ wxWidgetImplType* wxWidgetImpl::CreateStaticText( wxWindowMac* wxpeer,
     [v setBezeled:NO];
     [v setBordered:NO];
 
-    NSLineBreakMode linebreak = NSLineBreakByClipping;
-    if ( style & wxST_ELLIPSIZE_MASK )
+    NSLineBreakMode linebreak = NSLineBreakByWordWrapping;
+    if ( ((wxStaticText*)wxpeer)->IsEllipsized() )
     {
         if ( style & wxST_ELLIPSIZE_MIDDLE )
             linebreak = NSLineBreakByTruncatingMiddle;

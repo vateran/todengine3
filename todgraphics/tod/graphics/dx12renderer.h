@@ -1,37 +1,13 @@
 #pragma once
 #include "tod/graphics/renderer.h"
 #include "tod/graphics/d3dx12.h"
+#include "tod/graphics/config.h"
 #include <D3D12.h>
 #include <dxgi1_4.h>
 #include <D3Dcompiler.h>
 #include <DirectXMath.h>
 namespace tod::graphics
 {
-
-
-class Config : public SingletonDerive<Config, Node>
-{
-public:
-    Config() :
-        shaderDebug(false),
-        shaderOptimization(false)
-    {}
-
-    void setShaderDebug(bool value) { this->shaderDebug = value; }
-    bool isShaderDebug() { return this->shaderDebug; }
-    void setShaderOptimization(bool value) { this->shaderDebug = value; }
-    bool isShaderOptimization() { return this->shaderOptimization; }
-
-    static void bindProperty()
-    {
-        BIND_PROPERTY(bool, "shader_debug", "Shader 디버깅 활성화", setShaderDebug, isShaderDebug, false, PropertyAttr::DEFAULT);
-        BIND_PROPERTY(bool, "shader_optimization", "Shader 최적화 활성화", setShaderOptimization, isShaderOptimization, false, PropertyAttr::DEFAULT);
-    }
-
-private:
-    bool shaderDebug;
-    bool shaderOptimization;
-};
 
 
 class Dx12Shader

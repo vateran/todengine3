@@ -24,7 +24,7 @@
 
 // work in progress
 
-@interface wxNSTableDataSource : NSObject <NSComboBoxDataSource>
+@interface wxNSTableDataSource : NSObject wxOSX_10_6_AND_LATER(<NSComboBoxDataSource>)
 {
     wxNSComboBoxControl* impl;
 }

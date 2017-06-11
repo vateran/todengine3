@@ -25,8 +25,6 @@
 #include <string.h>
 #include <vector>
 #include <map>
-#include <algorithm>
-#include <stdexcept>
 
 // These are all Scintilla headers
 #include "Platform.h"
@@ -45,6 +43,7 @@
 #include "WordList.h"
 #endif
 #include "ContractionState.h"
+#include "SVector.h"
 #include "CellBuffer.h"
 #include "CallTip.h"
 #include "KeyMap.h"
@@ -56,13 +55,9 @@
 #include "ViewStyle.h"
 #include "CharClassify.h"
 #include "Decoration.h"
-#include "CaseFolder.h"
 #include "Document.h"
 #include "Selection.h"
 #include "PositionCache.h"
-#include "EditModel.h"
-#include "MarginView.h"
-#include "EditView.h"
 #include "Editor.h"
 #include "PropSetSimple.h"
 #include "ScintillaBase.h"
@@ -72,12 +67,6 @@
 #endif
 #if wxUSE_DRAG_AND_DROP
 #include "wx/timer.h"
-#endif
-
-// Define this if there is a standard clipboard format for rectangular
-// text selection under the current platform.
-#if defined(__WXMSW__) || defined(__WXGTK__)
-    #define wxHAVE_STC_RECT_FORMAT
 #endif
 
 //----------------------------------------------------------------------
@@ -98,10 +87,10 @@ public:
         m_swx = swx;
     }
 
-    bool OnDropText(wxCoord x, wxCoord y, const wxString& data) wxOVERRIDE;
-    wxDragResult OnEnter(wxCoord x, wxCoord y, wxDragResult def) wxOVERRIDE;
-    wxDragResult OnDragOver(wxCoord x, wxCoord y, wxDragResult def) wxOVERRIDE;
-    void OnLeave() wxOVERRIDE;
+    bool OnDropText(wxCoord x, wxCoord y, const wxString& data);
+    wxDragResult OnEnter(wxCoord x, wxCoord y, wxDragResult def);
+    wxDragResult OnDragOver(wxCoord x, wxCoord y, wxDragResult def);
+    void OnLeave();
 
 private:
     ScintillaWX* m_swx;
@@ -117,38 +106,38 @@ public:
     ~ScintillaWX();
 
     // base class virtuals
-    virtual void Initialise() wxOVERRIDE;
-    virtual void Finalise() wxOVERRIDE;
-    virtual void StartDrag() wxOVERRIDE;
-    virtual bool SetIdle(bool on) wxOVERRIDE;
-    virtual void SetTicking(bool on) wxOVERRIDE;
-    virtual void SetMouseCapture(bool on) wxOVERRIDE;
-    virtual bool HaveMouseCapture() wxOVERRIDE;
-    virtual void ScrollText(int linesToMove) wxOVERRIDE;
-    virtual void SetVerticalScrollPos() wxOVERRIDE;
-    virtual void SetHorizontalScrollPos() wxOVERRIDE;
-    virtual bool ModifyScrollBars(int nMax, int nPage) wxOVERRIDE;
-    virtual void Copy() wxOVERRIDE;
-    virtual void Paste() wxOVERRIDE;
-    virtual void CopyToClipboard(const SelectionText &selectedText) wxOVERRIDE;
+    virtual void Initialise();
+    virtual void Finalise();
+    virtual void StartDrag();
+    virtual bool SetIdle(bool on);
+    virtual void SetTicking(bool on);
+    virtual void SetMouseCapture(bool on);
+    virtual bool HaveMouseCapture();
+    virtual void ScrollText(int linesToMove);
+    virtual void SetVerticalScrollPos();
+    virtual void SetHorizontalScrollPos();
+    virtual bool ModifyScrollBars(int nMax, int nPage);
+    virtual void Copy();
+    virtual void Paste();
+    virtual void CopyToClipboard(const SelectionText &selectedText);
 
-    virtual void CreateCallTipWindow(PRectangle rc) wxOVERRIDE;
-    virtual void AddToPopUp(const char *label, int cmd = 0, bool enabled = true) wxOVERRIDE;
-    virtual void ClaimSelection() wxOVERRIDE;
+    virtual void CreateCallTipWindow(PRectangle rc);
+    virtual void AddToPopUp(const char *label, int cmd = 0, bool enabled = true);
+    virtual void ClaimSelection();
 
     virtual sptr_t DefWndProc(unsigned int iMessage,
                               uptr_t wParam,
-                              sptr_t lParam) wxOVERRIDE;
+                              sptr_t lParam);
     virtual sptr_t WndProc(unsigned int iMessage,
                            uptr_t wParam,
-                           sptr_t lParam) wxOVERRIDE;
+                           sptr_t lParam);
 
-    virtual void NotifyChange() wxOVERRIDE;
-    virtual void NotifyParent(SCNotification scn) wxOVERRIDE;
+    virtual void NotifyChange();
+    virtual void NotifyParent(SCNotification scn);
 
-    virtual void CancelModes() wxOVERRIDE;
+    virtual void CancelModes();
 
-    virtual void UpdateSystemCaret() wxOVERRIDE;
+    virtual void UpdateSystemCaret();
 
     // Event delegates
     void DoPaint(wxDC* dc, wxRect rect);
@@ -185,8 +174,8 @@ public:
     // helpers
     void FullPaint();
     void FullPaintDC(wxDC* dc);
-    bool CanPaste() wxOVERRIDE;
-    bool GetHideSelection() { return view.hideSelection; }
+    bool CanPaste();
+    bool GetHideSelection() { return hideSelection; }
     void DoScrollToLine(int line);
     void DoScrollToColumn(int column);
     void ClipChildren(wxDC& dc, PRectangle rect);
@@ -215,13 +204,7 @@ private:
     int sysCaretWidth;
     int sysCaretHeight;
 #endif
-
-#ifdef wxHAVE_STC_RECT_FORMAT
-    // The presence of this format on the clipboard indicates that the text is
-    // a rectangular (and not the default linear) selection.
-    wxDataFormat m_clipRectTextFormat;
-#endif
-
+   
     friend class wxSTCCallTip;
 };
 

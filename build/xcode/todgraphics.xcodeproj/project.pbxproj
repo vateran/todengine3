@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		095D18E61EE77BB500B5FE92 /* todmath.cc in Sources */ = {isa = PBXBuildFile; fileRef = 095D18E41EE77BB500B5FE92 /* todmath.cc */; };
 		095D18E71EE77BB500B5FE92 /* todmath.h in Headers */ = {isa = PBXBuildFile; fileRef = 095D18E51EE77BB500B5FE92 /* todmath.h */; };
+		096AEA5A1EED831A003CFA89 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 096AEA581EED831A003CFA89 /* main.cc */; };
+		096AEA5B1EED831A003CFA89 /* main.h in Headers */ = {isa = PBXBuildFile; fileRef = 096AEA591EED831A003CFA89 /* main.h */; };
 		09AC2B671EE1B52E00291654 /* openglrenderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 09AC2B631EE1B52E00291654 /* openglrenderer.cc */; };
 		09AC2B681EE1B52E00291654 /* openglrenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09AC2B641EE1B52E00291654 /* openglrenderer.h */; };
 		09AC2B691EE1B52E00291654 /* renderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 09AC2B651EE1B52E00291654 /* renderer.cc */; };
@@ -24,6 +26,9 @@
 		095D18E21EE6F1B700B5FE92 /* libVc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVc.a; path = ../../external/libvc/lib/libVc.a; sourceTree = "<group>"; };
 		095D18E41EE77BB500B5FE92 /* todmath.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = todmath.cc; path = ../../todgraphics/tod/graphics/todmath.cc; sourceTree = "<group>"; };
 		095D18E51EE77BB500B5FE92 /* todmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = todmath.h; path = ../../todgraphics/tod/graphics/todmath.h; sourceTree = "<group>"; };
+		096AEA581EED831A003CFA89 /* main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cc; path = ../../todgraphics/tod/graphics/main.cc; sourceTree = "<group>"; };
+		096AEA591EED831A003CFA89 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = ../../todgraphics/tod/graphics/main.h; sourceTree = "<group>"; };
+		096AEA5C1EED833B003CFA89 /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = config.h; path = ../../todgraphics/tod/graphics/config.h; sourceTree = "<group>"; };
 		09AC2B631EE1B52E00291654 /* openglrenderer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = openglrenderer.cc; path = ../../todgraphics/tod/graphics/openglrenderer.cc; sourceTree = "<group>"; };
 		09AC2B641EE1B52E00291654 /* openglrenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = openglrenderer.h; path = ../../todgraphics/tod/graphics/openglrenderer.h; sourceTree = "<group>"; };
 		09AC2B651EE1B52E00291654 /* renderer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = renderer.cc; path = ../../todgraphics/tod/graphics/renderer.cc; sourceTree = "<group>"; };
@@ -65,6 +70,8 @@
 		0956907A1EE177CE00A9AF92 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				096AEA581EED831A003CFA89 /* main.cc */,
+				096AEA591EED831A003CFA89 /* main.h */,
 				09AC2B631EE1B52E00291654 /* openglrenderer.cc */,
 				09AC2B641EE1B52E00291654 /* openglrenderer.h */,
 				09AC2B651EE1B52E00291654 /* renderer.cc */,
@@ -73,6 +80,7 @@
 				095D18DF1EE6E3A000B5FE92 /* vector3.h */,
 				095D18E41EE77BB500B5FE92 /* todmath.cc */,
 				095D18E51EE77BB500B5FE92 /* todmath.h */,
+				096AEA5C1EED833B003CFA89 /* config.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -95,6 +103,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				095D18E71EE77BB500B5FE92 /* todmath.h in Headers */,
+				096AEA5B1EED831A003CFA89 /* main.h in Headers */,
 				09AC2B681EE1B52E00291654 /* openglrenderer.h in Headers */,
 				09AC2B6A1EE1B52E00291654 /* renderer.h in Headers */,
 			);
@@ -157,6 +166,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				096AEA5A1EED831A003CFA89 /* main.cc in Sources */,
 				09AC2B691EE1B52E00291654 /* renderer.cc in Sources */,
 				09AC2B671EE1B52E00291654 /* openglrenderer.cc in Sources */,
 				095D18E61EE77BB500B5FE92 /* todmath.cc in Sources */,

@@ -32,6 +32,7 @@ public:
 	MarkerHandleSet();
 	~MarkerHandleSet();
 	int Length() const;
+	int NumberFromHandle(int handle) const;
 	int MarkValue() const;	///< Bit set of marker numbers.
 	bool Contains(int handle) const;
 	bool InsertHandle(int handle, int markerNum);
@@ -72,7 +73,7 @@ public:
 	void ExpandLevels(int sizeNew=-1);
 	void ClearLevels();
 	int SetLevel(int line, int level, int lines);
-	int GetLevel(int line) const;
+	int GetLevel(int line);
 };
 
 class LineState : public PerLine {
@@ -87,7 +88,7 @@ public:
 
 	int SetLineState(int line, int state);
 	int GetLineState(int line);
-	int GetMaxLineState() const;
+	int GetMaxLineState();
 };
 
 class LineAnnotation : public PerLine {
@@ -100,8 +101,9 @@ public:
 	virtual void InsertLine(int line);
 	virtual void RemoveLine(int line);
 
+	bool AnySet() const;
 	bool MultipleStyles(int line) const;
-	int Style(int line) const;
+	int Style(int line);
 	const char *Text(int line) const;
 	const unsigned char *Styles(int line) const;
 	void SetText(int line, const char *text);
@@ -110,23 +112,6 @@ public:
 	void SetStyles(int line, const unsigned char *styles);
 	int Length(int line) const;
 	int Lines(int line) const;
-};
-
-typedef std::vector<int> TabstopList;
-
-class LineTabstops : public PerLine {
-	SplitVector<TabstopList *> tabstops;
-public:
-	LineTabstops() {
-	}
-	virtual ~LineTabstops();
-	virtual void Init();
-	virtual void InsertLine(int line);
-	virtual void RemoveLine(int line);
-
-	bool ClearTabstops(int line);
-	bool AddTabstop(int line, int x);
-	int GetNextTabstop(int line, int x) const;
 };
 
 #ifdef SCI_NAMESPACE

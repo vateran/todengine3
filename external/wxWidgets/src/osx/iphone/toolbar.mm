@@ -26,8 +26,8 @@
 #pragma mark -
 #pragma mark Tool Implementation
 
-wxBEGIN_EVENT_TABLE(wxToolBar, wxToolBarBase)
-wxEND_EVENT_TABLE()
+BEGIN_EVENT_TABLE(wxToolBar, wxToolBarBase)
+END_EVENT_TABLE()
 
 // ----------------------------------------------------------------------------
 // private classes

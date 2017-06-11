@@ -11,13 +11,13 @@
 		0956905D1EDF1A9E00A9AF92 /* libtodcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0956905C1EDF1A9E00A9AF92 /* libtodcore.a */; };
 		0956905F1EE03CEF00A9AF92 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0956905E1EE03CEF00A9AF92 /* libcurl.dylib */; };
 		095690801EE17B6E00A9AF92 /* libtodgraphics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0956907F1EE17B6E00A9AF92 /* libtodgraphics.a */; };
+		096AEA571EED8301003CFA89 /* todeditor.cc in Sources */ = {isa = PBXBuildFile; fileRef = 096AEA561EED8301003CFA89 /* todeditor.cc */; };
 		098E6BFE1EDDC07300F32BB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 098E6BFD1EDDC07300F32BB0 /* Assets.xcassets */; };
 		099D48721EDDC0FF00A8874A /* wx.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 099D486D1EDDC0FF00A8874A /* wx.xcconfig */; };
 		099D48731EDDC0FF00A8874A /* wxcocoa.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 099D486E1EDDC0FF00A8874A /* wxcocoa.xcconfig */; };
 		099D48741EDDC0FF00A8874A /* wxdebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 099D486F1EDDC0FF00A8874A /* wxdebug.xcconfig */; };
 		099D48751EDDC0FF00A8874A /* wxrelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 099D48701EDDC0FF00A8874A /* wxrelease.xcconfig */; };
 		099D48761EDDC0FF00A8874A /* wxvers.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 099D48711EDDC0FF00A8874A /* wxvers.xcconfig */; };
-		099D487B1EDDC17600A8874A /* todeditor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 099D487A1EDDC17600A8874A /* todeditor.mm */; };
 		09AC2B791EE1C38E00291654 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AC2B781EE1C38E00291654 /* CoreVideo.framework */; };
 /* End PBXBuildFile section */
 
@@ -26,6 +26,7 @@
 		0956905C1EDF1A9E00A9AF92 /* libtodcore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtodcore.a; path = ../../bin/Debug/libtodcore.a; sourceTree = "<group>"; };
 		0956905E1EE03CEF00A9AF92 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = ../../external/curl/lib/libcurl.dylib; sourceTree = "<group>"; };
 		0956907F1EE17B6E00A9AF92 /* libtodgraphics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtodgraphics.a; path = build/Debug/libtodgraphics.a; sourceTree = "<group>"; };
+		096AEA561EED8301003CFA89 /* todeditor.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = todeditor.cc; path = ../../todeditor/todeditor.cc; sourceTree = "<group>"; };
 		098E6BE61EDDC00000F32BB0 /* TodEditor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodEditor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		098E6BF71EDDC00000F32BB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		098E6BFD1EDDC07300F32BB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = SOURCE_ROOT; };
@@ -34,7 +35,6 @@
 		099D486F1EDDC0FF00A8874A /* wxdebug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = wxdebug.xcconfig; sourceTree = SOURCE_ROOT; };
 		099D48701EDDC0FF00A8874A /* wxrelease.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = wxrelease.xcconfig; sourceTree = SOURCE_ROOT; };
 		099D48711EDDC0FF00A8874A /* wxvers.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = wxvers.xcconfig; sourceTree = SOURCE_ROOT; };
-		099D487A1EDDC17600A8874A /* todeditor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = todeditor.mm; path = ../../todeditor/todeditor.mm; sourceTree = "<group>"; };
 		09AC2B781EE1C38E00291654 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -54,12 +54,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		096AEA551EED82F8003CFA89 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				096AEA561EED8301003CFA89 /* todeditor.cc */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
 		098E6BDD1EDDC00000F32BB0 = {
 			isa = PBXGroup;
 			children = (
+				096AEA551EED82F8003CFA89 /* Source */,
 				098E6BE81EDDC00000F32BB0 /* Build */,
 				098E6BE71EDDC00000F32BB0 /* Products */,
-				099D487A1EDDC17600A8874A /* todeditor.mm */,
 				099D487C1EDDC27A00A8874A /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -173,7 +181,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				099D487B1EDDC17600A8874A /* todeditor.mm in Sources */,
+				096AEA571EED8301003CFA89 /* todeditor.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

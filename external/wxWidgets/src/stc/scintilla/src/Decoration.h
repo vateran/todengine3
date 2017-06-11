@@ -17,10 +17,10 @@ public:
 	RunStyles rs;
 	int indicator;
 
-	explicit Decoration(int indicator_);
+	Decoration(int indicator_);
 	~Decoration();
 
-	bool Empty() const;
+	bool Empty();
 };
 
 class DecorationList {
@@ -51,7 +51,7 @@ public:
 	void InsertSpace(int position, int insertLength);
 	void DeleteRange(int position, int deleteLength);
 
-	int AllOnFor(int position) const;
+	int AllOnFor(int position);
 	int ValueAt(int indicator, int position);
 	int Start(int indicator, int position);
 	int End(int indicator, int position);
