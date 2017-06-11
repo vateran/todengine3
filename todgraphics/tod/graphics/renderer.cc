@@ -2,13 +2,13 @@
 namespace tod::graphics
 {
 
-bool Renderer::initialize()
+bool Renderer::initialize(void* window_handle)
 {
     Matrix44 m;
     
     Kernel::instance()->init();
     std::list<String> paths;
-	paths.push_back(".");
+    paths.push_back(".");
     paths.push_back("../../../..");
     auto asd=FileSystem::instance()->getCurrentWorkingDirectory();
     FileSystem::instance()->setSearchPaths(paths);

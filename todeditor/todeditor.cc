@@ -5,7 +5,9 @@
 #include "tod/kernel.h"
 #include "tod/serializer.h"
 #include "tod/type.h"
+#include "tod/graphics/main.h"
 #include "tod/graphics/renderer.h"
+
 
 typedef std::list<tod::ObjRef<tod::Node>> Selections;
 
@@ -428,9 +430,6 @@ public:
         this->contextMenu->AppendSeparator();
         this->contextMenu->Append(this->editorContextMenuItem = new wxMenuItem(this->contextMenu, CONTEXTMENU_EDITOR, "Editor"));
         
-        
-        tod::Kernel::instance()->create("Node", "/node1/node2/node3");
-        
         this->setRoot(tod::Kernel::instance()->getRootNode());
     }
     void setRoot(tod::Node* root)
@@ -641,8 +640,21 @@ class MainFrame : public wxFrame
 public:
     MainFrame():wxFrame(nullptr, -1, wxT("TodEditor"))
     {
+        tod::graphics::init();
+
         this->auiMgr.SetManagedWindow(this);
         this->auiMgr.SetArtProvider(new ArtProvider);
+
+        //RenderView
+        auto render_view = new wxWindow(this, wxID_ANY);
+        this->auiMgr.AddPane(render_view, wxAuiPaneInfo().Center());
+        HWND hwnd = render_view->GetHWND();
+
+        auto renderer = static_cast<tod::graphics::Renderer*>
+            (tod::Kernel::instance()->create("Dx12Renderer", "/sys/renderer"));
+        renderer->initialize((void*)hwnd);
+
+
         
         //Node Hierarchy
         this->nodeHierarchy = new NodeHierarchy(this);
@@ -734,38 +746,6 @@ public:
 
 wxDECLARE_APP(TodEditor);
 wxIMPLEMENT_APP(TodEditor);
-
-
-/*
-int main(int argv, char* argc[])
-{
-    REGISTER_TYPE(tod::graphics::Renderer);
-    
-    auto renderer = static_cast<tod::graphics::Renderer*>
-        (tod::Kernel::instance()->create("Renderer", "/sys/renderer"));
-    renderer->initialize();
-    return 0;
-}
-*/
-
-/*int CALLBACK WinMain(
-  _In_ HINSTANCE hInstance,
-  _In_ HINSTANCE hPrevInstance,
-  _In_ LPSTR     lpCmdLine,
-  _In_ int       nCmdShow)
- {
-	
-	REGISTER_TYPE(tod::graphics::Renderer);
-    
-    auto renderer = static_cast<tod::graphics::Renderer*>
-        (tod::Kernel::instance()->create("Renderer", "/sys/renderer"));
-    renderer->initialize();
-    return 0;
- }
- */
-
-
-
 
 
 /*wxMenuBar* menubar = new wxMenuBar();

@@ -6,7 +6,7 @@ namespace tod::graphics
 class OpenGlRenderer : public Derive<OpenGlRenderer, Renderer>
 {
 public:
-    bool initialize() override;
+    bool initialize(void* window_handle) override;
     bool render(Camera* camera, Node* scene_root) override;
 };
     

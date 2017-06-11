@@ -21,6 +21,12 @@
     <ClInclude Include="..\..\todgraphics\tod\graphics\vector3.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx12renderer.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\main.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\todgraphics\tod\graphics\openglrenderer.cc">
@@ -30,6 +36,12 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\todgraphics\tod\graphics\todmath.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx12renderer.cc">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\main.cc">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

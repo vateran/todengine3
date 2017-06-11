@@ -1,6 +1,7 @@
 #include "tod/uuid.h"
-#ifdef _MSC_VER
+#ifdef PLATFORM_WINDOWS
 #include <Rpc.h>
+#pragma comment(lib, "Rpcrt4.lib")
 #else
 #include <uuid/uuid.h>
 #endif
@@ -17,7 +18,7 @@ Uuid::Uuid()
 //-----------------------------------------------------------------------------
 Uuid::Uuid(const char* uuid_str)
 {
-    #ifdef _MSC_VER
+    #ifdef PLATFORM_WINDOWS
     UuidFromStringA((RPC_CSTR)(uuid_str), (UUID*)this->array);
     #else
     uuid_parse(uuid_str, this->array);

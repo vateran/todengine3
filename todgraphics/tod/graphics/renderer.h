@@ -3,6 +3,14 @@
 #include "tod/filesystem.h"
 #include "tod/graphics/vector3.h"
 #include "tod/graphics/matrix44.h"
+
+#ifdef PLATFORM_WINDOWS
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <Windows.h>
+#endif
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -335,9 +343,9 @@ class Renderer : public Derive<Renderer, Node>
 public:
     Camera camera;
     
-    virtual bool initialize();
+    virtual bool initialize(void* window_handle);
     
-    void mainloop()
+    virtual void mainloop()
     {
         // wipe the drawing surface clear
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

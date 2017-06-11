@@ -123,8 +123,8 @@ private:
         Data data;
         int responseCode;
         size_t recvBlockSize;
-		size_t recvSize;
-		size_t totalSize;
+        size_t recvSize;
+        size_t totalSize;
     };
     static size_t write_data_callback
     (void *ptr, size_t size, size_t nmemb, void *userdata)
@@ -255,17 +255,17 @@ bool PosixLoader::load
     for (auto& spath : FileSystem::instance()->getSearchPaths())
     {
         String full_path { spath + S("/") + path };
-		std::ifstream file(full_path.c_str(), std::ios::binary);
+        std::ifstream file(full_path.c_str(), std::ios::binary);
         if (!file) continue;
         
         //data buffer 준비
         Data data;
-		file.seekg(0, file.end);
-		data.resize(static_cast<size_t>(file.tellg()) + (option.isString() ? 1 : 0));
+        file.seekg(0, file.end);
+        data.resize(static_cast<size_t>(file.tellg()) + (option.isString() ? 1 : 0));
         if (option.isString()) data[data.size() - 1] = 0;        
-		file.seekg(0, file.beg);
-		file.read(&data[0], data.size());
-		file.close();
+        file.seekg(0, file.beg);
+        file.read(&data[0], data.size());
+        file.close();
         
         callback(data);
         

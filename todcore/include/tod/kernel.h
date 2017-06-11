@@ -60,5 +60,6 @@ T* Kernel::lookup(const String& path)
     if (path.empty()) return nullptr;
     return static_cast<T*>(this->root->getRelativeNode(path));
 }
+
     
 }

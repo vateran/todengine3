@@ -110,7 +110,7 @@ void String::split(const char* delims, OUT_T& ret, bool drop_empty) const
 void String::ltrim()
 {
     this->erase(this->begin(), std::find_if(this->begin(), this->end(),
-		[](value_type ch) { return !std::isspace(ch); }));
+        [](value_type ch) { return !std::isspace(ch); }));
 }
 
 
@@ -118,7 +118,7 @@ void String::ltrim()
 void String::rtrim()
 {
     this->erase(std::find_if(this->rbegin(), this->rend(),
-		[](value_type ch) { return !std::isspace(ch); }).base(), this->end());
+        [](value_type ch) { return !std::isspace(ch); }).base(), this->end());
 }
     
     

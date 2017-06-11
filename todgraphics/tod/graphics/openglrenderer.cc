@@ -5,6 +5,13 @@
 #include <iostream>
 #include <fstream>
 #include "tod/filesystem.h"
+
+//Library link
+#pragma comment(lib, "opengl32.lib")
+#pragma comment(lib, "glew32.lib")
+#pragma comment(lib, "glew32s.lib")
+#pragma comment(lib, "glfw3dll.lib")
+
 namespace tod::graphics
 {
     GLuint gShaderProgram;
@@ -195,7 +202,7 @@ namespace tod::graphics
     
     
 //-----------------------------------------------------------------------------
-bool OpenGlRenderer::initialize()
+bool OpenGlRenderer::initialize(void* window_handle)
 {
     // start GL context and O/S window using the GLFW helper library
     if (!glfwInit()) {
