@@ -343,7 +343,6 @@
 					"$(SRCROOT)/../../todgraphics",
 					"$(SRCROOT)/../../external/rapidjson/include",
 					"$(SRCROOT)/../../external/glew/include",
-					"$(SRCROOT)/../../external/glfw/include",
 					"$(SRCROOT)/../../external/glm",
 				);
 				INFOPLIST_FILE = Info.plist;
@@ -388,7 +387,6 @@
 					"$(SRCROOT)/../../todgraphics",
 					"$(SRCROOT)/../../external/rapidjson/include",
 					"$(SRCROOT)/../../external/glew/include",
-					"$(SRCROOT)/../../external/glfw/include",
 					"$(SRCROOT)/../../external/glm",
 				);
 				INFOPLIST_FILE = Info.plist;

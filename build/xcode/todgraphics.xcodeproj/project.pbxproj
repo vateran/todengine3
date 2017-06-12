@@ -11,30 +11,34 @@
 		095D18E71EE77BB500B5FE92 /* todmath.h in Headers */ = {isa = PBXBuildFile; fileRef = 095D18E51EE77BB500B5FE92 /* todmath.h */; };
 		096AEA5A1EED831A003CFA89 /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 096AEA581EED831A003CFA89 /* main.cc */; };
 		096AEA5B1EED831A003CFA89 /* main.h in Headers */ = {isa = PBXBuildFile; fileRef = 096AEA591EED831A003CFA89 /* main.h */; };
+		096AEA651EED90AB003CFA89 /* shader.h in Headers */ = {isa = PBXBuildFile; fileRef = 096AEA641EED90AB003CFA89 /* shader.h */; };
+		096AEA681EED90B9003CFA89 /* openglmesh.h in Headers */ = {isa = PBXBuildFile; fileRef = 096AEA661EED90B9003CFA89 /* openglmesh.h */; };
+		096AEA691EED90B9003CFA89 /* openglshader.h in Headers */ = {isa = PBXBuildFile; fileRef = 096AEA671EED90B9003CFA89 /* openglshader.h */; };
 		09AC2B671EE1B52E00291654 /* openglrenderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 09AC2B631EE1B52E00291654 /* openglrenderer.cc */; };
 		09AC2B681EE1B52E00291654 /* openglrenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09AC2B641EE1B52E00291654 /* openglrenderer.h */; };
 		09AC2B691EE1B52E00291654 /* renderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 09AC2B651EE1B52E00291654 /* renderer.cc */; };
 		09AC2B6A1EE1B52E00291654 /* renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 09AC2B661EE1B52E00291654 /* renderer.h */; };
 		09AC2B731EE1BBFE00291654 /* libGLEW.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AC2B721EE1BBFE00291654 /* libGLEW.a */; };
-		09AC2B751EE1C19900291654 /* libglfw3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 09AC2B741EE1C19900291654 /* libglfw3.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		095690691EE1771F00A9AF92 /* libtodgraphics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libtodgraphics.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		095D18DE1EE6E34800B5FE92 /* matrix44.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = matrix44.h; path = ../../todgraphics/tod/graphics/matrix44.h; sourceTree = "<group>"; };
 		095D18DF1EE6E3A000B5FE92 /* vector3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = vector3.h; path = ../../todgraphics/tod/graphics/vector3.h; sourceTree = "<group>"; };
-		095D18E21EE6F1B700B5FE92 /* libVc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVc.a; path = ../../external/libvc/lib/libVc.a; sourceTree = "<group>"; };
 		095D18E41EE77BB500B5FE92 /* todmath.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = todmath.cc; path = ../../todgraphics/tod/graphics/todmath.cc; sourceTree = "<group>"; };
 		095D18E51EE77BB500B5FE92 /* todmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = todmath.h; path = ../../todgraphics/tod/graphics/todmath.h; sourceTree = "<group>"; };
 		096AEA581EED831A003CFA89 /* main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cc; path = ../../todgraphics/tod/graphics/main.cc; sourceTree = "<group>"; };
 		096AEA591EED831A003CFA89 /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = main.h; path = ../../todgraphics/tod/graphics/main.h; sourceTree = "<group>"; };
 		096AEA5C1EED833B003CFA89 /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = config.h; path = ../../todgraphics/tod/graphics/config.h; sourceTree = "<group>"; };
+		096AEA641EED90AB003CFA89 /* shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = shader.h; path = ../../todgraphics/tod/graphics/shader.h; sourceTree = "<group>"; };
+		096AEA661EED90B9003CFA89 /* openglmesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = openglmesh.h; path = ../../todgraphics/tod/graphics/openglmesh.h; sourceTree = "<group>"; };
+		096AEA671EED90B9003CFA89 /* openglshader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = openglshader.h; path = ../../todgraphics/tod/graphics/openglshader.h; sourceTree = "<group>"; };
+		096AEA6A1EED90F7003CFA89 /* mesh.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = mesh.h; path = ../../todgraphics/tod/graphics/mesh.h; sourceTree = "<group>"; };
 		09AC2B631EE1B52E00291654 /* openglrenderer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = openglrenderer.cc; path = ../../todgraphics/tod/graphics/openglrenderer.cc; sourceTree = "<group>"; };
 		09AC2B641EE1B52E00291654 /* openglrenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = openglrenderer.h; path = ../../todgraphics/tod/graphics/openglrenderer.h; sourceTree = "<group>"; };
 		09AC2B651EE1B52E00291654 /* renderer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = renderer.cc; path = ../../todgraphics/tod/graphics/renderer.cc; sourceTree = "<group>"; };
 		09AC2B661EE1B52E00291654 /* renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = renderer.h; path = ../../todgraphics/tod/graphics/renderer.h; sourceTree = "<group>"; };
 		09AC2B721EE1BBFE00291654 /* libGLEW.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGLEW.a; path = ../../external/glew/lib/libGLEW.a; sourceTree = "<group>"; };
-		09AC2B741EE1C19900291654 /* libglfw3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libglfw3.a; path = ../../external/glfw/lib/libglfw3.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,7 +46,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09AC2B751EE1C19900291654 /* libglfw3.a in Frameworks */,
 				09AC2B731EE1BBFE00291654 /* libGLEW.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -70,26 +73,60 @@
 		0956907A1EE177CE00A9AF92 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				096AEA6B1EED9246003CFA89 /* component */,
+				096AEA631EED9082003CFA89 /* interface */,
+				096AEA611EED8FE7003CFA89 /* math */,
+				096AEA5D1EED8F08003CFA89 /* opengl */,
 				096AEA581EED831A003CFA89 /* main.cc */,
 				096AEA591EED831A003CFA89 /* main.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		096AEA5D1EED8F08003CFA89 /* opengl */ = {
+			isa = PBXGroup;
+			children = (
 				09AC2B631EE1B52E00291654 /* openglrenderer.cc */,
 				09AC2B641EE1B52E00291654 /* openglrenderer.h */,
-				09AC2B651EE1B52E00291654 /* renderer.cc */,
-				09AC2B661EE1B52E00291654 /* renderer.h */,
+				096AEA661EED90B9003CFA89 /* openglmesh.h */,
+				096AEA671EED90B9003CFA89 /* openglshader.h */,
+			);
+			name = opengl;
+			sourceTree = "<group>";
+		};
+		096AEA611EED8FE7003CFA89 /* math */ = {
+			isa = PBXGroup;
+			children = (
 				095D18DE1EE6E34800B5FE92 /* matrix44.h */,
 				095D18DF1EE6E3A000B5FE92 /* vector3.h */,
 				095D18E41EE77BB500B5FE92 /* todmath.cc */,
 				095D18E51EE77BB500B5FE92 /* todmath.h */,
-				096AEA5C1EED833B003CFA89 /* config.h */,
 			);
-			name = Source;
+			name = math;
+			sourceTree = "<group>";
+		};
+		096AEA631EED9082003CFA89 /* interface */ = {
+			isa = PBXGroup;
+			children = (
+				09AC2B651EE1B52E00291654 /* renderer.cc */,
+				09AC2B661EE1B52E00291654 /* renderer.h */,
+				096AEA5C1EED833B003CFA89 /* config.h */,
+				096AEA641EED90AB003CFA89 /* shader.h */,
+				096AEA6A1EED90F7003CFA89 /* mesh.h */,
+			);
+			name = interface;
+			sourceTree = "<group>";
+		};
+		096AEA6B1EED9246003CFA89 /* component */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = component;
 			sourceTree = "<group>";
 		};
 		09AC2B711EE1BBFD00291654 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				095D18E21EE6F1B700B5FE92 /* libVc.a */,
-				09AC2B741EE1C19900291654 /* libglfw3.a */,
 				09AC2B721EE1BBFE00291654 /* libGLEW.a */,
 			);
 			name = Frameworks;
@@ -105,6 +142,9 @@
 				095D18E71EE77BB500B5FE92 /* todmath.h in Headers */,
 				096AEA5B1EED831A003CFA89 /* main.h in Headers */,
 				09AC2B681EE1B52E00291654 /* openglrenderer.h in Headers */,
+				096AEA651EED90AB003CFA89 /* shader.h in Headers */,
+				096AEA681EED90B9003CFA89 /* openglmesh.h in Headers */,
+				096AEA691EED90B9003CFA89 /* openglshader.h in Headers */,
 				09AC2B6A1EE1B52E00291654 /* renderer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -224,13 +264,9 @@
 					"$(SRCROOT)/../../external/curl/xcode/include",
 					"$(SRCROOT)/../../external/rapidjson/include",
 					"$(SRCROOT)/../../external/glew/include",
-					"$(SRCROOT)/../../external/glfw/include",
 					"$(SRCROOT)/../../external/glm",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(SRCROOT)/../../external/glew/lib",
-					"$(SRCROOT)/../../external/glfw/lib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../external/glew/lib";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -280,13 +316,9 @@
 					"$(SRCROOT)/../../external/curl/xcode/include",
 					"$(SRCROOT)/../../external/rapidjson/include",
 					"$(SRCROOT)/../../external/glew/include",
-					"$(SRCROOT)/../../external/glfw/include",
 					"$(SRCROOT)/../../external/glm",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(SRCROOT)/../../external/glew/lib",
-					"$(SRCROOT)/../../external/glfw/lib",
-				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../external/glew/lib";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;

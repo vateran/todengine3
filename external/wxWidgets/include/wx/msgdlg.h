@@ -92,7 +92,7 @@ public:
         : m_message(message),
           m_caption(caption)
     {
-        m_parent = parent;
+        m_parent = GetParentForModalDialog(parent, style);
         SetMessageDialogStyle(style);
     }
 
@@ -103,8 +103,9 @@ public:
 
     // Title and caption are the same thing, GetCaption() mostly exists just
     // for compatibility.
-    virtual void SetTitle(const wxString& title) { m_caption = title; }
-    virtual wxString GetTitle() const { return m_caption; }
+    virtual void SetTitle(const wxString& title) wxOVERRIDE { m_caption = title; }
+    virtual wxString GetTitle() const wxOVERRIDE { return m_caption; }
+
 
     virtual void SetMessage(const wxString& message)
     {
@@ -190,7 +191,6 @@ public:
         DoSetCustomLabel(m_help, help);
         return true;
     }
-
     // test if any custom labels were set
     bool HasCustomLabels() const
     {
@@ -297,8 +297,6 @@ private:
     (defined(__WXGTK__) && !defined(__WXGTK20__))
 
     #define wxMessageDialog wxGenericMessageDialog
-#elif defined(__WXCOCOA__)
-    #include "wx/cocoa/msgdlg.h"
 #elif defined(__WXMSW__)
     #include "wx/msw/msgdlg.h"
 #elif defined(__WXMOTIF__)
@@ -307,8 +305,8 @@ private:
     #include "wx/gtk/msgdlg.h"
 #elif defined(__WXMAC__)
     #include "wx/osx/msgdlg.h"
-#elif defined(__WXPM__)
-    #include "wx/os2/msgdlg.h"
+#elif defined(__WXQT__)
+    #include "wx/qt/msgdlg.h"
 #endif
 
 // ----------------------------------------------------------------------------

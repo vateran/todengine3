@@ -15,17 +15,6 @@
 
 #include "wx/defs.h"
 
-#ifdef wxNEEDS_STRICT_ANSI_WORKAROUNDS
-    /*
-        In addition to declaring _finite() ourselves below, we also must work
-        around a compilation error in MinGW standard header itself, see
-        https://sourceforge.net/p/mingw/bugs/2250/
-     */
-    #ifndef __NO_INLINE__
-        #define __NO_INLINE__
-    #endif
-#endif
-
 #include <math.h>
 
 #ifndef M_PI
@@ -64,18 +53,11 @@
 
 #ifdef __cplusplus
 
-/*
-    Things are simple with C++11: we have everything we need in std.
-    Eventually we will only have this section and not the legacy stuff below.
- */
+/* Any C++11 compiler should provide isfinite() */
 #if __cplusplus >= 201103
     #include <cmath>
-
     #define wxFinite(x) std::isfinite(x)
-    #define wxIsNaN(x) std::isnan(x)
-#else /* C++98 */
-
-#if defined(__VISUALC__) || defined(__BORLANDC__) || defined(__WATCOMC__)
+#elif defined(__VISUALC__) || defined(__BORLANDC__)
     #include <float.h>
     #define wxFinite(x) _finite(x)
 #elif defined(__MINGW64_TOOLCHAIN__) || defined(__clang__)
@@ -90,10 +72,10 @@
         #define wxFinite(x) isfinite(x)
     #endif
 #elif defined(wxNEEDS_STRICT_ANSI_WORKAROUNDS)
-    wxDECL_FOR_STRICT_MINGW32(int, _finite, (double));
+    wxDECL_FOR_STRICT_MINGW32(int, _finite, (double))
 
     #define wxFinite(x) _finite(x)
-#elif ( defined(__GNUG__)||defined(__GNUWIN32__)||defined(__DJGPP__)|| \
+#elif ( defined(__GNUG__)||defined(__GNUWIN32__)|| \
       defined(__SGI_CC__)||defined(__SUNCC__)||defined(__XLC__)|| \
       defined(__HPUX__) ) && ( !defined(wxOSX_USE_IPHONE) || wxOSX_USE_IPHONE == 0 )
 #ifdef __SOLARIS__
@@ -107,15 +89,13 @@
 
 #if defined(__VISUALC__)||defined(__BORLAND__)
     #define wxIsNaN(x) _isnan(x)
-#elif defined(__GNUG__)||defined(__GNUWIN32__)||defined(__DJGPP__)|| \
+#elif defined(__GNUG__)||defined(__GNUWIN32__)|| \
       defined(__SGI_CC__)||defined(__SUNCC__)||defined(__XLC__)|| \
       defined(__HPUX__)
     #define wxIsNaN(x) isnan(x)
 #else
     #define wxIsNaN(x) ((x) != (x))
 #endif
-
-#endif /* C++11/C++98 */
 
 #ifdef __INTELC__
 
@@ -157,10 +137,14 @@ inline int wxRound(double x)
     #endif
 }
 
+// Convert between degrees and radians.
+inline double wxDegToRad(double deg) { return (deg * M_PI) / 180.0; }
+inline double wxRadToDeg(double rad) { return (rad * 180.0) / M_PI; }
+
 #endif /* __cplusplus */
 
 
-#if defined(__WINDOWS__) && !defined(__WXWINCE__)
+#if defined(__WINDOWS__)
     #define wxMulDivInt32( a , b , c ) ::MulDiv( a , b , c )
 #else
     #define wxMulDivInt32( a , b , c ) (wxRound((a)*(((wxDouble)b)/((wxDouble)c))))
@@ -185,5 +169,7 @@ inline int wxRound(double x)
 #endif
 #endif /* wxUSE_APPLE_IEEE */
 
+/* Compute the greatest common divisor of two positive integers */
+WXDLLIMPEXP_BASE unsigned int wxGCD(unsigned int u, unsigned int v);
 
 #endif /* _WX_MATH_H_ */

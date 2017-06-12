@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // Name:        src/osx/cocoa/nonownedwnd.mm
 // Purpose:     non owned window for cocoa
-// Author:      DavidStefan Csomor
+// Author:      Stefan Csomor
 // Modified by:
 // Created:     2008-06-20
 // Copyright:   (c) Stefan Csomor
@@ -89,6 +89,11 @@ bool shouldHandleSelector(SEL selector)
 
     return true;
 
+}
+
+static bool IsUsingFullScreenApi(WXWindow macWindow)
+{
+    return ([macWindow collectionBehavior] & NSWindowCollectionBehaviorFullScreenPrimary);
 }
 
 //
@@ -300,7 +305,7 @@ static NSResponder* s_formerFirstResponder = NULL;
 // controller
 //
 
-@interface wxNonOwnedWindowController : NSObject wxOSX_10_6_AND_LATER(<NSWindowDelegate>)
+@interface wxNonOwnedWindowController : NSObject <NSWindowDelegate>
 {
 }
 
@@ -313,6 +318,7 @@ static NSResponder* s_formerFirstResponder = NULL;
 - (void)windowDidDeminiaturize:(NSNotification *)notification;
 - (BOOL)windowShouldClose:(id)window;
 - (BOOL)windowShouldZoom:(NSWindow *)window toFrame:(NSRect)newFrame;
+- (void)windowWillEnterFullScreen:(NSNotification *)notification;
 
 @end
 
@@ -569,9 +575,29 @@ extern int wxOSXGetIdFromSelector(SEL action );
     return true;
 }
 
+// work around OS X bug, on a secondary monitor an already fully sized window
+// (eg maximized) will not be correctly put to full screen size and keeps a 22px
+// title band at the top free, therefore we force the correct content size
+
+- (void)windowWillEnterFullScreen:(NSNotification *)notification
+{
+    NSWindow* window = (NSWindow*) [notification object];
+
+    NSView* view = [window contentView];
+    NSRect windowframe = [window frame];
+    NSRect viewframe = [view frame];
+    NSUInteger stylemask = [window styleMask] | NSFullScreenWindowMask;
+    NSRect expectedframerect = [NSWindow contentRectForFrameRect: windowframe styleMask: stylemask];
+    
+    if ( !NSEqualSizes(expectedframerect.size, viewframe.size) )
+    {
+        [view setFrameSize: expectedframerect.size];
+    }
+}
+
 @end
 
-IMPLEMENT_DYNAMIC_CLASS( wxNonOwnedWindowCocoaImpl , wxNonOwnedWindowImpl )
+wxIMPLEMENT_DYNAMIC_CLASS(wxNonOwnedWindowCocoaImpl , wxNonOwnedWindowImpl);
 
 wxNonOwnedWindowCocoaImpl::wxNonOwnedWindowCocoaImpl( wxNonOwnedWindow* nonownedwnd) :
     wxNonOwnedWindowImpl(nonownedwnd)
@@ -813,10 +839,7 @@ bool wxNonOwnedWindowCocoaImpl::SetTransparent(wxByte alpha)
 
 bool wxNonOwnedWindowCocoaImpl::SetBackgroundColour(const wxColour& col )
 {
-    [m_macWindow setBackgroundColor:[NSColor colorWithCalibratedRed:(CGFloat) (col.Red() / 255.0)
-                                                             green:(CGFloat) (col.Green() / 255.0)
-                                                              blue:(CGFloat) (col.Blue() / 255.0)
-                                                             alpha:(CGFloat) (col.Alpha() / 255.0)]];
+    [m_macWindow setBackgroundColor:col.OSXGetNSColor()];
     return true;
 }
 
@@ -913,6 +936,27 @@ void wxNonOwnedWindowCocoaImpl::SetTitle( const wxString& title, wxFontEncoding 
     [m_macWindow setTitle:wxCFStringRef( title , encoding ).AsNSString()];
 }
 
+bool wxNonOwnedWindowCocoaImpl::EnableCloseButton(bool enable)
+{
+    [[m_macWindow standardWindowButton:NSWindowCloseButton] setEnabled:enable];
+
+    return true;
+}
+
+bool wxNonOwnedWindowCocoaImpl::EnableMaximizeButton(bool enable)
+{
+    [[m_macWindow standardWindowButton:NSWindowZoomButton] setEnabled:enable];
+
+    return true;
+}
+
+bool wxNonOwnedWindowCocoaImpl::EnableMinimizeButton(bool enable)
+{
+    [[m_macWindow standardWindowButton:NSWindowMiniaturizeButton] setEnabled:enable];
+
+    return true;
+}
+
 bool wxNonOwnedWindowCocoaImpl::IsMaximized() const
 {
     if (([m_macWindow styleMask] & NSResizableWindowMask) != 0)
@@ -960,11 +1004,42 @@ typedef struct
 
 bool wxNonOwnedWindowCocoaImpl::IsFullScreen() const
 {
+    if ( IsUsingFullScreenApi(m_macWindow) )
+    {
+        return [m_macWindow styleMask] & NSFullScreenWindowMask;
+    }
+
     return m_macFullScreenData != NULL ;
+}
+
+bool wxNonOwnedWindowCocoaImpl::EnableFullScreenView(bool enable)
+{
+    NSUInteger collectionBehavior = [m_macWindow collectionBehavior];
+    if (enable)
+    {
+        collectionBehavior |= NSWindowCollectionBehaviorFullScreenPrimary;
+    }
+    else
+    {
+        collectionBehavior &= ~NSWindowCollectionBehaviorFullScreenPrimary;
+    }
+    [m_macWindow setCollectionBehavior: collectionBehavior];
+
+    return true;
 }
 
 bool wxNonOwnedWindowCocoaImpl::ShowFullScreen(bool show, long WXUNUSED(style))
 {
+    if ( IsUsingFullScreenApi(m_macWindow) )
+    {
+        if ( show != IsFullScreen() )
+        {
+            [m_macWindow toggleFullScreen: nil];
+        }
+
+        return true;
+    }
+
     if ( show )
     {
         FullScreenData *data = (FullScreenData *)m_macFullScreenData ;
@@ -975,18 +1050,12 @@ bool wxNonOwnedWindowCocoaImpl::ShowFullScreen(bool show, long WXUNUSED(style))
         data->m_formerLevel = [m_macWindow level];
         data->m_formerFrame = [m_macWindow frame];
         data->m_formerStyleMask = [m_macWindow styleMask];
-#if 0
-        // CGDisplayCapture( kCGDirectMainDisplay );
-        //[m_macWindow setLevel:NSMainMenuWindowLevel+1/*CGShieldingWindowLevel()*/];
-#endif
+
         NSRect screenframe = [[NSScreen mainScreen] frame];
         NSRect frame = NSMakeRect (0, 0, 100, 100);
         NSRect contentRect;
 
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6
-        if ( [ m_macWindow respondsToSelector:@selector(setStyleMask:) ] )
-            [m_macWindow setStyleMask:data->m_formerStyleMask & ~ NSResizableWindowMask];
-#endif
+        [m_macWindow setStyleMask:data->m_formerStyleMask & ~ NSResizableWindowMask];
         
         contentRect = [NSWindow contentRectForFrameRect: frame
                                 styleMask: [m_macWindow styleMask]];
@@ -1004,16 +1073,10 @@ bool wxNonOwnedWindowCocoaImpl::ShowFullScreen(bool show, long WXUNUSED(style))
     else if ( m_macFullScreenData != NULL )
     {
         FullScreenData *data = (FullScreenData *) m_macFullScreenData ;
-#if 0
-        // CGDisplayRelease( kCGDirectMainDisplay );
-        // [m_macWindow setLevel:data->m_formerLevel];
-#endif
         
         [m_macWindow setFrame:data->m_formerFrame display:YES];
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6
-        if ( [ m_macWindow respondsToSelector:@selector(setStyleMask:) ] )
-            [m_macWindow setStyleMask:data->m_formerStyleMask];
-#endif
+        [m_macWindow setStyleMask:data->m_formerStyleMask];
+
         delete data ;
         m_macFullScreenData = NULL ;
 

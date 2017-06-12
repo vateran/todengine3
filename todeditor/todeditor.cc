@@ -1,12 +1,14 @@
 #include "wx/wx.h"
 #include "wx/aui/aui.h"
 #include "wx/treectrl.h"
+#include "wx/glcanvas.h"
 #include "tod/node.h"
 #include "tod/kernel.h"
 #include "tod/serializer.h"
 #include "tod/type.h"
 #include "tod/graphics/main.h"
 #include "tod/graphics/renderer.h"
+#include <GLUT/glut.h>
 
 
 typedef std::list<tod::ObjRef<tod::Node>> Selections;
@@ -642,7 +644,7 @@ public:
     wxWindow(parent, wxID_ANY)
     {
         this->renderer = static_cast<tod::graphics::Renderer*>
-            (tod::Kernel::instance()->create("OpenGlRenderer", "/sys/renderer"));
+            (tod::Kernel::instance()->create("Dx12Renderer", "/sys/renderer"));
         this->renderer->initialize((void*)this->GetHandle(), 640, 480, true);
 
         this->Bind(wxEVT_IDLE, [this](wxIdleEvent& event)
@@ -656,20 +658,89 @@ private:
     tod::graphics::Renderer* renderer;
 };
 
+class GLRenderView : public wxWindow
+{
+public:
+    GLRenderView(wxWindow* parent):
+    wxWindow(parent, wxID_ANY)
+    {
+        this->SetBackgroundStyle(wxBG_STYLE_CUSTOM);
+        auto sizer = new wxBoxSizer(wxVERTICAL);
+        this->SetSizer(sizer);
+        
+        wxGLAttributes disp_attrs;
+        disp_attrs.PlatformDefaults().MinRGBA(8, 8, 8, 8)
+            .DoubleBuffer()
+            .EndList();
+        
+        wxGLContextAttrs cxtAttrs;
+        cxtAttrs.CoreProfile();
+        cxtAttrs.PlatformDefaults();
+        cxtAttrs.EndList();
+        
+        auto canvas = new wxGLCanvas(this, disp_attrs);
+        this->context = new wxGLContext(canvas, nullptr, &cxtAttrs);
+        canvas->SetCurrent(*this->context);
+        sizer->Add(canvas, 1, wxEXPAND);
+        
+        this->renderer = static_cast<tod::graphics::Renderer*>
+        (tod::Kernel::instance()->create("OpenGlRenderer", "/sys/renderer"));
+        this->renderer->initialize(canvas->GetHandle(), 640, 480, true);
+        
+        this->Bind(wxEVT_PAINT, [this, canvas](wxPaintEvent& event)
+        {
+            this->context->SetCurrent(*canvas);
+            
+            wxPaintDC dc(this);
+            dc.DrawRectangle(0, 0, this->GetClientSize().GetWidth(),
+                             this->GetClientSize().GetHeight());
+            
+            this->renderer->render(nullptr, tod::Kernel::instance()->lookup("/node1"));
+            
+            canvas->SwapBuffers();
+            
+            wxMilliSleep(0);
+        });
+        this->Bind(wxEVT_SIZE, [this](wxSizeEvent& event)
+        {
+            const auto& csize = this->GetClientSize();
+            glViewport(0, 0, csize.GetWidth(), csize.GetHeight());
+            event.Skip();
+        });
+    }
+    
+private:
+    tod::graphics::Renderer* renderer;
+    wxGLContext* context;
+};
+
 class MainFrame : public wxFrame
 {
 public:
     MainFrame():wxFrame(nullptr, -1, wxT("TodEditor"))
     {
+        tod::Kernel::instance()->init();
+        std::list<tod::String> paths;
+        paths.push_back(".");
+        paths.push_back("../../../..");
+        tod::FileSystem::instance()->setSearchPaths(paths);
+        
         tod::graphics::init();
 
         this->auiMgr.SetManagedWindow(this);
         this->auiMgr.SetArtProvider(new ArtProvider);
-
-        //RenderView
-        auto render_view = new RenderView(this);
-        this->auiMgr.AddPane(render_view, wxAuiPaneInfo().Center());
         
+        //RenderView
+        #ifdef PLATFORM_WINDOWS
+        auto render_view = new RenderView(this);
+        #else
+        auto render_view = new GLRenderView(this);
+        #endif
+        this->auiMgr.AddPane(render_view,
+                             wxAuiPaneInfo()
+                             .Center()
+                             .CaptionVisible(false)
+                             .MinSize(wxSize(300, 300)));
         
         //Node Hierarchy
         this->nodeHierarchy = new NodeHierarchy(this);
