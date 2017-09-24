@@ -1,0 +1,16 @@
+//-----------------------------------------------------------------------------
+float computeViewZFromDepth(mat4 proj, sampler2D depth_tex, vec2 tex_coord)
+{
+    float depth = texture(depth_tex, tex_coord).r;
+    return proj[3][2] / (-2.0 * depth + 1.0 - proj[2][2]);
+}
+
+
+//-----------------------------------------------------------------------------
+vec3 computeFragPosFromDepth(mat4 proj, sampler2D depth_tex, vec2 view_ray, vec2 tex_coord)
+{
+    float view_z = computeViewZFromDepth(proj, depth_tex, tex_coord);
+    float view_x = -view_ray.x * view_z;
+    float view_y = -view_ray.y * view_z;
+    return vec3(view_x, view_y, view_z);
+}

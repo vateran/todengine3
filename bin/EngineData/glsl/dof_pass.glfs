@@ -1,0 +1,45 @@
+#version 400
+#include "EngineData/glsl/common.glfs"
+
+out vec4 FragColor;
+  
+in vec2 TexCoord;
+in vec2 ViewRay;
+
+uniform sampler2D Scene;
+uniform sampler2D Blur;
+uniform sampler2D Depth;
+uniform vec4 DOFParam;
+uniform mat4 ProjectionMatrix;
+
+float ComputeDepthBlur(float depth)
+{
+    float f;
+    float focal_plane = DOFParam.y;
+
+    depth = -depth;
+
+    if (depth < focal_plane)  
+    {
+        f = (focal_plane - depth) / (focal_plane - DOFParam.x);
+    }
+    else
+    {
+        f = (depth - focal_plane - 10) / (DOFParam.z - focal_plane - 10);
+        f = clamp(f, 0, 1);
+    }
+
+    return f / DOFParam.w;
+}
+
+
+void main()
+{
+    vec3 scene_color = texture(Scene, TexCoord).rgb;
+    vec3 blur_color = texture(Blur, TexCoord).rgb;
+    vec3 frag_view_pos = computeFragPosFromDepth(
+        ProjectionMatrix, Depth, ViewRay, TexCoord);
+    float depth = frag_view_pos.z;
+    float ratio = ComputeDepthBlur(depth);
+    FragColor = vec4(mix(scene_color, blur_color, ratio), 1.0);
+}

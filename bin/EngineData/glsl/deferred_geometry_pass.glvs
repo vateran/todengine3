@@ -1,0 +1,27 @@
+#version 400
+#include "EngineData/glsl/toddefines.glvs"
+
+layout (location = POSITION) in vec3 inPosition;
+layout (location = NORMAL) in vec3 inNormal;
+layout (location = TANGENT) in vec3 inTangent;
+layout (location = TEXCOORD0) in vec2 inTexCoord;
+
+uniform mat4 WorldMatrix;
+uniform mat4 ViewMatrix;
+uniform mat4 ProjViewWorldMatrix;
+
+out vec2 TexCoord;
+out mat3 TBN;
+
+void main()
+{
+	TexCoord = inTexCoord;
+	
+	mat3 normal_matrix = transpose(inverse(mat3(WorldMatrix)));
+	vec3 T = normalize(normal_matrix * inTangent);
+	vec3 N = normalize(normal_matrix * inNormal);
+	vec3 B = cross(T, N);
+	TBN = mat3(T, B, N);
+
+	gl_Position = ProjViewWorldMatrix * vec4(inPosition, 1.0);
+}

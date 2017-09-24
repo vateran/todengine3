@@ -1,0 +1,55 @@
+#version 400
+#include "EngineData/glsl/common.glfs"
+
+out float FragColor;
+
+//-----------------------------------------------------------------------------
+in vec2 ViewRay;
+in vec2 TexCoord;
+
+uniform sampler2D NormalTex;
+uniform sampler2D NoiseTex;
+uniform sampler2D DepthTex;
+
+const int MAX_SAMPLES = 64;
+uniform vec3 Samples[MAX_SAMPLES];
+
+uniform int KernelSize;
+uniform float SampleRadius;
+uniform float Bias;
+uniform mat4 ViewMatrix;
+uniform mat4 ProjectionMatrix;
+
+void main()
+{
+    vec2 noise_scale = textureSize(NormalTex, 0)/4;
+    vec3 frag_pos = computeFragPosFromDepth(
+        ProjectionMatrix, DepthTex, ViewRay, TexCoord);
+    vec3 normal = normalize(texture(NormalTex, TexCoord)).xyz;
+    vec3 random_vec = normalize(texture(NoiseTex, TexCoord * noise_scale).xyz);
+
+    //Create TBN(change of basis matrix: from tangent-space to view-space)
+    vec3 tangent = normalize(random_vec - normal * dot(random_vec, normal));
+    vec3 bitangent = cross(normal, tangent);
+    mat3 TBN = mat3(tangent, bitangent, normal);
+
+    float occlusion = 0.0;
+    for (int i=0;i<KernelSize;++i)
+    {
+        vec3 sampled = TBN * Samples[i];
+        sampled = frag_pos + sampled * SampleRadius;
+
+        vec4 offset = vec4(sampled, 1.0);
+        offset = ProjectionMatrix * offset;
+        offset.xyz /= offset.w;
+        offset.xyz = offset.xyz * 0.5 + 0.5;
+
+        float sampled_depth = computeViewZFromDepth(ProjectionMatrix, DepthTex, offset.xy);
+        float range_check = smoothstep(0.0, 1.0, SampleRadius / abs(frag_pos.z - sampled_depth));
+        occlusion += (sampled_depth >= sampled.z + Bias ? 1.0 : 0.0) * range_check;
+    }
+
+    occlusion = 1.0 - (occlusion / KernelSize);
+
+    FragColor = occlusion;
+}

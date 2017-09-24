@@ -1,0 +1,19 @@
+#version 400
+#include "EngineData/glsl/toddefines.glvs"
+layout (location = POSITION) in vec3 inPosition;
+
+out vec2 TexCoord;
+out vec2 ViewRay;
+
+uniform float AspectRatio;
+uniform float TanHalfFOV;
+
+void main()
+{
+    gl_Position = vec4(inPosition, 1.0);
+
+    //inPosition.xy 값(Quad Vertex값)이 -1~1 값이므로 -> 0~1 사이값으로 만들어주면 TexCoord가 됨
+    TexCoord = (inPosition.xy + vec2(1.0)) / 2.0;
+    ViewRay.x = inPosition.x * AspectRatio * TanHalfFOV;
+    ViewRay.y = inPosition.y * TanHalfFOV;
+}

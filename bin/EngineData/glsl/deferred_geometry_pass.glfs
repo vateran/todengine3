@@ -1,0 +1,23 @@
+#version 400
+layout (location = 0) out vec3 outNormal;
+layout (location = 1) out vec4 outAlbedoSpecular;
+
+in vec2 TexCoord;
+in mat3 TBN;
+in vec3 Normal;
+
+uniform sampler2D DiffuseTex;
+uniform sampler2D SpecularTex;
+uniform sampler2D NormalTex;
+
+void main()
+{
+    vec3 N = texture(NormalTex, TexCoord).rgb;
+    N = normalize(N * 2.0  - 1.0);
+    N = normalize(TBN * N);
+
+    //outNormal = vec3(0,0,1);
+    outNormal = N;
+    outAlbedoSpecular.rgb = texture(DiffuseTex, TexCoord).rgb;
+    outAlbedoSpecular.a = texture(SpecularTex, TexCoord).r;
+}
