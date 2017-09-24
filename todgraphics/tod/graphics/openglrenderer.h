@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "tod/graphics/renderer.h"
-#include "tod/graphics/openglshader.h"
-#include "tod/graphics/openglmesh.h"
+#include "tod/graphics/openglfunc.h"
 namespace tod::graphics
 {
     
@@ -9,14 +8,21 @@ class OpenGlRenderer : public Derive<OpenGlRenderer, Renderer>
 {
 public:
     bool initialize(
-        void* window_handle,
+        void* opengl_func,
         int width, int height,
         bool windowed) override;
     
-    bool render(Camera* camera, Node* scene_root) override;
+    void setViewport(int width, int height) override;
+    void enableZTest(bool value) override;
+    void enableAlphaTest(bool value) override;
+    void cullFace(CullFace value) override;
     
-    Shader* createShader() override { return new OpenGlShader; }
-    Mesh* createMesh() override { return new OpenGlMesh; }
+    Shader* createShader() override;
+    Mesh* createMesh(const String& name) override;
+    Texture* createTexture(const String& name) override;
+    RenderTarget* createRenderTarget(const String& name) override;
+    Camera* createCamera() override;
+
 };
     
 }

@@ -5,56 +5,179 @@
 #include <Windows.h>
 #endif
 #include "tod/graphics/openglrenderer.h"
-#include "tod/filesystem.h"
-#include <GL/glew.h>
-#include <glm/glm.hpp>
+#include "tod/graphics/openglshader.h"
+#include "tod/graphics/openglmesh.h"
+#include "tod/graphics/opengltexture.h"
+#include "tod/graphics/openglrendertarget.h"
+#include "tod/graphics/openglcamera.h"
 
-//Library link
-#pragma comment(lib, "opengl32.lib")
-#pragma comment(lib, "glew32.lib")
-#pragma comment(lib, "glew32s.lib")
-#pragma comment(lib, "glfw3dll.lib")
+
+#include "tod/graphics/modelcomponent.h"
 
 namespace tod::graphics
 {
+
+
+//-----------------------------------------------------------------------------
+OpenGl::FuncsType* OpenGl::funcs = nullptr;
+    
+
+//-----------------------------------------------------------------------------
+void OpenGl::checkError()
+{
+    auto err = OpenGl::funcs->glGetError();
+    switch (err)
+    {
+    case GL_NO_ERROR: break;
+    case GL_INVALID_ENUM:
+        printf("OpenGlError:GL_INVALID_ENUM\n");
+        break;
+    case GL_INVALID_OPERATION:
+        printf("OpenGlError:GL_INVALID_OPERATION\n");
+        break;
+    case GL_INVALID_VALUE:
+        printf("OpenGlError:GL_INVALID_VALUE\n");
+        break;
+    case GL_STACK_OVERFLOW:
+        printf("OpenGlError:GL_STACK_OVERFLOW\n");
+        break;
+    case GL_STACK_UNDERFLOW:
+        printf("OpenGlError:GL_STACK_UNDERFLOW\n");
+        break;
+    case GL_OUT_OF_MEMORY:
+        printf("OpenGlError:OpenGlError\n");
+        break;
+    case GL_INVALID_FRAMEBUFFER_OPERATION:
+        printf("OpenGlError:GL_INVALID_FRAMEBUFFER_OPERATION\n");
+        break;
+    }
+}
+    
     
 //-----------------------------------------------------------------------------
 bool OpenGlRenderer::initialize
-(void* window_handle, int width, int height, bool windowed)
+(void* context, int width, int height, bool windowed)
 {
-    glewExperimental = GL_TRUE;
-    glewInit();
+    OpenGl::funcs = static_cast<OpenGl::FuncsType*>(context);
     
-    const GLubyte* renderer = glGetString(GL_RENDERER);
-    const GLubyte* version = glGetString(GL_VERSION);
+    const auto renderer = OpenGl::funcs->glGetString(GL_RENDERER);
+    const auto version = OpenGl::funcs->glGetString(GL_VERSION);
     printf("Renderer: %s\n", renderer);
     printf("OpenGL version supported %s\n", version);
+
+    OpenGl::funcs->glEnable(GL_DEPTH_TEST);
+    OpenGl::funcs->glDepthFunc(GL_LESS);
     
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
-    
-    auto node = Kernel::instance()->create("Node", "/node1");
-    node->addComponent(newInstance<TransformComponent>());
-    auto shader_component = newInstance<ShaderComponent>();
-    shader_component->setVShaderFileName("BasicShader.glvs");
-    shader_component->setFShaderFileName("BasicShader.glfs");
-    node->addComponent(shader_component);
-    node->addComponent(newInstance<MeshComponent>());
-    
-    return true;
+    return BaseType::initialize(context, width, height, windowed);
 }
 
-    
+
 //-----------------------------------------------------------------------------
-bool OpenGlRenderer::render(Camera* camera, Node* scene_root)
+void OpenGlRenderer::setViewport(int width, int height)
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    Matrix44 t;
-    t.identity();
-    this->update_transform(scene_root, t, false);
-    
-    return true;
+    OpenGl::funcs->glViewport(0, 0, width, height);
 }
+
+
+//-----------------------------------------------------------------------------
+void OpenGlRenderer::enableZTest(bool value)
+{
+    if (value)
+        OpenGl::funcs->glEnable(GL_DEPTH_TEST);
+    else
+        OpenGl::funcs->glDisable(GL_DEPTH_TEST);
+}
+
+
+//-----------------------------------------------------------------------------
+void OpenGlRenderer::enableAlphaTest(bool value)
+{
+    if (value)
+        OpenGl::funcs->glEnable(GL_ALPHA_TEST);
+    else
+        OpenGl::funcs->glDisable(GL_ALPHA_TEST);
+}
+
+
+//-----------------------------------------------------------------------------
+void OpenGlRenderer::cullFace(CullFace value)
+{
+    switch (value)
+    {
+    case CullFace::FRONT:
+        OpenGl::funcs->glCullFace(GL_FRONT);
+        break;
+    case CullFace::BACK:
+        OpenGl::funcs->glCullFace(GL_BACK);
+        break;
+    }
+}
+
+
+//-----------------------------------------------------------------------------
+Shader* OpenGlRenderer::createShader()
+{
+    return new OpenGlShader;
+}
+
+
+//-----------------------------------------------------------------------------
+Mesh* OpenGlRenderer::createMesh(const String& name)
+{
+    if (!name.empty())
+    {
+        auto i = this->namedMeshes.find(name.hash());
+        if (this->namedMeshes.end() != i)
+        {
+            return i->second;
+        }
+    }
+
+    auto mesh = new OpenGlMesh(name);
     
+    if (!name.empty())
+    {
+        this->namedMeshes[name.hash()] = mesh;
+    }
+ 
+    return mesh;
+}
+
+
+//-----------------------------------------------------------------------------
+Texture* OpenGlRenderer::createTexture(const String& name)
+{
+    if (!name.empty())
+    {
+        auto i = this->namedTextures.find(name.hash());
+        if (this->namedTextures.end() != i)
+        {
+            return i->second;
+        }
+    }
+
+    auto texture = new OpenGlTexture(name);
+    
+    if (!name.empty())
+    {
+        this->namedTextures[name.hash()] = texture;
+    }
+ 
+    return texture;
+}
+
+
+//-----------------------------------------------------------------------------
+RenderTarget* OpenGlRenderer::createRenderTarget(const String& name)
+{
+    return new OpenGlRenderTarget(name);
+}
+
+
+//-----------------------------------------------------------------------------
+Camera* OpenGlRenderer::createCamera()
+{
+    return new OpenGlCamera;
+}
+
 }

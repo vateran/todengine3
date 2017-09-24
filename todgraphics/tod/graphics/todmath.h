@@ -1,7 +1,9 @@
 ﻿#pragma once
+#include <cmath>
 namespace tod::graphics
 {
-    
+
+//-----------------------------------------------------------------------------
 class Math
 {
 public:
@@ -17,6 +19,7 @@ public:
     static float acos(float x);
     static float tan(float rad);
     static float atan2(float x, float y);
+    static float power(float x, float y);
     static inline float deg2rad(float deg);
     static inline float rad2deg(float rad);
     
@@ -24,13 +27,15 @@ public:
     static void init() {}
 };
     
-    
+
+//-----------------------------------------------------------------------------
 float Math::deg2rad(float deg)
 {
     return deg * Math::DEG2RAD;
 }
-    
-    
+
+
+//-----------------------------------------------------------------------------
 float Math::rad2deg(float rad)
 {
     return rad * Math::RAD2DEG;

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/Resources">
+        <file>darkstyle.qss</file>
+    </qresource>
+</RCC>

@@ -11,8 +11,11 @@ public:
     
     virtual bool begin()=0;
     virtual void end()=0;
-    virtual bool load(const String& vshader_fname, const String& fshader_fname)=0;
+    virtual bool load(const String& vshader_fname, const String& pshader_fname)=0;
     virtual void unload()=0;
+    
+    virtual bool setParam(const String& name, const std::any& value)=0;
+    virtual bool commitParams()=0;
 };
 
 }

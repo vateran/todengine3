@@ -1,222 +1,136 @@
 ﻿#pragma once
 #include "tod/coreforward.h"
 #include "tod/filesystem.h"
+#include "tod/rect.h"
 #include "tod/graphics/vector3.h"
+#include "tod/graphics/vector4.h"
 #include "tod/graphics/matrix44.h"
-#include "tod/graphics/shader.h"
-#include "tod/graphics/mesh.h"
+#include "tod/graphics/transform44.h"
 namespace tod::graphics
 {
-    
-class Renderer;
-typedef int64 ResourceId;
 
-template <typename T>
-class RectBase
-{
-public:
-    T x, y, w, h;
-};
-typedef RectBase<float> Rect;
-    
-    
-class Camera
-{
-public:
-    
-private:
-    bool clearColor;
-    bool clearDepth;
-    bool clearStencil;
-    //float near;
-    //float far;
-    Rect viewportRect;
-};
-
-
-
-class Light
-{
-public:
-};
-    
-class BoundingVolume
-{
-public:
-    virtual bool isCulled(Camera* camera)=0;
-    virtual void expand(BoundingVolume* other)=0;
-};
-    
-class SphereBoundingVolume : public BoundingVolume
-{
-public:
-    virtual bool isCulled(Camera* camera)
-    {
-        return false;
-    }
-    virtual void expand(BoundingVolume* other)
-    {
-    }
-};
-    
-class TransformComponent : public Derive<TransformComponent, Component>
-{
-public:
-    enum
-    {
-        TRANSFORM_DIRTY,
-        
-        MAX,
-    };
-public:
-    TransformComponent()
-    {
-        this->localTransform.identity();
-        this->flags[TRANSFORM_DIRTY] = true;
-    }
-    void updateWorldTransform(const Matrix44& parent_transform)
-    {
-        //TODO : 이렇게 곱하는거랑 곱하면서 복사하는 거랑 어느쪽이 빠른지 대결해보자
-        this->worldTransform = this->localTransform;
-        this->worldTransform *= parent_transform;
-        this->flags[TRANSFORM_DIRTY] = false;
-    }
-    void setTranslation(const Vector3& t)
-    {
-        this->localTransform.setTranslation(t);
-        this->flags[TRANSFORM_DIRTY] = true;
-    }
-    bool isTransformDirty() const { return this->flags[TRANSFORM_DIRTY]; }
-    const Matrix44& getLocalTransformMatrix() const
-    { return this->localTransform; }
-    //TODO : 아직 이번 프레임이 렌더링 되지 않았을 경우 worldTransform 이 업데이트 안된 경우가 있다
-    //아직 렌더링 되지 않았을때도 올바른 WorldTransform을 얻도록 해야함
-    const Matrix44& getWorldTransformMatrix() const
-    { return this->worldTransform; }
-    
-private:
-    Matrix44 localTransform;
-    Matrix44 worldTransform;
-    BoundingVolume* boundingVolume;
-    std::bitset<MAX> flags;
-};
-    
-class RenderComponent : public Derive<RenderComponent, Component>
-{
-public:
-    virtual void render()=0;
-};
-    
-
-
+class Shader;
+class Texture;
+class Mesh;
+class RenderTarget;
+class Camera;
+class TransformComponent;
+class RenderComponent;
 class ShaderComponent;
+class CameraComponent;
+class LightComponent;
+class ShadowCasterComponent;
+class Shading;
+class DeferredShading;
+
+enum class CullFace
+{
+    FRONT,
+    BACK,
+};
 
 class Renderer : public Derive<Renderer, Node>
 {
 public:
-    Camera camera;
+    typedef std::unordered_map<int, ObjRef<Texture>> NamedTextures;
+    typedef std::unordered_map<int, ObjRef<Mesh>> NamedMeshes;
     
-    virtual bool initialize(void* window_handle, int width, int height, bool windowed) { return false; }
-    virtual bool render(Camera* camera, Node* scene_root) { return false; }
+public:
+    Renderer();
+    virtual~Renderer();
+
+    virtual bool initialize(void* window_handle, int width, int height, bool windowed);
+    virtual bool render(Node* scene_root);
+    
+    virtual void setViewport(int width, int height) {}
+    virtual void drawTexture(Texture* texture);
+    virtual void enableZTest(bool value) {}
+    virtual void enableAlphaTest(bool value) {}
+    virtual void cullFace(CullFace value) {}
+    
     virtual Shader* createShader()=0;
-    virtual Mesh* createMesh()=0;
+    virtual Mesh* createMesh(const String& name=S(""))=0;
+    virtual Texture* createTexture(const String& name=S(""))=0;
+    virtual RenderTarget* createRenderTarget(const String& name)=0;
+    virtual Camera* createCamera()=0;
+    
+    NamedTextures& getNamedTextures() { return this->namedTextures; }
+    
+    void setSSAOKernelSize(int value);
+    int getSSAOKernelSize();
+    void setSSAOSampleRadius(float value);
+    float getSSAOSampleRadius();
+    void setSSAOBias(float value);
+    float getSSAOBias();
+    void setSSAOPower(float value);
+    float getSSAOPower();
+    
+    static void bindProperty();
+    
+public:
+    static float ScreenScale() { return 2.0f; }
     
 protected:
     void update_transform(Node* current, const Matrix44& parent_transform,
                           bool parent_transform_updated);
+    void render_cameras();
+    
+protected:
+    //RenderCommand list
+    struct RenderCommand
+    {
+        Node* node;
+        TransformComponent* transform;
+        ShaderComponent* shader;
+        RenderComponent* render;
+    };
+    typedef std::list<RenderCommand> RenderCommands;
+    RenderCommands renderCommands;
+    
+    
+    //Camera list
+    struct RenderCamera
+    {
+        TransformComponent* transform;
+        ShaderComponent* shader;
+        CameraComponent* camera;
+    };
+    typedef std::list<RenderCamera> RenderCameras;
+    RenderCameras renderCameras;
+    
+    
+    //Light list
+    struct RenderLight
+    {
+        TransformComponent* transform;
+        ShaderComponent* shader;
+        LightComponent* light;
+        ShadowCasterComponent* shadowCaster;
+    };
+    typedef std::list<RenderLight> RenderLights;
+    RenderLights renderLights;
+    
+    
+    //ShaderStack
+    std::stack<ShaderComponent*> shaderStack;
+    
+    
+    //Named Resources
+    NamedTextures namedTextures;
+    NamedMeshes namedMeshes;
+    
+    
+    Shading* shading;
+    
+    
+    //Deferred Rendering stuff
+    friend class DeferredShading;
+    DeferredShading* deferredShading;
+    
+    
+    //for Draw Texture
+    ObjRef<Mesh> quadMesh;
+    ObjRef<Shader> drawTextureShader;
 };
-    
-class ShaderComponent : public Derive<ShaderComponent, Component>
-{
-public:
-    ShaderComponent():
-    shader(nullptr),
-    renderer("/sys/renderer")
-    {
-        this->shader = this->renderer->createShader();
-    }
-    virtual~ShaderComponent()
-    {
-        SAFE_DELETE(this->shader);
-    }
-    virtual void begin()
-    {
-        if (nullptr == this->shader) return;
-        shader->begin();
-    }
-    virtual void end()
-    {
-        if (nullptr == this->shader) return;
-        shader->end();
-    }
-    void setVShaderFileName(const String& fname)
-    {
-        this->vshaderFileName = fname;
-        
-        this->load();
-    }
-    const String& getVShaderFileName()
-    {
-        return this->vshaderFileName;
-    }
-    void setFShaderFileName(const String& fname)
-    {
-        this->fshaderFileName = fname;
-        
-        this->load();
-    }
-    const String& getFShaderFileName()
-    {
-        return this->fshaderFileName;
-    }
-    
-    static void bindProperty()
-    {
-        BIND_PROPERTY(const String&, "vshader_fname", "",
-            setVShaderFileName, getVShaderFileName, "", PropertyAttr::DEFAULT);
-        BIND_PROPERTY(const String&, "fshader_fname", "",
-            setFShaderFileName, getFShaderFileName, "", PropertyAttr::DEFAULT);
-    }
-    
-private:
-    void load()
-    {
-        if (this->vshaderFileName.empty() || this->fshaderFileName.empty())
-            return;
-        this->shader->load(this->vshaderFileName, this->fshaderFileName);
-    }
-    
-private:
-    String vshaderFileName;
-    String fshaderFileName;
-    Shader* shader;
-    ObjRef<Renderer> renderer;
-};
-    
-class MeshComponent : public Derive<MeshComponent, RenderComponent>
-{
-public:
-    MeshComponent():
-    mesh(nullptr),
-    renderer("/sys/renderer")
-    {
-        this->mesh = this->renderer->createMesh();
-    }
-    virtual~MeshComponent()
-    {
-        SAFE_DELETE(this->mesh);
-    }
-    
-    void render() override
-    {
-        if (nullptr == this->mesh) return;
-        this->mesh->render();
-    }
-    
-private:
-    Mesh* mesh;
-    ObjRef<Renderer> renderer;
-};
-
     
 }

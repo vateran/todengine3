@@ -49,5 +49,12 @@ float Math::atan2(float x, float y)
 {
     return std::atan2f(x, y);
 }
+
+
+//-----------------------------------------------------------------------------
+float Math::power(float x, float y)
+{
+    return std::pow(x, y);
+}
     
 }
