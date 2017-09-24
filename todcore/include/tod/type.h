@@ -52,6 +52,7 @@ public:
     typedef std::unordered_map<int, Property*> Properties;
     typedef std::list<Property*> PropertyOrder;
     typedef std::unordered_map<int, Method*> Methods;
+    typedef std::list<Type*> DerivedTypes;
     
 public:
     Type(Type* base, const String& name);
@@ -71,19 +72,41 @@ public:
     void addMethod(Method* method);
     Method* findMethod(const String& method_name);
     
+    void setAbstract(bool value) { this->abstract = value; }
+    bool isAbstract() { return this->abstract; }
     Type* getBase() { return this->base; }
+    DerivedTypes& getDerivedTypes() { return this->derivedTypes; }
     const String& getName() const { return this->name; }
     int getNameHash() const { return this->nameHash; }
+    template <typename T>
+    bool isKindOf() const;
     
 private:
+    bool abstract;
     String name;
     int nameHash;
     Type* base;
+    DerivedTypes derivedTypes;
     Properties properties;
     PropertyOrder propertyOrder;
     PropertyOrder allPropertyOrder;
     Methods methods;
 };
+
+
+//-----------------------------------------------------------------------------
+template <typename T>
+bool Type::isKindOf() const
+{
+    auto cur = this;
+    while (cur)
+    {
+        if (T::get_type() == cur) return true;
+        cur = cur->base;
+    }
+    
+    return false;
+}
 
 
 //-----------------------------------------------------------------------------
@@ -97,6 +120,7 @@ public:
     ClassType(Type* base, const String& name):
     Type(base, name)
     {
+        this->setAbstract(ABSTRACT);
     }
     Object* createObject() override
     {
@@ -104,12 +128,12 @@ public:
     }
     void bindProperty() override
     {
-        if (&TYPE::bindProperty != BASE::bindProperty)
+        if (&TYPE::bindProperty != &BASE::bindProperty)
             TYPE::bindProperty();
     }
     void bindMethod() override
     {
-        if (&TYPE::bindMethod != BASE::bindMethod)
+        if (&TYPE::bindMethod != &BASE::bindMethod)
             TYPE::bindMethod();
     }
 };
@@ -150,19 +174,20 @@ public:
     ClassType(Type* base, const String& name):
     Type(base, name)
     {
+        this->setAbstract(true);
     }
     Object* createObject() override
     {
-        return nullptr;
+        TOD_RETURN_TRACE(nullptr);
     }
     void bindProperty() override
     {
-        if (&TYPE::bindProperty != BASE::bindProperty)
+        if (&TYPE::bindProperty != &BASE::bindProperty)
             TYPE::bindProperty();
     }
     void bindMethod() override
     {
-        if (&TYPE::bindMethod != BASE::bindMethod)
+        if (&TYPE::bindMethod != &BASE::bindMethod)
             TYPE::bindMethod();
     }
 };

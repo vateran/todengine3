@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "tod/string.h"
 namespace tod
 {
@@ -25,8 +25,9 @@ public:
     }
     static void toString(bool value, String& s)
     {
-        if(value) s.assign("true");
-        else s.assign("false");
+        static String s_true("true"), s_false("false");
+        if(value) s = s_true;
+        else s = s_false;
     }
 };
 

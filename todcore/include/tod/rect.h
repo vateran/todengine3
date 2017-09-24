@@ -1,5 +1,5 @@
 #pragma once
-namespace tod::graphics
+namespace tod
 {
 
 template <typename T>

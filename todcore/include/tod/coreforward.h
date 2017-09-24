@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stack>
+
 #include "tod/kernel.h"
 #include "tod/type.h"
 #include "tod/property.h"

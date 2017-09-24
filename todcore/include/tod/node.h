@@ -39,6 +39,8 @@ public:
     Node();
     virtual~Node();
     
+    int release() override;
+    
     //!@brief Node Hierarchy
     //@{
     bool addChild(Node* node);
@@ -49,17 +51,20 @@ public:
     //!@brief 지정된 이름의 Node 를 찾는다
     //!@param name 찾을 이름
     //!@param depth 지정된 depth 이상 tree 탐색을 하지 않는다
-    Node* findNodeByName(const String& name, int depth=-1) const;
+    Node* findNodeByName(const String& name, int depth=-1);
     //!@brief 지정된 상대경로의 Node를 반환
-    Node* getRelativeNode(const String& path) const;
+    Node* getRelativeNode(const String& path);
     //!@brief 자식 노드의 갯수를 반환
     int getChildCount() const
     { return static_cast<int>(this->children.size()); }
     //!@brief 자식 노드 전체를 반환
     Nodes& getChildren() { return this->children; }
+    Node* getChildAt(int index);
     //!@brief root Node 로 부터 절대 경로를 반환
     String getAbsolutePath() const;
     Node* getParent() { return this->parent; }
+    int indexOf(Node* child_node);
+    int getSelfIndex();
     //@}
     
     //!@brief Component System
@@ -71,19 +76,17 @@ public:
     template <typename T>
     T* findComponent();
     Component* findComponentByName(const String& name);
+    Components& getComponents() { return this->components; }
     //@}
 
     void setName(const String& name);
-    const String& getName() const { return this->name; }
+    const String& getName() { return this->name; }
     void setVisible(bool value) { this->flags[VISIBLE] = value; }
-    bool isVisible() const { return this->flags[VISIBLE]; }
+    bool isVisible() { return this->flags[VISIBLE]; }
     void setHidden(bool value) { this->flags[HIDDEN] = value; }
-    bool isHidden() const { return this->flags[HIDDEN]; }
+    bool isHidden() { return this->flags[HIDDEN]; }
     void setSerializable(bool value) { this->flags[SERIALIZABLE] = value; }
-    bool isSerializable() const { return this->flags[SERIALIZABLE]; }
-    
-    static void bindProperty();
-    static void bindMethod();
+    bool isSerializable() { return this->flags[SERIALIZABLE]; }
     
     //!@brief internal events
     //@{
@@ -92,6 +95,9 @@ public:
     virtual void onBeginDeserialize() {}
     virtual void onEndDeserialize() {}
     //@}
+    
+    static void bindProperty();
+    static void bindMethod();
     
 private:
     Node* parent;
@@ -102,7 +108,7 @@ private:
     std::bitset<FLAG_MAX> flags;
     
 private:
-    static Node* find_node_by_name(const Node* parent, int name_hash,
+    static Node* find_node_by_name(Node* parent, int name_hash,
                                    int depth, int limit_depth);
 };
     

@@ -1,9 +1,19 @@
-//
-//  random.cpp
-//  todcore
-//
-//  Created by BaekMinki on 2017. 8. 15..
-//  Copyright © 2017년 vateran.net. All rights reserved.
-//
+#include "tod/random.h"
+namespace tod
+{
 
-#include <stdio.h>
+//-----------------------------------------------------------------------------
+int Random::uniformInt(int min, int max)
+{
+    return this->gen() % (max - min + 1) + min;
+}
+
+
+//-----------------------------------------------------------------------------
+float Random::uniformFloat(float min, float max)
+{
+    double ret = this->gen();
+    return static_cast<float>((ret / this->gen.max()) * (max - min) + min);
+}
+
+}

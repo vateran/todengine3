@@ -4,8 +4,16 @@ namespace tod
     
 //-----------------------------------------------------------------------------
 Object::Object():
-refCount(0)
+refCount(0),
+dynamicProperties(nullptr)
 {
+}
+
+
+//-----------------------------------------------------------------------------
+Object::~Object()
+{
+    SAFE_DELETE(this->dynamicProperties);
 }
     
 
@@ -19,6 +27,7 @@ void Object::retain()
 //-----------------------------------------------------------------------------
 int Object::release()
 {
+    TOD_ASSERT(this->refCount >= 0);
     if (--this->refCount <= 0)
     {
         delete this;
@@ -31,7 +40,9 @@ int Object::release()
 //-----------------------------------------------------------------------------
 Property* Object::findProperty(const String& prop_name)
 {
-    return this->getType()->findProperty(prop_name);
+    auto prop = this->getType()->findProperty(prop_name);
+    if (nullptr != prop) return prop;
+    return this->findDynamicProperty(prop_name);
 }
     
 
@@ -49,6 +60,35 @@ void Object::resetAllProperties()
 Method* Object::findMethod(const String& method_name)
 {
     return this->getType()->findMethod(method_name);
+}
+
+
+//-----------------------------------------------------------------------------
+Property* Object::findDynamicProperty(const String& prop_name)
+{
+    if (nullptr == this->dynamicProperties) TOD_RETURN_TRACE(nullptr);
+    
+    auto i = this->dynamicProperties->find(prop_name.hash());
+    if (this->dynamicProperties->end() == i) TOD_RETURN_TRACE(nullptr);
+    return i->second;
+}
+
+
+//-----------------------------------------------------------------------------
+void Object::removeDynamicProperty(const String& prop_name)
+{
+    if (nullptr == this->dynamicProperties) return;
+    
+    this->dynamicProperties->erase(prop_name.hash());
+    if (this->dynamicProperties->empty())
+        SAFE_DELETE(this->dynamicProperties);
+}
+
+
+//-----------------------------------------------------------------------------
+Object::DynamicProperties* Object::getDynamicProperties()
+{
+    return this->dynamicProperties;
 }
     
     

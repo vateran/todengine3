@@ -1,13 +1,18 @@
-//
-//  interpolation.h
-//  todcore
-//
-//  Created by BaekMinki on 2017. 8. 16..
-//  Copyright © 2017년 vateran.net. All rights reserved.
-//
+#pragma once
+namespace tod
+{
 
-#ifndef interpolation_h
-#define interpolation_h
+template <typename T>
+class InterpolationBase
+{
+public:
+    inline static T linear(T ratio, T start, T end)
+    {
+        if (ratio >= 1) return end;
+        return ratio * (end - start) + start;
+    }
+};
 
+typedef InterpolationBase<float> Interpolation;
 
-#endif /* interpolation_h */
+}

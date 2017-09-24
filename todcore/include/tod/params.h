@@ -39,7 +39,7 @@ public:
     }
     
 public:
-    void* operator new (size_t bytes)
+    void* operator new (size_t)
     {
         return ParamPool::instance()->alloc();
     }
@@ -58,7 +58,7 @@ private:
     void* operator new [] (size_t bytes)=delete;
     void operator delete [] (void* param)=delete;
     
-    static void build_param(Params& out) {}
+    static void build_param(Params&) {}
     template <typename ARG, typename ... ARGS>
     static void build_param(Params& out, const ARG& arg, const ARGS& ... args)
     {

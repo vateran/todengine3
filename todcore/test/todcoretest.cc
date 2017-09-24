@@ -4,6 +4,8 @@
 #include <iostream>
 #include <concurrentqueue/concurrentqueue.h>
 #include <unistd.h>
+#include <thread>
+#include <chrono>
 #include "tod/kernel.h"
 #include "tod/uuid.h"
 #include "tod/type.h"
@@ -15,6 +17,9 @@
 #include "tod/pool.h"
 #include "tod/filesystem.h"
 #include "tod/serializer.h"
+#include "tod/timemgr.h"
+#include "tod/random.h"
+#include "tod/interpolation.h"
 
 using namespace tod;
 
@@ -50,7 +55,72 @@ using namespace tod;
  */
 
 
+//-----------------------------------------------------------------------------
+void test_Interpolation()
+{
+    for (float i=0.0f;i<=1.01f;i+=0.1f)
+    {
+        printf("%f -> %f\n", i, Interpolation::linear(i, 23.0f, 50.223f));
+    }
+}
 
+
+//-----------------------------------------------------------------------------
+void test_Random()
+{
+    Random r;
+    for (int i=0;i<100;++i)
+    {
+        printf("%f\n", r.uniformFloat(-1, 1));
+    }
+    for (int i=0;i<1000;++i)
+    {
+        auto ret = r.uniformInt(-10, 10);
+        assert(-10 <= ret);
+        assert(ret <= 10);
+        printf("%d\n", ret);
+    }
+}
+
+
+//-----------------------------------------------------------------------------
+void test_TimeMgr()
+{
+    for (int i=0;i<10;++i)
+    {
+        TimeMgr::instance()->update();
+        TimeMgr::instance()->now();
+        printf("%f %f\n", TimeMgr::instance()->now(), TimeMgr::instance()->delta());
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+}
+
+
+//-----------------------------------------------------------------------------
+void test_NodeRelease()
+{
+    Node* node1 = new Node();
+    node1->setName("node1");
+    Node* node2 = new Node();
+    node2->setName("node2");
+    
+    ObjRef<Node> node_ref2(node2);
+    
+    node1->addChild(node2);
+    node1->release();
+    
+    Node* node3 = new Node();
+    Node* node4 = new Node();
+    node3->addChild(node4);
+    node4->removeFromParent();
+    node3->release();
+    
+    Node* node5 = new Node();
+    Node* node6 = new Node();
+    node5->addChild(node6);
+    node6->release();
+    node5->release();
+}
 
 
 //-----------------------------------------------------------------------------
@@ -146,6 +216,10 @@ void test_any()
 class Fighter : public Derive<Fighter, Node>
 {
 public:
+    Fighter():boolValue(false)
+    {
+        
+    }
     void setHp(int value)
     {
         this->hp = value;
@@ -169,10 +243,56 @@ public:
         out.push_back(122);
     }
     
+    enum Enum
+    {
+        ENUM_0,
+        ENUM_1,
+        ENUM_2,
+        MAX
+    };
+    
+    void setEnum(int value)
+    {
+        this->enumValue = value;
+    }
+    int getEnum()
+    {
+        return this->enumValue;
+    }
+    static EnumList<int>& getEnumEnumerator()
+    {
+        static EnumList<int> s_enum
+        {
+            std::make_tuple("ENUM_0", ENUM_0),
+            std::make_tuple("ENUM_1", ENUM_1),
+            std::make_tuple("ENUM_2", ENUM_2),
+        };
+        return s_enum;
+    }
+    void setString(const String& value)
+    {
+        this->string = value;
+    }
+    const String& getString()
+    {
+        return this->string;
+    }
+    void setBool(bool value)
+    {
+        this->boolValue = value;
+    }
+    bool isBool()
+    {
+        return this->boolValue;
+    }
+    
     static void bindProperty()
     {
+        BIND_PROPERTY(bool, "bool", "bool", setBool, isBool, false, PropertyAttr::DEFAULT);
         BIND_PROPERTY(int, "hp", "Fighter의 HP", setHp, getHp, 0, PropertyAttr::DEFAULT);
         BIND_PROPERTY(int, "mp", "Fighter의 MP", setMp, getMp, 0, PropertyAttr::DEFAULT);
+        BIND_ENUM_PROPERTY(int, "enum", "Enum테스트", setEnum, getEnum, getEnumEnumerator, 0, PropertyAttr::DEFAULT);
+        BIND_PROPERTY(const String&, "string", "string", setString, getString, "", PropertyAttr::DEFAULT);
     }
     
     static void bindMethod()
@@ -181,8 +301,11 @@ public:
     }
     
 private:
+    bool boolValue;
     int hp;
     int mp;
+    int enumValue;
+    String string;
 };
 
 
@@ -192,12 +315,24 @@ void test_Reflection()
     auto test_fighter = newInstance<Fighter>();
     test_fighter->setHp(10);
     auto fighter_hp_prop = test_fighter->findProperty("hp");
+    auto fighter_string_prop = test_fighter->findProperty("string");
+    auto fighter_bool_prop = test_fighter->findProperty("bool");
+    auto fighter_enum_prop = test_fighter->findProperty("enum");
     
     String fighter_hp_prop_value;
     fighter_hp_prop->toString(test_fighter, fighter_hp_prop_value);
     assert(fighter_hp_prop_value == "10");
     fighter_hp_prop->fromString(test_fighter, "22");
     assert(test_fighter->getHp() == 22);
+    fighter_string_prop->fromString(test_fighter, "aaa");
+    fighter_bool_prop->fromString(test_fighter, "true");
+    String bool_value;
+    fighter_bool_prop->toString(test_fighter, bool_value);
+    assert(bool_value == "true");
+    test_fighter->setEnum(Fighter::ENUM_2);
+    String enum_value;
+    fighter_enum_prop->toString(test_fighter, enum_value);
+    assert(enum_value == "ENUM_2");
     
     auto test_method = test_fighter->findMethod("method_call");
     test_method->invoke(test_fighter);
@@ -361,10 +496,16 @@ void test_FileSystem()
 }
 
 
-
 //-----------------------------------------------------------------------------
 int main(int argc, char* argv[])
 {
+    test_Interpolation();
+    return 0;
+    
+
+    test_Random();
+    test_TimeMgr();
+    test_NodeRelease();
     test_Utilites();
     test_Pool();
     test_any();

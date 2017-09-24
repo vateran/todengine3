@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <functional>
 #include <unordered_map>
-#include "tod/singleton.h"
+#include "tod/object.h"
 #include "tod/string.h"
 namespace tod
 {
@@ -9,7 +9,7 @@ namespace tod
 
 //!@ingroup FileSystem
 //!@brief TodEngine 에서 파일을 핸들링
-class FileSystem : public Singleton<FileSystem>
+class FileSystem : public SingletonDerive<FileSystem, Object>
 {
 public:
     typedef std::vector<char> Data;
@@ -49,10 +49,11 @@ public:
     void setSearchPaths(const std::list<String>& paths);
     const std::list<String>& getSearchPaths() { return this->searchPaths; }
     
+    String getRelativePath(const String& path);
+    
     //!@brief URI로 지정된 파일, 아카이브, 원격지 데이터등을 읽고,
     //!완료되면 callback으로 데이터를 반환
     //!@param uri protocol://path 로 지정된 URI
-    
     //!       file://, zip://, http:// 이 될 수 있음
     //!       프로토콜이 지정되지 않으면 file:// 이 default
     //!@param callback 로딩이 완료되면 호출되는 callback 함수
@@ -61,6 +62,12 @@ public:
     bool load(const String& uri,
               const LoadComplete& callback,
               const LoadOption& option=LoadOption()) const;
+    //!@breif URI로 지정된 리소스를 로딩한다
+    //!@param option 이 메서드에서 async 는 무시됨
+    bool load(const String& uri,
+              Data& output,
+              const LoadOption& option=LoadOption()) const;
+    bool save(const String& uri, const char* data, uint64 size);
     
     //!@brief URI로 지정된 파일
     int64 getFileSize(const String& uri) const;
@@ -68,21 +75,24 @@ public:
     String getCurrentWorkingDirectory() const;
     
 public:
-    class ILoader
+    class IProtocol
     {
     public:
         typedef std::vector<char> Data;
         typedef std::function<void(Data&)> LoadComplete;
         
     public:
-        ILoader(const String& protocol):protocol(protocol) {}
-        virtual~ILoader() {}
+        IProtocol(const String& protocol):protocol(protocol) {}
+        virtual~IProtocol() {}
         
         //!@brief 리소스를 로딩한다.
         //!실제 구현에서는 async loading 을 위해 re-enterance func 으로 제작되어야 한다
         virtual bool load(const String& path,
-                          const LoadComplete& callback,
-                          const LoadOption& option) =0;
+                          Data& output,
+                          const LoadOption& option)=0;
+        virtual bool save(const String& path,
+                          const char* data,
+                          uint64 size)=0;
         const String& getProtocol() const { return this->protocol; }
         
     private:
@@ -90,11 +100,15 @@ public:
     };
     
 private:
-    void reigster_loader(ILoader* file_loader);
+    void reigster_protocol(IProtocol* protocol);
+    void split_protocol_and_path(
+        const String& uri, String& protocol, String& path) const;
+    bool load(const String& protocol, const String& path,
+              Data& output, const LoadOption& option) const;
     
 private:
-    typedef std::unordered_map<int, ILoader*> Loaders;
-    Loaders loaders;
+    typedef std::vector<IProtocol*> Protocols;
+    Protocols protocols;
     std::list<String> searchPaths;
 };
 

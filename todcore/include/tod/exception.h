@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <stdexcept>
+#include <cassert>
 #include "tod/string.h"
 namespace tod
 {
@@ -27,5 +28,8 @@ private:
 throw tod::Exception(\
 tod::String::fromFormat(msg, ## __VA_ARGS__).c_str(),\
 __LINE__, __FILE__, __PRETTY_FUNCTION__); } while (false)
+#define TOD_LOG(tag, msg, ...) do { printf(msg, ## __VA_ARGS__); } while(false)
+#define TOD_RETURN_TRACE(ret) do { printf("%s\n", __PRETTY_FUNCTION__); return ret; } while(false)
+#define TOD_ASSERT(exp) assert(exp)
     
 }

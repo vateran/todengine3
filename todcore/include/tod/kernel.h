@@ -57,7 +57,7 @@ private:
 template <typename T>
 T* Kernel::lookup(const String& path)
 {
-    if (path.empty()) return nullptr;
+    if (path.empty()) TOD_RETURN_TRACE(nullptr);
     return static_cast<T*>(this->root->getRelativeNode(path));
 }
 

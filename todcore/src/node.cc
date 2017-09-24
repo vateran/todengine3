@@ -1,5 +1,4 @@
 ﻿#include "tod/node.h"
-#include <cassert>
 namespace tod
 {
 
@@ -21,6 +20,31 @@ nameHash(0)
 //-----------------------------------------------------------------------------
 Node::~Node()
 {
+    printf("%p\n", this);
+}
+
+
+//-----------------------------------------------------------------------------
+int Node::release()
+{
+    TOD_ASSERT(this->refCount >= 0);
+
+    if (this->refCount <= 1)
+    {
+        if (this->parent)
+        {
+            this->removeFromParent();
+            return 0;
+        }
+        else
+        {
+            for (auto& child : this->children)
+                child->parent = nullptr;
+            this->children.clear();
+        }
+    }
+    
+    return BaseType::release();
 }
 
     
@@ -29,7 +53,7 @@ bool Node::addChild(Node* node)
 {
     if (node == this) TOD_THROW_EXCEPTION("can't add self as a child");
     node->parent = this;
-    this->children.push_back(node);
+    this->children.emplace_back(node);
     this->dispatchEvent(EVENT_ADDCHILD, Params::newParam(node));
     return true;
 }
@@ -85,12 +109,12 @@ void Node::removeFromParent()
 
 //-----------------------------------------------------------------------------
 Node* Node::find_node_by_name
-(const Node* parent, int name_hash, int depth, int limit_depth)
+(Node* parent, int name_hash, int depth, int limit_depth)
 {
     if (parent->nameHash == name_hash) return const_cast<Node*>(parent);
     if (depth == limit_depth) return nullptr;
     
-    for (const auto& child : parent->children)
+    for (auto& child : parent->children)
     {
         if (child->isHidden()) continue;
         auto find_it = Node::find_node_by_name(
@@ -99,16 +123,28 @@ Node* Node::find_node_by_name
     }
     return nullptr;
 };
-Node* Node::findNodeByName(const String& name, int depth) const
+
+
+//-----------------------------------------------------------------------------
+Node* Node::findNodeByName(const String& name, int depth)
 {
     auto name_hash = name.hash();
-    for (const auto& child : this->children)
+    for (auto& child : this->children)
     {
         if (child->isHidden()) continue;
         auto find_it = Node::find_node_by_name(child.get(), name_hash, 0, depth);
         if (nullptr != find_it) return find_it;
     }
     return nullptr;
+}
+
+
+//-----------------------------------------------------------------------------
+Node* Node::getChildAt(int index)
+{
+    if (index < 0 || index >= this->children.size())
+        TOD_RETURN_TRACE(nullptr);
+    return this->children[index];
 }
 
     
@@ -138,12 +174,34 @@ String Node::getAbsolutePath() const
     
     return path;
 }
+
+
+//-----------------------------------------------------------------------------
+int Node::indexOf(Node* child_node)
+{
+    int count = static_cast<int>(this->children.size());
+    for (int i=0;i<count;++i)
+    {
+        if (this->children.at(i).equal(child_node))
+            return i;
+    }
+    return -1;
+}
+
+
+//-----------------------------------------------------------------------------
+int Node::getSelfIndex()
+{
+    if (nullptr == this->parent) return -1;
+    return this->parent->indexOf(this);
+}
     
 
 //-----------------------------------------------------------------------------
 void Node::addComponent(Component* component)
 {
     this->components.push_back(component);
+    component->node = this;
 }
 
 
@@ -187,17 +245,17 @@ Component* Node::findComponentByName(const String& name)
         if (c->getType()->getName().hash() == name_hash)
             return c;
     }
-    return nullptr;
+    TOD_RETURN_TRACE(nullptr);
 }
 
     
 //-----------------------------------------------------------------------------
-Node* Node::getRelativeNode(const String& path) const
+Node* Node::getRelativeNode(const String& path)
 {
     std::vector<String> path_list;
     path.split("/", path_list);
     
-    const Node* cur = this;
+    Node* cur = this;
     for (size_t i=0;i<path_list.size();++i)
     {
         const String& cur_name = path_list[i];
@@ -207,7 +265,7 @@ Node* Node::getRelativeNode(const String& path) const
         if (nullptr == cur) return nullptr;
     }
     
-    return const_cast<Node*>(cur);
+    return cur;
 }
     
 

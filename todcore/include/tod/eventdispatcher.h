@@ -130,9 +130,15 @@ void EventDispatcher<T>::dispatchEvent
         return;
     }
     
-    for (auto& i : this->handlers)
+    Handlers clone;
+    for (auto i : this->handlers)
     {
         if (i->eventName != event_name) continue;
+        clone.push_back(i);
+    }
+    
+    for (auto i : clone)
+    {
         i->callback(params);
     }
     

@@ -26,8 +26,38 @@ public:
 //!class Foo : public Singleton<Foo> {};
 //!Foo::instance()->call();
 //!@endcode
+template <typename T, typename BASE=void>
+class Singleton : public BASE, public ISingleton
+{
+public:
+    Singleton()
+    {
+        this->name = TypeNameDemangler::getName<T>();
+        SingletonMgr::instance()->push_back(this);
+    }
+    template <typename ... ARGS>
+    Singleton(const ARGS& ... args):BASE(args ...)
+    {
+        this->name = TypeNameDemangler::getName<T>();
+        SingletonMgr::instance()->push_back(this);
+    }
+    const std::string& getName() override { return this->name; }
+    //!@brief Singleton 객체를 반환
+    static T* instance()
+    {
+        static T* s_object = nullptr;
+        if (nullptr == s_object)
+            s_object = new T();
+        return s_object;
+    }
+    
+private:
+    std::string name;
+};
+
+
 template <typename T>
-class Singleton : public ISingleton
+class Singleton<T, void> : public ISingleton
 {
 public:
     Singleton()
@@ -50,3 +80,4 @@ private:
 };
 
 }
+

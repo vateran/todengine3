@@ -12,6 +12,40 @@ int String::hash() const
     return hash;
 }
     
+
+//-----------------------------------------------------------------------------
+String String::extractFileExtension() const
+{
+    auto p = this->rfind(S("."));
+    if (String::npos == p) return String();
+    return String(*this, p + 1, -1);
+}
+
+
+//-----------------------------------------------------------------------------
+String String::extractPath() const
+{
+    auto p = this->rfind(S("/"));
+    if (String::npos == p) return S("");
+    return String(*this, 0, p);
+}
+    
+
+//-----------------------------------------------------------------------------
+String& String::lower()
+{
+    std::transform(this->begin(), this->end(), this->begin(), ::tolower);
+    return *this;
+}
+
+
+//-----------------------------------------------------------------------------
+String& String::upper()
+{
+    std::transform(this->begin(), this->end(), this->begin(), ::toupper);
+    return *this;
+}
+    
     
 //-----------------------------------------------------------------------------
 int String::atoi(const char* str)

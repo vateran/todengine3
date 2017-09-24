@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <algorithm>
 #include <cctype>
 #include <bitset>
@@ -27,6 +27,7 @@ public:
     String(const String& str, size_t s):BaseString(str, s) {}
     String(String::iterator b, String::iterator e):BaseString(b, e) {}
     String(String::const_iterator b, String::const_iterator e):BaseString(b, e) {}
+    String(const String& str, size_t b, size_t e):BaseString(str, b, e) {}
     
     template<typename ... ARGS>
     void format(const char* format, ARGS ... args);
@@ -36,6 +37,10 @@ public:
     inline void rtrim();
     inline void trim();
     int hash() const;
+    String extractFileExtension() const;
+    String extractPath() const;
+    String& lower();
+    String& upper();
     
     template<typename ... ARGS>
     static String fromFormat(const char* format, ARGS ... args);
@@ -132,7 +137,7 @@ void String::trim()
 
 //-----------------------------------------------------------------------------
 template <typename T>
-T String::atof(const char* str) { return 0; }
+T String::atof(const char*) { return 0; }
 
 
 //-----------------------------------------------------------------------------

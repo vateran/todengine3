@@ -8,10 +8,13 @@ namespace tod
  
 //-----------------------------------------------------------------------------
 Type::Type(Type* base, const String& name):
- base(base)
-,name(name)
-,nameHash(this->name.hash())
+  abstract(false)
+, base(base)
+, name(name)
+, nameHash(this->name.hash())
 {
+    if (nullptr != base)
+        base->derivedTypes.push_back(this);
 }
 
     
@@ -81,7 +84,7 @@ Property* Type::findProperty(const String& prop_name)
         if (cur_type->properties.end() != i) return i->second;
         cur_type = cur_type->base;
     }
-    return nullptr;
+    TOD_RETURN_TRACE(nullptr);
 }
     
 
@@ -110,7 +113,7 @@ Method* Type::findMethod(const String& method_name)
         if (cur_type->methods.end() != i) return i->second;
         cur_type = cur_type->base;
     }
-    return nullptr;
+    TOD_RETURN_TRACE(nullptr);
 }
     
     

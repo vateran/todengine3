@@ -1,13 +1,18 @@
-//
-//  random.h
-//  todcore
-//
-//  Created by BaekMinki on 2017. 8. 15..
-//  Copyright © 2017년 vateran.net. All rights reserved.
-//
+#pragma once
+#include <random>
+namespace tod
+{
 
-#ifndef random_h
-#define random_h
+class Random
+{
+public:
+    ///@return min <= value <= max
+    int uniformInt(int min, int max);
+    ///@return min <= value <= max
+    float uniformFloat(float min, float max);
+    
+private:
+    std::mt19937 gen;
+};
 
-
-#endif /* random_h */
+}

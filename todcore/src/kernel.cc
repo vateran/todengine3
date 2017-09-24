@@ -32,7 +32,7 @@ void Kernel::init()
 Object* Kernel::create(const String& type_name)
 {
     auto i = this->types.find(type_name.hash());
-    if (this->types.end() == i) return nullptr;
+    if (this->types.end() == i) TOD_RETURN_TRACE(nullptr);
     return i->second->createObject();
 }
     
@@ -88,7 +88,7 @@ void Kernel::addType(Type* type)
 Type* Kernel::findType(const String& type_name)
 {
     auto i = this->types.find(type_name.hash());
-    if (this->types.end() == i) return nullptr;
+    if (this->types.end() == i) TOD_RETURN_TRACE(nullptr);
     return i->second;
 }
     
