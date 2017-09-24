@@ -1,9 +1,13 @@
-//
-//  colorpickpushbutton.cpp
-//  todeditor
-//
-//  Created by BaekMinki on 2017. 8. 3..
-//
-//
+#include "todeditor/colorpickpushbutton.h"
+namespace tod::editor
+{
 
-#include "colorpickpushbutton.hpp"
+//-----------------------------------------------------------------------------
+void ColorPickPushButton::setColor(const graphics::Color& value)
+{
+    this->setStyleSheet(QString::fromStdString(
+        String::fromFormat(".QPushButton { background-color:#%s; }",
+            value.toWebColorStr().c_str())));
+}
+
+}

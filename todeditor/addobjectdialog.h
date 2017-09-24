@@ -1,13 +1,21 @@
-//
-//  addobjectdialog.h
-//  todeditor
-//
-//  Created by BaekMinki on 2017. 8. 3..
-//
-//
+#pragma once
+#include <QDialog>
+#include <QTableWidget>
+#include "tod/object.h"
+namespace tod::editor
+{
 
-#ifndef addobjectdialog_h
-#define addobjectdialog_h
+class AddObjectDialog : public QDialog
+{
+public:
+    AddObjectDialog(Type* base_type=Object::get_type());
+    Object* getCreatedObject();
+    
+private:
+    void add_derived_objects(QTableWidget* table, Type* type);
+    
+private:
+    Object* createdObject;
+};
 
-
-#endif /* addobjectdialog_h */
+}

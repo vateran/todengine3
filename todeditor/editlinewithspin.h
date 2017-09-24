@@ -1,14 +1,13 @@
-//
-//  editlinewithspin.hpp
-//  todeditor
-//
-//  Created by BaekMinki on 2017. 8. 3..
-//
-//
+#pragma once
+#include <QLineEdit>
+namespace tod::editor
+{
 
-#ifndef editlinewithspin_hpp
-#define editlinewithspin_hpp
+class EditLineWithSpin : public QLineEdit
+{
+private:
+    void focusInEvent(QFocusEvent* event) override;
+    void wheelEvent(QWheelEvent* event);
+};
 
-#include <stdio.h>
-
-#endif /* editlinewithspin_hpp */
+}

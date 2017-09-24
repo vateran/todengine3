@@ -1,13 +1,17 @@
-//
-//  foldwidget.h
-//  todeditor
-//
-//  Created by BaekMinki on 2017. 6. 22..
-//
-//
+#pragma once
+#include <QWidget>
+namespace tod::editor
+{
 
-#ifndef foldwidget_h
-#define foldwidget_h
+class FoldWidget : public QWidget
+{
+public:
+    FoldWidget(const QString& name);
+    
+    void setContent(QWidget* widget);
+    
+private:
+    QWidget* content;
+};
 
-
-#endif /* foldwidget_h */
+}

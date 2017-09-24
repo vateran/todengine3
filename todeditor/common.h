@@ -1,13 +1,30 @@
-//
-//  common.h
-//  todeditor
-//
-//  Created by BaekMinki on 2017. 6. 20..
-//
-//
+#pragma once
+#include <QAction>
+#include <QApplication>
+#include <list>
+#include "tod/node.h"
+#include "tod/singleton.h"
+namespace tod::editor
+{
 
-#ifndef common_h
-#define common_h
+typedef std::list<ObjRef<Node>> NodeSelections;
 
-
-#endif /* common_h */
+class TodEditorAction : public Singleton<TodEditorAction, QObject>
+{
+public:
+    TodEditorAction()
+    {
+        this->copyAction = new QAction("Copy");
+        this->copyAction->setShortcut(tr("Ctrl+C"));
+        
+        this->pasteAction = new QAction("Paste");
+        this->pasteAction->setShortcut(tr("Ctrl+V"));
+    }
+    
+public:
+    QAction* copyAction;
+    QAction* pasteAction;
+    
+};
+    
+}

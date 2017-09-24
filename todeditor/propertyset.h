@@ -1,14 +1,21 @@
-//
-//  propertyset.hpp
-//  todeditor
-//
-//  Created by BaekMinki on 2017. 8. 3..
-//
-//
+#pragma once
+#include <unordered_map>
+#include "tod/type.h"
+#include "tod/property.h"
+#include "todeditor/foldwidget.h"
+namespace tod::editor
+{
 
-#ifndef propertyset_hpp
-#define propertyset_hpp
+class PropertySet : public FoldWidget
+{
+public:
+    PropertySet(Object* object, Type* cur_type);
+    void updateValues();
+    void updateValue(Property* prop);
+    
+private:
+    Object* object;
+    std::unordered_map<Property*, std::function<void()>> updaters;
+};
 
-#include <stdio.h>
-
-#endif /* propertyset_hpp */
+}

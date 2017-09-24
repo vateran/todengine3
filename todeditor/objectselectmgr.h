@@ -1,14 +1,22 @@
-//
-//  objectselectmgr.hpp
-//  todeditor
-//
-//  Created by BaekMinki on 2017. 8. 3..
-//
-//
+#pragma once
+#include "tod/object.h"
+#include "tod/eventdispatcher.h"
+#include "todeditor/common.h"
+namespace tod::editor
+{
 
-#ifndef objectselectmgr_hpp
-#define objectselectmgr_hpp
+class ObjectSelectMgr : public EventDispatcher<SingletonDerive<ObjectSelectMgr, Object>>
+{
+public:
+    static const char* EVENT_SELECTION_CHANGED;
+    
+public:
+    void setSelections(const NodeSelections& selections);
+    
+    const NodeSelections& getSelections() const;
+    
+private:
+    NodeSelections selections;
+};
 
-#include <stdio.h>
-
-#endif /* objectselectmgr_hpp */
+}

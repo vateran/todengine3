@@ -1,9 +1,16 @@
+#include <QVBoxLayout>
+#include <QLineEdit>
+#include <QTableWidget>
+#include <QTreeWidget>
+#include <QHeaderView>
+#include <QDialogButtonBox>
+#include "tod/kernel.h"
 #include "todeditor/addobjectdialog.h"
 namespace tod::editor
 {
 
 //-----------------------------------------------------------------------------
-AddObjectDialog::AddObjectDialog(Type* base_type=Object::get_type()):
+AddObjectDialog::AddObjectDialog(Type* base_type):
 createdObject(nullptr)
 {
     auto main_layout = new QVBoxLayout(this);
