@@ -1,57 +1,336 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source">
+    <Filter Include="src">
       <UniqueIdentifier>{82f49255-e5db-4145-ad79-3bd36ef62996}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\d3d12">
+    <Filter Include="src\math">
+      <UniqueIdentifier>{55b0860d-1495-47ac-9d4c-35f9fbf54076}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\component">
+      <UniqueIdentifier>{5813f28c-ad0e-4246-8742-5fbd1bc0af60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\base">
+      <UniqueIdentifier>{79db0b40-ebbb-4359-90f7-258c78f71d22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\dx11">
       <UniqueIdentifier>{e01d2878-09ea-4cd1-9f08-875c8b883370}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\opengl">
-      <UniqueIdentifier>{644b331d-158b-4add-82bb-d011cac495a3}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\todgraphics\tod\graphics\matrix44.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\main.h">
+      <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\todgraphics\tod\graphics\renderer.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\transform44.h">
+      <Filter>src\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\todgraphics\tod\graphics\todmath.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\vector2.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\vector4.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\texturecache.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\texture.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\shadercache.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\rendertargettexturepool.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\rendertarget.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\cameracomponent.h">
+      <Filter>src\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\meshcomponent.h">
+      <Filter>src\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\rendercomponent.h">
+      <Filter>src\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\shadercomponent.h">
+      <Filter>src\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\shadowcastercomponent.h">
+      <Filter>src\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\light.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\shader.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\shading.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\shadowcaster.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\color.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\colorf.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\config.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\transformcomponent.h">
+      <Filter>src\component</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todgraphics\tod\graphics\vector3.h">
-      <Filter>Source</Filter>
+      <Filter>src\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\todgraphics\tod\graphics\main.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\matrix44.h">
+      <Filter>src\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\todgraphics\tod\graphics\dx12renderer.h">
-      <Filter>Source\d3d12</Filter>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\todmath.h">
+      <Filter>src\math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\todgraphics\tod\graphics\openglrenderer.h">
-      <Filter>Source\opengl</Filter>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\graphicsdef.h">
+      <Filter>src\base</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\todgraphics\tod\graphics\d3dx12.h">
-      <Filter>Source\d3d12</Filter>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\camera.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\aabb.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\plane.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\frustum.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\renderinterface.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\meshloader.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\mesh.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\vertexbuffer.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\indexbuffer.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\bone.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\boneanimator.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\renderer.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\boneanim.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\boneanimtrack.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\inputlayoutcache.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\inputlayout.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\constantbuffer.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\skinmesh.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\todfileconverter.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\skeleton.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\fbxloader.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\material.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\gltfloader.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx11renderinterface.h">
+      <Filter>src\dx11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx11constantbuffer.h">
+      <Filter>src\dx11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx11shader.h">
+      <Filter>src\dx11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx11texture.h">
+      <Filter>src\dx11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx11viewport.h">
+      <Filter>src\dx11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\viewport.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx11vertexbuffer.h">
+      <Filter>src\dx11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx11indexbuffer.h">
+      <Filter>src\dx11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx11inputlayout.h">
+      <Filter>src\dx11</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\forwardrenderpath.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\lightcomponent.h">
+      <Filter>src\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\compactfloat.h">
+      <Filter>src\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\behaviorcomponent.h">
+      <Filter>src\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todgraphics\tod\graphics\animcomponent.h">
+      <Filter>src\component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\todgraphics\tod\graphics\renderer.cc">
-      <Filter>Source</Filter>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\main.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\transform44.cc">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\texturecache.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\texture.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\shadercache.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\rendertargettexturepool.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\rendertarget.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\cameracomponent.cc">
+      <Filter>src\component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\meshcomponent.cc">
+      <Filter>src\component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\shadercomponent.cc">
+      <Filter>src\component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\shadowcaster.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\colorf.cc">
+      <Filter>src\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\transformcomponent.cc">
+      <Filter>src\component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\color.cc">
+      <Filter>src\math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\todgraphics\tod\graphics\todmath.cc">
-      <Filter>Source</Filter>
+      <Filter>src\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\todgraphics\tod\graphics\main.cc">
-      <Filter>Source</Filter>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\graphicsdef.cc">
+      <Filter>src\base</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\todgraphics\tod\graphics\dx12renderer.cc">
-      <Filter>Source\d3d12</Filter>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\frustum.cc">
+      <Filter>src\math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\todgraphics\tod\graphics\openglrenderer.cc">
-      <Filter>Source\opengl</Filter>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\meshloader.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\mesh.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\renderer.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\boneanimator.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\boneanim.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\bone.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\boneanimtrack.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\inputlayoutcache.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\skinmesh.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\todfileconverter.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\skeleton.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\fbxloader.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\material.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\gltfloader.cc">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx11renderinterface.cc">
+      <Filter>src\dx11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx11constantbuffer.cc">
+      <Filter>src\dx11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx11shader.cc">
+      <Filter>src\dx11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx11texture.cc">
+      <Filter>src\dx11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx11viewport.cc">
+      <Filter>src\dx11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx11vertexbuffer.cc">
+      <Filter>src\dx11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx11indexbuffer.cc">
+      <Filter>src\dx11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx11inputlayout.cc">
+      <Filter>src\dx11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\rendercomponent.cc">
+      <Filter>src\component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todgraphics\tod\graphics\animcomponent.cc">
+      <Filter>src\component</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

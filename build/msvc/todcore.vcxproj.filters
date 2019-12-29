@@ -1,123 +1,199 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source">
+    <Filter Include="src">
       <UniqueIdentifier>{68a263d3-5d0a-466d-8f8f-3586e3ff1373}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\todcore\src\objref.cc">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\todcore\src\property.cc">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\todcore\src\scriptmgr.cc">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\todcore\src\serializer.cc">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\todcore\src\singletonmgr.cc">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\todcore\src\string.cc">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\todcore\src\type.cc">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\todcore\src\uuid.cc">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\todcore\src\exception.cc">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\todcore\src\filesystem.cc">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\todcore\src\kernel.cc">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\todcore\src\node.cc">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\todcore\src\object.cc">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\todcore\src\random.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todcore\src\argparser.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todcore\src\staticstring.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todcore\src\staticstringstorage.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todcore\src\file.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todcore\src\precompiled.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todcore\src\binarystreamwriter.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todcore\src\buffer.cc" />
+    <ClCompile Include="..\..\todcore\src\http.cc" />
+    <ClCompile Include="..\..\todcore\src\win32window.cc" />
+    <ClCompile Include="..\..\todcore\src\log.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\todcore\include\tod\kernel.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\method.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\node.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\object.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\objref.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\params.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\platformdef.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\pool.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\property.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\scriptmgr.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\serializer.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\singleton.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\singletonmgr.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\string.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\stringconv.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\todcore\include\tod\type.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\uuid.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\any.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\component.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\coreforward.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\derive.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\eventdispatcher.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\exception.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\todcore\include\tod\filesystem.h">
-      <Filter>Source</Filter>
+      <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\random.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\binarywriter.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\argparser.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\staticstring.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\staticstringstorage.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\buffer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\basetype.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\file.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\precompiled.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\type.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\binarystreamwriter.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\timemgr.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\promise.h" />
+    <ClInclude Include="..\..\todcore\include\tod\http.h" />
+    <ClInclude Include="..\..\todcore\include\tod\window.h" />
+    <ClInclude Include="..\..\todcore\include\tod\win32window.h" />
+    <ClInclude Include="..\..\todcore\include\tod\log.h" />
+    <ClInclude Include="..\..\todcore\include\tod\indexedpool.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\todcore\include\tod\file.inl">
+      <Filter>src</Filter>
+    </None>
+    <None Include="..\..\todcore\include\tod\string.inl">
+      <Filter>src</Filter>
+    </None>
+    <None Include="..\..\todcore\include\tod\property.inl">
+      <Filter>src</Filter>
+    </None>
+    <None Include="..\..\todcore\include\tod\promise.inl" />
   </ItemGroup>
 </Project>

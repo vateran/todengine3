@@ -11,46 +11,132 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\msvc\todcore.vcxproj">
-      <Project>{7334cc41-79fc-4849-8c2f-de0c3dd08945}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\todgraphics\tod\graphics\d3dx12.h" />
-    <ClInclude Include="..\..\todgraphics\tod\graphics\dx12renderer.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\aabb.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\animcomponent.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\behaviorcomponent.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\boneanimtrack.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\bone.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\boneanim.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\boneanimator.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\camera.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\cameracomponent.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\color.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\colorf.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\compactfloat.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\config.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\constantbuffer.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx11constantbuffer.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx11indexbuffer.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx11inputlayout.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx11renderinterface.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx11shader.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx11texture.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx11vertexbuffer.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\dx11viewport.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\fbxloader.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\forwardrenderpath.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\frustum.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\gltfloader.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\graphicsdef.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\indexbuffer.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\inputlayout.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\inputlayoutcache.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\light.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\lightcomponent.h" />
     <ClInclude Include="..\..\todgraphics\tod\graphics\main.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\material.h" />
     <ClInclude Include="..\..\todgraphics\tod\graphics\matrix44.h" />
-    <ClInclude Include="..\..\todgraphics\tod\graphics\openglrenderer.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\mesh.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\meshcomponent.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\meshloader.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\plane.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\rendercomponent.h" />
     <ClInclude Include="..\..\todgraphics\tod\graphics\renderer.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\renderinterface.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\rendertarget.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\rendertargettexturepool.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\shader.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\shadercache.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\shadercomponent.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\shading.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\shadowcaster.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\shadowcastercomponent.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\skeleton.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\skinmesh.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\texture.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\texturecache.h" />
     <ClInclude Include="..\..\todgraphics\tod\graphics\todmath.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\todfileconverter.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\transform44.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\transformcomponent.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\vector2.h" />
     <ClInclude Include="..\..\todgraphics\tod\graphics\vector3.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\vector4.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\vertexbuffer.h" />
+    <ClInclude Include="..\..\todgraphics\tod\graphics\viewport.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\todgraphics\tod\graphics\dx12renderer.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\animcomponent.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\boneanimtrack.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\bone.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\boneanim.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\boneanimator.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\cameracomponent.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\color.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\colorf.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx11constantbuffer.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx11indexbuffer.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx11inputlayout.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx11renderinterface.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx11shader.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx11texture.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx11vertexbuffer.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\dx11viewport.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\fbxloader.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\frustum.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\gltfloader.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\graphicsdef.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\inputlayoutcache.cc" />
     <ClCompile Include="..\..\todgraphics\tod\graphics\main.cc" />
-    <ClCompile Include="..\..\todgraphics\tod\graphics\openglrenderer.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\material.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\mesh.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\meshcomponent.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\meshloader.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\rendercomponent.cc" />
     <ClCompile Include="..\..\todgraphics\tod\graphics\renderer.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\rendertarget.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\rendertargettexturepool.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\shadercache.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\shadercomponent.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\shadowcaster.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\skeleton.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\skinmesh.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\texture.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\texturecache.cc" />
     <ClCompile Include="..\..\todgraphics\tod\graphics\todmath.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\todfileconverter.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\transform44.cc" />
+    <ClCompile Include="..\..\todgraphics\tod\graphics\transformcomponent.cc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4C2AD1FE-CB6B-414A-AE96-F9D219FD6E11}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>todgraphics</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -67,10 +153,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(UCRTContentRoot)include\10.0.15063.0\shared;$(UCRTContentRoot)include\10.0.15063.0\um;$(IncludePath)</IncludePath>
+    <IncludePath>$(UCRTContentRoot)include\10.0.15063.0\shared;$(UCRTContentRoot)include\10.0.15063.0\um;$(SolutionDir)..\..\external\fx11\inc;$(SolutionDir)..\..\external\DirectXTK\inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(UCRTContentRoot)include\10.0.15063.0\shared;$(UCRTContentRoot)include\10.0.15063.0\um;$(IncludePath)</IncludePath>
+    <IncludePath>$(UCRTContentRoot)include\10.0.15063.0\shared;$(UCRTContentRoot)include\10.0.15063.0\um;$(SolutionDir)..\..\external\fx11\inc;$(SolutionDir)..\..\external\DirectXTK\inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

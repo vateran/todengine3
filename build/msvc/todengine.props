@@ -5,8 +5,8 @@
   <PropertyGroup>
     <OutDir>$(SolutionDir)..\..\bin\$(Configuration)\$(PlatformTarget)\</OutDir>
     <ExecutablePath>$(VC_ExecutablePath_x64_x64);$(WindowsSDK_ExecutablePath);$(VS_ExecutablePath);$(MSBuild_ExecutablePath);$(FxCopDir);$(PATH)</ExecutablePath>
-    <IncludePath>$(SolutionDir)..\..\external;$(SolutionDir)..\..\external\curl\msvc\include;$(SolutionDir)..\..\external\rapidjson\include;$(SolutionDir)..\..\external\wxWidgets\include;$(SolutionDir)..\..\external\wxWidgets\include\msvc;$(SolutionDir)..\..\external\glew\include;$(SolutionDir)..\..\external\glfw\include;$(SolutionDir)..\..\external\glm;$(SolutionDir)..\..\todcore\include;$(SolutionDir)..\..\todgraphics;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\..\external\curl\msvc\lib;$(SolutionDir)..\..\external\wxWidgets\lib\vc_x64_dll;$(SolutionDir)..\..\external\glew\lib;$(SolutionDir)..\..\external\glfw\lib;$(UCRTContentRoot)Lib\10.0.15063.0\um\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\..\external;$(SolutionDir)..\..\external\curl\msvc\include;$(SolutionDir)..\..\external\openssll\msvc\include;$(SolutionDir)..\..\external\rapidjson\include;$(SolutionDir)..\..\external\assimp\include;$(SolutionDir)..\..\external\fbxsdk\include;$(SolutionDir)..\..\external\DevIL\include;$(SolutionDir)..\..\todcore\include;$(SolutionDir)..\..\todgraphics;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\..\external\curl\msvc\lib;$(SolutionDir)..\..\external\openssl\msvc\lib;$(SolutionDir)..\..\external\assimp\lib\x64;$(SolutionDir)..\..\external\DevIL\lib\x64;$(UCRTContentRoot)Lib\10.0.15063.0\um\x64;$(LibraryPath)</LibraryPath>
     <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
@@ -14,6 +14,7 @@
       <AdditionalOptions>/std:c++latest %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />

@@ -1,13 +1,174 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source">
-      <UniqueIdentifier>{aa81bb1c-7766-474a-ad8b-3f5000f4f0ad}</UniqueIdentifier>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\todeditor\todeditor.cc">
-      <Filter>Source</Filter>
+    <ClCompile Include="..\..\todeditor\addobjectdialog.cc">
+      <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_clickablelabel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_clickablelabel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todeditor\colorpickpushbutton.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todeditor\editlinewithspin.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todeditor\foldwidget.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todeditor\inspector.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todeditor\main.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todeditor\nodehierarchy.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_nodehierarchy.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_nodehierarchy.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todeditor\objectselectmgr.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todeditor\propertyset.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todeditor\renderview.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todeditor\todeditor.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_todeditor.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_todeditor.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todeditor\rendertargetviewer.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_todeditor.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todeditor\logoutput.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_logoutput.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_logoutput.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_editablelabel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_editablelabel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todeditor\editablelabel.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_editlinewithspin.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_editlinewithspin.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\todeditor\todeditor.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\todeditor\todeditor.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\todeditor\todeditor.h">
+      <Filter>src</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\todeditor\clickablelabel.h">
+      <Filter>src</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\todeditor\nodehierarchy.h">
+      <Filter>src</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\todeditor\logoutput.h">
+      <Filter>src</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\todeditor\editablelabel.h">
+      <Filter>src</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\todeditor\editlinewithspin.h">
+      <Filter>src</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\todeditor\rendertargetviewer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todeditor\addobjectdialog.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todeditor\colorpickpushbutton.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todeditor\common.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todeditor\dockwidget.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todeditor\foldwidget.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todeditor\inspector.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todeditor\objectselectmgr.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todeditor\propertyset.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todeditor\renderview.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\todeditor\darkstyle.qss">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
