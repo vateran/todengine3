@@ -6,7 +6,9 @@ class ClickableLabel : public QLabel
 {
     Q_OBJECT
 public:
-    ClickableLabel(const QString& text):QLabel(text) {}
+    ClickableLabel(const QString& text):QLabel(text)
+    {   
+    }
     
 signals:
     void mousePressed();

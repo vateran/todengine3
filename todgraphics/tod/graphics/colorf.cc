@@ -4,15 +4,21 @@ namespace tod::graphics
 {
 
 //-----------------------------------------------------------------------------
-ColorF::ColorF():
-r(0),g(0),b(0),a(0)
+ColorF::ColorF()
+    : r(0)
+    , g(0)
+    , b(0)
+    , a(0)
 {
 }
 
 
 //-----------------------------------------------------------------------------
-ColorF::ColorF(float r, float g, float b, float a):
-r(r),g(g),b(b),a(a)
+ColorF::ColorF(float r, float g, float b, float a)
+    : r(r)
+    , g(g)
+    , b(b)
+    , a(a)
 {
 }
 

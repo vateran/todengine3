@@ -1,11 +1,24 @@
+#include "tod/precompiled.h"
 #include "tod/property.h"
 namespace tod
 {
-    
+
 //-----------------------------------------------------------------------------
-void Property::setFlags(int value)
+Property::Property(const String& name)
+: name(name)
 {
-    this->flags |= value;
+}
+
+
+//-----------------------------------------------------------------------------
+Property::~Property()
+{
+}
+
+//-----------------------------------------------------------------------------
+bool Property::isEqualType(const std::type_info& type_info) const
+{
+    return this->getType().hash_code() == type_info.hash_code();
 }
     
 }

@@ -6,7 +6,11 @@ namespace tod::graphics
 class Light
 {
 public:
-    Light():intensity(1), specularStrength(0.5), attenuationLinear(1), attenuationQuadratic(1)
+    Light()
+        : intensity(1)
+        , specularStrength(0.5)
+        , attenuationLinear(1)
+        , attenuationQuadratic(1)
     {
         this->color = { 255, 255, 255, 255 };
     }

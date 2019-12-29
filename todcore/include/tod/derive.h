@@ -89,7 +89,7 @@ public:
     typedef SingletonType<SelfType, BaseType> ObjectType;
     
 public:
-    const std::string& getName() override
+    const String& getName() override
     {
         return TypeNameDemangler::getName<TYPE>();
     }

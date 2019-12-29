@@ -11,6 +11,11 @@ public:
     ColorF();
     ColorF(float r, float g, float b, float a);
     ColorF(const Color& color);
+
+    operator const float* () const
+    {
+        return this->array;
+    }
     
     union
     {

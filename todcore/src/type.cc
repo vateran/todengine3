@@ -1,14 +1,18 @@
-﻿#include "tod/type.h"
+﻿#include "tod/precompiled.h"
+#include "tod/string.h"
+#include "tod/exception.h"
 #include "tod/kernel.h"
-#include "tod/property.h"
 #include "tod/method.h"
-#include <stack>
+#include "tod/eventdispatcher.h"
+#include "tod/objref.h"
+#include "tod/object.h"
+#include "tod/type.h"
 namespace tod
 {
  
 //-----------------------------------------------------------------------------
-Type::Type(Type* base, const String& name):
-  abstract(false)
+Type::Type(Type* base, const StaticString& name)
+: abstract(false)
 , base(base)
 , name(name)
 , nameHash(this->name.hash())

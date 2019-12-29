@@ -1,61 +1,21 @@
-#pragma once
+﻿#pragma once
 #include "tod/graphics/vector3.h"
+#include "tod/graphics/vector4.h"
 namespace tod::graphics
 {
-    
-//-----------------------------------------------------------------------------
-class MatrixRowMajor
-{
-public:
-    template <typename T>
-    static inline void setElement(T* array, int row, int column, T value)
-    {
-        array[(column << 2) + row] = value;
-    }
-    template <typename T>
-    static inline T getElement(T* array, int row, int column)
-    {
-        return array[(column << 2) + row];
-    }
-    template <typename T>
-    static inline void add(T* array, int row, int column, T value)
-    {
-        array[(column << 2) + row] += value;
-    }
-};
-
 
 //-----------------------------------------------------------------------------
-class MatrixColumnMajor
-{
-public:
-    template <typename T>
-    static inline void setElement(T* array, int row, int column, T value)
-    {
-        array[(row << 2) + column] = value;
-    }
-    template <typename T>
-    static inline T getElement(T* array, int row, int column)
-    {
-        return array[(row << 2) + column];
-    }
-    template <typename T>
-    static inline void add(T* array, int row, int column, T value)
-    {
-        array[(row << 2) + column] += value;
-    }
-};
-
-
-//-----------------------------------------------------------------------------
-template <typename T, typename MAJOR=MatrixColumnMajor>
+template <typename T>
 class Matrix44Base
 {
 public:
-    typedef Matrix44Base<T, MAJOR> type;
+    typedef Matrix44Base<T> type;
     
 public:
     Matrix44Base();
+    Matrix44Base(bool identity);
+    Matrix44Base(const Quaternion& r);
+    Matrix44Base(const type& value);
     
     void clear();
     void identity();
@@ -68,7 +28,11 @@ public:
     void eulerRotate(const Vector3& r);
     float determinent();
     bool inverse();
+    bool inverseTo(type& out);
     void transpose();
+    void makeFromSRT(const Vector3& s, const Quaternion& r, const Vector3& t);
+    void makeFromSRTTranspose(const Vector3& s, const Quaternion& r, const Vector3& t);
+    void makeFromQuaternion(const Quaternion& r);
     Vector3 getRightVector();
     Vector3 getUpVector();
     Vector3 getForwardVector();
@@ -89,69 +53,110 @@ public:
     T getX();
     T getY();
     T getZ();
+
+    T& m(int32 row, int32 column);
+    const T& m(int32 row, int32 column) const;
     
     type& operator += (const type& other);
     type& operator -= (const type& other);
     type& operator *= (const type& other);
+    type operator * (const type& other) const;
+
+    operator float* ();
     
 public:
     union
     {
+        struct
+        {
+            float m11, m12, m13, m14;
+            float m21, m22, m23, m24;
+            float m31, m32, m33, m34;
+            float m41, m42, m43, m44;
+        };
         T d[4][4];
         T array[16];
+        Vector4 v[4];
     };
 };
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-Matrix44Base<T, MAJOR>::Matrix44Base()
+template <typename T>
+Matrix44Base<T>::Matrix44Base()
 {
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::clear()
+template <typename T>
+Matrix44Base<T>::Matrix44Base(bool identity)
+{
+    if (identity)
+    {
+        this->identity();
+    }
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename T>
+Matrix44Base<T>::Matrix44Base(const Quaternion& r)
+{
+    this->makeFromQuaternion(r);
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename T>
+Matrix44Base<T>::Matrix44Base(const type& value)
+{
+    memcpy(this->array, value.array, sizeof(type));
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename T>
+void Matrix44Base<T>::clear()
 {
     memset(this->d, 0, sizeof(type));
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::identity()
+template <typename T>
+void Matrix44Base<T>::identity()
 {
     this->clear();
-    for (int i=0;i<4;++i) d[i][i] = 1;
+    for (int32 i = 0; i < 4; ++i)
+    {
+        d[i][i] = 1;
+    }
 }
     
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::setTranslation(const Vector3& t)
+template <typename T>
+void Matrix44Base<T>::setTranslation(const Vector3& t)
 {
     this->identity();
-    MAJOR::setElement(this->array, 3, 0, t.x);
-    MAJOR::setElement(this->array, 3, 1, t.y);
-    MAJOR::setElement(this->array, 3, 2, t.z);
+    this->m41 = t.x;
+    this->m42 = t.y;
+    this->m43 = t.z;
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-Vector3 Matrix44Base<T, MAJOR>::getTranslation() const
+template <typename T>
+Vector3 Matrix44Base<T>::getTranslation() const
 {
-    return Vector3(
-        MAJOR::getElement(this->array, 3, 0),
-        MAJOR::getElement(this->array, 3, 1),
-        MAJOR::getElement(this->array, 3, 2));
+    return Vector3(this->m41, this->m42, this->m43);
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::setEulerRotation(const Vector3& r)
+template <typename T>
+void Matrix44Base<T>::setEulerRotation(const Vector3& r)
 {
     this->clear();
     auto sin_rx = Math::sin(r.x);
@@ -163,37 +168,37 @@ void Matrix44Base<T, MAJOR>::setEulerRotation(const Vector3& r)
     auto sin_rz = Math::sin(r.z);
     auto cos_rz = Math::cos(r.z);
     
-    MAJOR::setElement(this->array, 0, 0, cos_ry * cos_rz);
-    MAJOR::setElement(this->array, 0, 1, -cos_ry * sin_rz);
-    MAJOR::setElement(this->array, 0, 2, sin_ry);
-    
-    MAJOR::setElement(this->array, 1, 0, cos_rx * sin_rz + sin_rx * sin_ry * cos_rz);
-    MAJOR::setElement(this->array, 1, 1, cos_rx * cos_rz - sin_rx * sin_ry * sin_rz);
-    MAJOR::setElement(this->array, 1, 2, -sin_rx * cos_ry);
-    
-    MAJOR::setElement(this->array, 2, 0, sin_rx * sin_rz - cos_rx * sin_ry * cos_rz);
-    MAJOR::setElement(this->array, 2, 1, sin_rx * cos_rz + cos_rx * sin_ry * sin_rz);
-    MAJOR::setElement(this->array, 2, 2, cos_rx * cos_ry);
-    
-    MAJOR::setElement(this->array, 3, 3, 1.0f);
+    this->m11 = cos_ry * cos_rz;
+    this->m12 = -cos_ry * sin_rz;
+    this->m13 = sin_ry;
+
+    this->m21 = cos_rx * sin_rz + sin_rx * sin_ry * cos_rz;
+    this->m22 = cos_rx * cos_rz - sin_rx * sin_ry * sin_rz;
+    this->m23 = -sin_rx * cos_ry;
+
+    this->m31 = sin_rx * sin_rz - cos_rx * sin_ry * cos_rz;
+    this->m32 = sin_rx * cos_rz + cos_rx * sin_ry * sin_rz;
+    this->m33 = cos_rx * cos_ry;
+
+    this->m44 = 1.0f;
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::setScaling(const Vector3& s)
+template <typename T>
+void Matrix44Base<T>::setScaling(const Vector3& s)
 {
     this->clear();
-    MAJOR::setElement(this->array, 0, 0, s.x);
-    MAJOR::setElement(this->array, 1, 1, s.y);
-    MAJOR::setElement(this->array, 2, 2, s.z);
-    MAJOR::setElement(this->array, 3, 3, 1.0f);
+    this->m11 = s.x;
+    this->m22 = s.y;
+    this->m33 = s.z;
+    this->m44 = 1.0f;
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::translate(const Vector3& t)
+template <typename T>
+void Matrix44Base<T>::translate(const Vector3& t)
 {
     auto x = t.x, y = t.y, z = t.z;
     this->array[0] += this->array[3] * x;   this->array[4] += this->array[7] * x;   this->array[8] += this->array[11]* x;   this->array[12]+= this->array[15]* x;
@@ -203,8 +208,8 @@ void Matrix44Base<T, MAJOR>::translate(const Vector3& t)
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::scale(const Vector3& s)
+template <typename T>
+void Matrix44Base<T>::scale(const Vector3& s)
 {
     auto x = s.x, y = s.y, z = s.z;
     this->array[0] *= x;   this->array[4] *= x;   this->array[8] *= x;   this->array[12] *= x;
@@ -214,8 +219,8 @@ void Matrix44Base<T, MAJOR>::scale(const Vector3& s)
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::eulerRotate(const Vector3& r)
+template <typename T>
+void Matrix44Base<T>::eulerRotate(const Vector3& r)
 {
     type rm;
     rm.setEulerRotation(r);
@@ -224,8 +229,8 @@ void Matrix44Base<T, MAJOR>::eulerRotate(const Vector3& r)
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-float Matrix44Base<T, MAJOR>::determinent()
+template <typename T>
+float Matrix44Base<T>::determinent()
 {
     T inv[4];
     
@@ -265,139 +270,149 @@ float Matrix44Base<T, MAJOR>::determinent()
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-bool Matrix44Base<T, MAJOR>::inverse()
+template <typename T>
+bool Matrix44Base<T>::inverse()
 {
-    T inv[16];
-    
-    inv[0] = this->array[5]  * this->array[10] * this->array[15] -
-    this->array[5]  * this->array[11] * this->array[14] -
-    this->array[9]  * this->array[6]  * this->array[15] +
-    this->array[9]  * this->array[7]  * this->array[14] +
-    this->array[13] * this->array[6]  * this->array[11] -
-    this->array[13] * this->array[7]  * this->array[10];
-    
-    inv[4] = -this->array[4]  * this->array[10] * this->array[15] +
-    this->array[4]  * this->array[11] * this->array[14] +
-    this->array[8]  * this->array[6]  * this->array[15] -
-    this->array[8]  * this->array[7]  * this->array[14] -
-    this->array[12] * this->array[6]  * this->array[11] +
-    this->array[12] * this->array[7]  * this->array[10];
-    
-    inv[8] = this->array[4]  * this->array[9] * this->array[15] -
-    this->array[4]  * this->array[11] * this->array[13] -
-    this->array[8]  * this->array[5] * this->array[15] +
-    this->array[8]  * this->array[7] * this->array[13] +
-    this->array[12] * this->array[5] * this->array[11] -
-    this->array[12] * this->array[7] * this->array[9];
-    
-    inv[12] = -this->array[4]  * this->array[9] * this->array[14] +
-    this->array[4]  * this->array[10] * this->array[13] +
-    this->array[8]  * this->array[5] * this->array[14] -
-    this->array[8]  * this->array[6] * this->array[13] -
-    this->array[12] * this->array[5] * this->array[10] +
-    this->array[12] * this->array[6] * this->array[9];
-    
-    inv[1] = -this->array[1]  * this->array[10] * this->array[15] +
-    this->array[1]  * this->array[11] * this->array[14] +
-    this->array[9]  * this->array[2] * this->array[15] -
-    this->array[9]  * this->array[3] * this->array[14] -
-    this->array[13] * this->array[2] * this->array[11] +
-    this->array[13] * this->array[3] * this->array[10];
-    
-    inv[5] = this->array[0]  * this->array[10] * this->array[15] -
-    this->array[0]  * this->array[11] * this->array[14] -
-    this->array[8]  * this->array[2] * this->array[15] +
-    this->array[8]  * this->array[3] * this->array[14] +
-    this->array[12] * this->array[2] * this->array[11] -
-    this->array[12] * this->array[3] * this->array[10];
-    
-    inv[9] = -this->array[0]  * this->array[9] * this->array[15] +
-    this->array[0]  * this->array[11] * this->array[13] +
-    this->array[8]  * this->array[1] * this->array[15] -
-    this->array[8]  * this->array[3] * this->array[13] -
-    this->array[12] * this->array[1] * this->array[11] +
-    this->array[12] * this->array[3] * this->array[9];
-    
-    inv[13] = this->array[0]  * this->array[9] * this->array[14] -
-    this->array[0]  * this->array[10] * this->array[13] -
-    this->array[8]  * this->array[1] * this->array[14] +
-    this->array[8]  * this->array[2] * this->array[13] +
-    this->array[12] * this->array[1] * this->array[10] -
-    this->array[12] * this->array[2] * this->array[9];
-    
-    inv[2] = this->array[1]  * this->array[6] * this->array[15] -
-    this->array[1]  * this->array[7] * this->array[14] -
-    this->array[5]  * this->array[2] * this->array[15] +
-    this->array[5]  * this->array[3] * this->array[14] +
-    this->array[13] * this->array[2] * this->array[7] -
-    this->array[13] * this->array[3] * this->array[6];
-    
-    inv[6] = -this->array[0]  * this->array[6] * this->array[15] +
-    this->array[0]  * this->array[7] * this->array[14] +
-    this->array[4]  * this->array[2] * this->array[15] -
-    this->array[4]  * this->array[3] * this->array[14] -
-    this->array[12] * this->array[2] * this->array[7] +
-    this->array[12] * this->array[3] * this->array[6];
-    
-    inv[10] = this->array[0]  * this->array[5] * this->array[15] -
-    this->array[0]  * this->array[7] * this->array[13] -
-    this->array[4]  * this->array[1] * this->array[15] +
-    this->array[4]  * this->array[3] * this->array[13] +
-    this->array[12] * this->array[1] * this->array[7] -
-    this->array[12] * this->array[3] * this->array[5];
-    
-    inv[14] = -this->array[0]  * this->array[5] * this->array[14] +
-    this->array[0]  * this->array[6] * this->array[13] +
-    this->array[4]  * this->array[1] * this->array[14] -
-    this->array[4]  * this->array[2] * this->array[13] -
-    this->array[12] * this->array[1] * this->array[6] +
-    this->array[12] * this->array[2] * this->array[5];
-    
-    inv[3] = -this->array[1] * this->array[6] * this->array[11] +
-    this->array[1] * this->array[7] * this->array[10] +
-    this->array[5] * this->array[2] * this->array[11] -
-    this->array[5] * this->array[3] * this->array[10] -
-    this->array[9] * this->array[2] * this->array[7] +
-    this->array[9] * this->array[3] * this->array[6];
-    
-    inv[7] = this->array[0] * this->array[6] * this->array[11] -
-    this->array[0] * this->array[7] * this->array[10] -
-    this->array[4] * this->array[2] * this->array[11] +
-    this->array[4] * this->array[3] * this->array[10] +
-    this->array[8] * this->array[2] * this->array[7] -
-    this->array[8] * this->array[3] * this->array[6];
-    
-    inv[11] = -this->array[0] * this->array[5] * this->array[11] +
-    this->array[0] * this->array[7] * this->array[9] +
-    this->array[4] * this->array[1] * this->array[11] -
-    this->array[4] * this->array[3] * this->array[9] -
-    this->array[8] * this->array[1] * this->array[7] +
-    this->array[8] * this->array[3] * this->array[5];
-    
-    inv[15] = this->array[0] * this->array[5] * this->array[10] -
-    this->array[0] * this->array[6] * this->array[9] -
-    this->array[4] * this->array[1] * this->array[10] +
-    this->array[4] * this->array[2] * this->array[9] +
-    this->array[8] * this->array[1] * this->array[6] -
-    this->array[8] * this->array[2] * this->array[5];
-    
-    T det = this->array[0] * inv[0] + this->array[1] * inv[4]
-    + this->array[2] * inv[8] + this->array[3] * inv[12];
-    if (det == 0) TOD_RETURN_TRACE(false);
-    
-    det = 1.0 / det;
-    
-    for (int i = 0; i < 16; i++)
-        this->array[i] = inv[i] * det;
-    
-    return true;
+    return this->inverseTo(*this);
 }
     
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::transpose()
+template <typename T>
+bool Matrix44Base<T>::inverseTo(type& out)
+{
+    T inv[16];
+
+    inv[0] = this->array[5] * this->array[10] * this->array[15] -
+        this->array[5] * this->array[11] * this->array[14] -
+        this->array[9] * this->array[6] * this->array[15] +
+        this->array[9] * this->array[7] * this->array[14] +
+        this->array[13] * this->array[6] * this->array[11] -
+        this->array[13] * this->array[7] * this->array[10];
+
+    inv[4] = -this->array[4] * this->array[10] * this->array[15] +
+        this->array[4] * this->array[11] * this->array[14] +
+        this->array[8] * this->array[6] * this->array[15] -
+        this->array[8] * this->array[7] * this->array[14] -
+        this->array[12] * this->array[6] * this->array[11] +
+        this->array[12] * this->array[7] * this->array[10];
+
+    inv[8] = this->array[4] * this->array[9] * this->array[15] -
+        this->array[4] * this->array[11] * this->array[13] -
+        this->array[8] * this->array[5] * this->array[15] +
+        this->array[8] * this->array[7] * this->array[13] +
+        this->array[12] * this->array[5] * this->array[11] -
+        this->array[12] * this->array[7] * this->array[9];
+
+    inv[12] = -this->array[4] * this->array[9] * this->array[14] +
+        this->array[4] * this->array[10] * this->array[13] +
+        this->array[8] * this->array[5] * this->array[14] -
+        this->array[8] * this->array[6] * this->array[13] -
+        this->array[12] * this->array[5] * this->array[10] +
+        this->array[12] * this->array[6] * this->array[9];
+
+    inv[1] = -this->array[1] * this->array[10] * this->array[15] +
+        this->array[1] * this->array[11] * this->array[14] +
+        this->array[9] * this->array[2] * this->array[15] -
+        this->array[9] * this->array[3] * this->array[14] -
+        this->array[13] * this->array[2] * this->array[11] +
+        this->array[13] * this->array[3] * this->array[10];
+
+    inv[5] = this->array[0] * this->array[10] * this->array[15] -
+        this->array[0] * this->array[11] * this->array[14] -
+        this->array[8] * this->array[2] * this->array[15] +
+        this->array[8] * this->array[3] * this->array[14] +
+        this->array[12] * this->array[2] * this->array[11] -
+        this->array[12] * this->array[3] * this->array[10];
+
+    inv[9] = -this->array[0] * this->array[9] * this->array[15] +
+        this->array[0] * this->array[11] * this->array[13] +
+        this->array[8] * this->array[1] * this->array[15] -
+        this->array[8] * this->array[3] * this->array[13] -
+        this->array[12] * this->array[1] * this->array[11] +
+        this->array[12] * this->array[3] * this->array[9];
+
+    inv[13] = this->array[0] * this->array[9] * this->array[14] -
+        this->array[0] * this->array[10] * this->array[13] -
+        this->array[8] * this->array[1] * this->array[14] +
+        this->array[8] * this->array[2] * this->array[13] +
+        this->array[12] * this->array[1] * this->array[10] -
+        this->array[12] * this->array[2] * this->array[9];
+
+    inv[2] = this->array[1] * this->array[6] * this->array[15] -
+        this->array[1] * this->array[7] * this->array[14] -
+        this->array[5] * this->array[2] * this->array[15] +
+        this->array[5] * this->array[3] * this->array[14] +
+        this->array[13] * this->array[2] * this->array[7] -
+        this->array[13] * this->array[3] * this->array[6];
+
+    inv[6] = -this->array[0] * this->array[6] * this->array[15] +
+        this->array[0] * this->array[7] * this->array[14] +
+        this->array[4] * this->array[2] * this->array[15] -
+        this->array[4] * this->array[3] * this->array[14] -
+        this->array[12] * this->array[2] * this->array[7] +
+        this->array[12] * this->array[3] * this->array[6];
+
+    inv[10] = this->array[0] * this->array[5] * this->array[15] -
+        this->array[0] * this->array[7] * this->array[13] -
+        this->array[4] * this->array[1] * this->array[15] +
+        this->array[4] * this->array[3] * this->array[13] +
+        this->array[12] * this->array[1] * this->array[7] -
+        this->array[12] * this->array[3] * this->array[5];
+
+    inv[14] = -this->array[0] * this->array[5] * this->array[14] +
+        this->array[0] * this->array[6] * this->array[13] +
+        this->array[4] * this->array[1] * this->array[14] -
+        this->array[4] * this->array[2] * this->array[13] -
+        this->array[12] * this->array[1] * this->array[6] +
+        this->array[12] * this->array[2] * this->array[5];
+
+    inv[3] = -this->array[1] * this->array[6] * this->array[11] +
+        this->array[1] * this->array[7] * this->array[10] +
+        this->array[5] * this->array[2] * this->array[11] -
+        this->array[5] * this->array[3] * this->array[10] -
+        this->array[9] * this->array[2] * this->array[7] +
+        this->array[9] * this->array[3] * this->array[6];
+
+    inv[7] = this->array[0] * this->array[6] * this->array[11] -
+        this->array[0] * this->array[7] * this->array[10] -
+        this->array[4] * this->array[2] * this->array[11] +
+        this->array[4] * this->array[3] * this->array[10] +
+        this->array[8] * this->array[2] * this->array[7] -
+        this->array[8] * this->array[3] * this->array[6];
+
+    inv[11] = -this->array[0] * this->array[5] * this->array[11] +
+        this->array[0] * this->array[7] * this->array[9] +
+        this->array[4] * this->array[1] * this->array[11] -
+        this->array[4] * this->array[3] * this->array[9] -
+        this->array[8] * this->array[1] * this->array[7] +
+        this->array[8] * this->array[3] * this->array[5];
+
+    inv[15] = this->array[0] * this->array[5] * this->array[10] -
+        this->array[0] * this->array[6] * this->array[9] -
+        this->array[4] * this->array[1] * this->array[10] +
+        this->array[4] * this->array[2] * this->array[9] +
+        this->array[8] * this->array[1] * this->array[6] -
+        this->array[8] * this->array[2] * this->array[5];
+
+    T det = this->array[0] * inv[0] + this->array[1] * inv[4]
+        + this->array[2] * inv[8] + this->array[3] * inv[12];
+    if (det == 0) TOD_RETURN_TRACE(false);
+
+    det = static_cast<T>(1.0) / det;
+
+    for (int32 i = 0; i < 16; i++)
+    {
+        out.array[i] = inv[i] * det;
+    }
+
+    return true;
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename T>
+void Matrix44Base<T>::transpose()
 {
     std::swap(this->array[1], this->array[4]);
     std::swap(this->array[2], this->array[8]);
@@ -409,41 +424,132 @@ void Matrix44Base<T, MAJOR>::transpose()
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-Vector3 Matrix44Base<T, MAJOR>::getRightVector()
+template <typename T>
+void Matrix44Base<T>::makeFromSRT(const Vector3& s, const Quaternion& r, const Vector3& t)
 {
-    return Vector3(
-        MAJOR::getElement(this->array, 0, 0),
-        MAJOR::getElement(this->array, 0, 1),
-        MAJOR::getElement(this->array, 0, 2));
+    auto rx = r.x;
+    auto ry = r.y;
+    auto rz = r.z;
+    auto rw = r.w;
+    auto sx = s.x;
+    auto sy = s.y;
+    auto sz = s.z;
+
+    this->m11 = (1.0f - 2.0f * (ry * ry + rz * rz)) * sx;
+    this->m12 = (2.0f * (rx * ry + rz * rw)) * sx;
+    this->m13 = (2.0f * (rx * rz - ry * rw)) * sx;
+    this->m14 = 0.0f;
+
+    this->m21 = (2.0f * (rx * ry - rz * rw)) * sy;
+    this->m22 = (1.0f - 2.0f * (rx * rx + rz * rz)) * sy;
+    this->m23 = (2.0f * (ry * rz + rx * rw)) * sy;
+    this->m24 = 0.0f;
+
+    this->m31 = (2.0f * (rx * rz + ry * rw)) * sz;
+    this->m32 = (2.0f * (ry * rz - rx * rw)) * sz;
+    this->m33 = (1.0f - 2.0f * (rx * rx + ry * ry)) * sz;
+    this->m34 = 0.0f;
+
+    this->m41 = t.x;
+    this->m42 = t.y;
+    this->m43 = t.z;
+    this->m44 = 1.0f;
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-Vector3 Matrix44Base<T, MAJOR>::getUpVector()
+template <typename T>
+void Matrix44Base<T>::makeFromSRTTranspose
+(const Vector3& s, const Quaternion& r, const Vector3& t)
 {
-    return Vector3(
-        MAJOR::getElement(this->array, 1, 0),
-        MAJOR::getElement(this->array, 1, 1),
-        MAJOR::getElement(this->array, 1, 2));
+    auto rx = r.x;
+    auto ry = r.y;
+    auto rz = r.z;
+    auto rw = r.w;
+    auto sx = s.x;
+    auto sy = s.y;
+    auto sz = s.z;
+
+    this->m11 = (1.0f - 2.0f * (ry * ry + rz * rz)) * sx;
+    this->m21 = (2.0f * (rx * ry + rz * rw)) * sx;
+    this->m31 = (2.0f * (rx * rz - ry * rw)) * sx;
+    this->m41 = 0.0f;
+
+    this->m12 = (2.0f * (rx * ry - rz * rw)) * sy;
+    this->m22 = (1.0f - 2.0f * (rx * rx + rz * rz)) * sy;
+    this->m32 = (2.0f * (ry * rz + rx * rw)) * sy;
+    this->m42 = 0.0f;
+
+    this->m13 = (2.0f * (rx * rz + ry * rw)) * sz;
+    this->m23 = (2.0f * (ry * rz - rx * rw)) * sz;
+    this->m33 = (1.0f - 2.0f * (rx * rx + ry * ry)) * sz;
+    this->m43 = 0.0f;
+
+    this->m14 = t.x;
+    this->m24 = t.y;
+    this->m34 = t.z;
+    this->m44 = 1.0f;
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-Vector3 Matrix44Base<T, MAJOR>::getForwardVector()
+template <typename T>
+void Matrix44Base<T>::makeFromQuaternion(const Quaternion& r)
 {
-    return Vector3(
-        MAJOR::getElement(this->array, 2, 0),
-        MAJOR::getElement(this->array, 2, 1),
-        MAJOR::getElement(this->array, 2, 2));
+    auto x = r.x;
+    auto y = r.y;
+    auto z = r.z;
+    auto w = r.w;
+
+    this->m11 = 1.0f - 2.0f * (y * y + z * z);
+    this->m12 = 2.0f * (x * y + z * w);
+    this->m13 = 2.0f * (x * z - y * w);
+    this->m14 = 0.0f;
+
+    this->m21 = 2.0f * (x * y - z * w);
+    this->m22 = 1.0f - 2.0f * (x * x + z * z);
+    this->m23 = 2.0f * (y * z + x * w);
+    this->m24 = 0.0f;
+
+    this->m31 = 2.0f * (x * z + y * w);
+    this->m32 = 2.0f * (y * z - x * w);
+    this->m33 = 1.0f - 2.0f * (x * x + y * y);
+    this->m34 = 0.0f;
+
+    this->m41 = 0.0f;
+    this->m42 = 0.0f;
+    this->m43 = 0.0f;
+    this->m44 = 1.0f;
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::lookAt(const Vector3& target)
+template <typename T>
+Vector3 Matrix44Base<T>::getRightVector()
+{
+    return Vector3(this->m11, this->m12, this->m13);
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename T>
+Vector3 Matrix44Base<T>::getUpVector()
+{
+    return Vector3(this->m21, this->m22, this->m23);
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename T>
+Vector3 Matrix44Base<T>::getForwardVector()
+{
+    return Vector3(this->m31, this->m32, this->m33);
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename T>
+void Matrix44Base<T>::lookAt(const Vector3& target)
 {
     Vector3 position { this->getTranslation() };
     Vector3 forward { target };
@@ -475,8 +581,8 @@ void Matrix44Base<T, MAJOR>::lookAt(const Vector3& target)
     
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::lookAt(const Vector3& target, const Vector3& up)
+template <typename T>
+void Matrix44Base<T>::lookAt(const Vector3& target, const Vector3& up)
 {
     Vector3 position { this->getTranslation() };
     Vector3 forward { target };
@@ -489,23 +595,23 @@ void Matrix44Base<T, MAJOR>::lookAt(const Vector3& target, const Vector3& up)
     Vector3 up_vec { forward.cross(left) };
     up_vec.normalize();
     
-    MAJOR::setElement(this->array, 0, 0, left.x);
-    MAJOR::setElement(this->array, 1, 0, left.y);
-    MAJOR::setElement(this->array, 2, 0, left.z);
-    
-    MAJOR::setElement(this->array, 0, 1, up_vec.x);
-    MAJOR::setElement(this->array, 1, 1, up_vec.y);
-    MAJOR::setElement(this->array, 2, 1, up_vec.z);
-
-    MAJOR::setElement(this->array, 0, 2, forward.x);
-    MAJOR::setElement(this->array, 1, 2, forward.y);
-    MAJOR::setElement(this->array, 2, 2, forward.z);
+    this->m11 = left.x;
+    this->m21 = left.y;
+    this->m31 = left.z;
+              =
+    this->m12 = up_vec.x;
+    this->m22 = up_vec.y;
+    this->m32 = up_vec.z;
+              =
+    this->m13 = forward.x;
+    this->m23 = forward.y;
+    this->m33 = forward.z;
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-Vector3 Matrix44Base<T, MAJOR>::getAngle()
+template <typename T>
+Vector3 Matrix44Base<T>::getAngle()
 {
     float yaw = Math::rad2deg(Math::asin(this->array[8]));
     if(this->array[10] < 0)
@@ -531,43 +637,47 @@ Vector3 Matrix44Base<T, MAJOR>::getAngle()
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::perspectiveLH(T fov, T aspect, T zNear, T zFar)
+template <typename T>
+void Matrix44Base<T>::perspectiveLH(T fov, T aspect, T zNear, T zFar)
 {
     this->clear();
     
-    auto tanHalfFovy = Math::tan(Math::deg2rad(fov) / static_cast<T>(2));
-    MAJOR::setElement(this->array, 0, 0, static_cast<T>(1) / (aspect * tanHalfFovy));
-    MAJOR::setElement(this->array, 1, 1, static_cast<T>(1) / (tanHalfFovy));
-    MAJOR::setElement(this->array, 2, 3, static_cast<T>(1));
+    T a = 1 / (Math::tan(Math::deg2rad(fov) / 2));
+    this->m11 = a / aspect;
+    this->m22 = a;
+    this->m34 = static_cast<T>(1);
     
-    MAJOR::setElement(this->array, 2, 2, - (zFar + zNear) / (zFar - zNear));
-    MAJOR::setElement(this->array, 3, 2, - (static_cast<T>(2) * zFar * zNear) / (zFar - zNear));
+    //OpenGL NDC
+
+    //DirectX NDC
+    T Q = zFar / (zFar - zNear);
+    this->m33 = Q;
+    this->m43 = -Q * zNear;
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::perspectiveRH(T fov, T aspect, T zNear, T zFar)
+template <typename T>
+void Matrix44Base<T>::perspectiveRH(T fov, T aspect, T zNear, T zFar)
 {
     this->clear();
     
     auto tanHalfFov = Math::tan(Math::deg2rad(fov) / static_cast<T>(2));
-    MAJOR::setElement(this->array, 0, 0, static_cast<T>(1) / (aspect * tanHalfFov));
-    MAJOR::setElement(this->array, 1, 1, static_cast<T>(1) / (tanHalfFov));
-    MAJOR::setElement(this->array, 2, 3, static_cast<T>(-1));
+    this->m11 = static_cast<T>(1) / (aspect * tanHalfFov);
+    this->m22 = static_cast<T>(1) / (tanHalfFov);
+    this->m34 = static_cast<T>(-1);
     
     //OpenGL NDC (Normalized Device Coodinate) : depth -1 ~ 1
-    MAJOR::setElement(this->array, 2, 2, - (zFar + zNear) / (zFar - zNear));
-    MAJOR::setElement(this->array, 3, 2, - (static_cast<T>(2) * zFar * zNear) / (zFar - zNear));
+    this->m33 = - (zFar + zNear) / (zFar - zNear);
+    this->m43 = - (static_cast<T>(2) * zFar * zNear) / (zFar - zNear);
     
     //DirectX NDC : detph 0 ~ 1
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::orthogonalLH
+template <typename T>
+void Matrix44Base<T>::orthogonalLH
 (T left, T right, T bottom, T top, T zNear, T zFar)
 {
     this->clear();
@@ -577,90 +687,103 @@ void Matrix44Base<T, MAJOR>::orthogonalLH
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::orthogonalRH
+template <typename T>
+void Matrix44Base<T>::orthogonalRH
 (T left, T right, T bottom, T top, T zNear, T zFar)
 {
     this->identity();
 
-    MAJOR::setElement(this->array, 0, 0, static_cast<T>(2) / (right - left));
-    MAJOR::setElement(this->array, 1, 1, static_cast<T>(2) / (top - bottom));
-    MAJOR::setElement(this->array, 3, 0, - (right + left) / (right - left));
-    MAJOR::setElement(this->array, 3, 1, - (top + bottom) / (top - bottom));
+    this->m11 = static_cast<T>(2) / (right - left);
+    this->m22 = static_cast<T>(2) / (top - bottom);
+    this->m41 = - (right + left) / (right - left);
+    this->m42 = - (top + bottom) / (top - bottom);
 
-    MAJOR::setElement(this->array, 2, 2, - static_cast<T>(2) / (zFar - zNear));
-    MAJOR::setElement(this->array, 3, 2, - (zFar + zNear) / (zFar - zNear));
+    this->m33 = - static_cast<T>(2) / (zFar - zNear);
+    this->m43 = - (zFar + zNear) / (zFar - zNear);
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::setX(T value)
+template <typename T>
+void Matrix44Base<T>::setX(T value)
 {
-    MAJOR::setElement(this->array, 3, 0, value);
+    this->m41 = value;
 }
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::setY(T value)
+template <typename T>
+void Matrix44Base<T>::setY(T value)
 {
-    MAJOR::setElement(this->array, 3, 1, value);
+    this->m42 = value;
 }
 
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-void Matrix44Base<T, MAJOR>::setZ(T value)
+template <typename T>
+void Matrix44Base<T>::setZ(T value)
 {
-    MAJOR::setElement(this->array, 3, 2, value);
+    this->m43 = value;
 }
 
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-T Matrix44Base<T, MAJOR>::getX()
+template <typename T>
+T Matrix44Base<T>::getX()
 {
-    return MAJOR::getElement(this->array, 3, 0);
+    return this->m41;
 }
 
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-T Matrix44Base<T, MAJOR>::getY()
+template <typename T>
+T Matrix44Base<T>::getY()
 {
-    return MAJOR::getElement(this->array, 3, 1);
+    return this->m42;
 }
 
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-T Matrix44Base<T, MAJOR>::getZ()
+template <typename T>
+T Matrix44Base<T>::getZ()
 {
-    return MAJOR::getElement(this->array, 3, 2);
+    return this->m43;
 }
 
 
+//-----------------------------------------------------------------------------
+template <typename T>
+T& Matrix44Base<T>::m(int32 row, int32 column)
+{
+    return this->d[row][column];
+}
+
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-typename Matrix44Base<T, MAJOR>::type& Matrix44Base<T, MAJOR>::operator *= (const type& other)
+template <typename T>
+const T& Matrix44Base<T>::m(int32 row, int32 column) const
+{
+    return this->d[row][column];
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename T>
+typename Matrix44Base<T>::type& Matrix44Base<T>::operator *= (const type& other)
 {
     type output;
     output.clear();
-    for(int i = 0; i < 4; ++i)
+    for(int32 i = 0; i < 4; ++i)
     {
-        for(int j = 0; j < 4; ++j)
+        for(int32 j = 0; j < 4; ++j)
         {
-            for(int k = 0; k < 4; ++k)
+            for(int32 k = 0; k < 4; ++k)
             {
-                MAJOR::add(output.array, i, j,
-                    MAJOR::getElement(this->array, i, k) *
-                    MAJOR::getElement(other.array, k, j));
+                output.d[i][j] += this->d[i][k] * other.d[k][j];
             }
         }
     }
@@ -669,10 +792,10 @@ typename Matrix44Base<T, MAJOR>::type& Matrix44Base<T, MAJOR>::operator *= (cons
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-typename Matrix44Base<T, MAJOR>::type& Matrix44Base<T, MAJOR>::operator += (const type& other)
+template <typename T>
+typename Matrix44Base<T>::type& Matrix44Base<T>::operator += (const type& other)
 {
-    for(int i = 0; i < 16; ++i)
+    for(int32 i = 0; i < 16; ++i)
     {
         this->array[i] += other.array[i];
     }
@@ -681,10 +804,10 @@ typename Matrix44Base<T, MAJOR>::type& Matrix44Base<T, MAJOR>::operator += (cons
 
 
 //-----------------------------------------------------------------------------
-template <typename T, typename MAJOR>
-typename Matrix44Base<T, MAJOR>::type& Matrix44Base<T, MAJOR>::operator -= (const type& other)
+template <typename T>
+typename Matrix44Base<T>::type& Matrix44Base<T>::operator -= (const type& other)
 {
-    for(int i = 0; i < 16; ++i)
+    for(int32 i = 0; i < 16; ++i)
     {
         this->array[i] -= other.array[i];
     }
@@ -693,7 +816,30 @@ typename Matrix44Base<T, MAJOR>::type& Matrix44Base<T, MAJOR>::operator -= (cons
 
 
 //-----------------------------------------------------------------------------
+template <typename T>
+typename Matrix44Base<T>::type
+Matrix44Base<T>::operator * (const type& other) const
+{
+    auto ret(*this);
+    ret *= other;
+    return ret;
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename T>
+Matrix44Base<T>::operator float* ()
+{
+    return this->array;
+}
+
+
+//-----------------------------------------------------------------------------
+#if defined (TOD_PLATFORM_WINDOWS)
 typedef Matrix44Base<float> Matrix44;
+#else
+typedef Matrix44Base<float> Matrix44;
+#endif
 
     
 }

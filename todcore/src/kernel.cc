@@ -1,13 +1,11 @@
-﻿#include "tod/kernel.h"
-#include <functional>
-#include "tod/type.h"
-#include "tod/node.h"
+﻿#include "tod/precompiled.h"
+#include "tod/kernel.h"
 namespace tod
 {
 
 //-----------------------------------------------------------------------------
-Kernel::Kernel():
-root(nullptr)
+Kernel::Kernel()
+: root(nullptr)
 {
     this->setRootNode(new Node());
 }
@@ -45,8 +43,8 @@ Node* Kernel::create(const String& type_name, const String& name)
     
     Node* cur_parent = this->root;
     Node* child_node = nullptr;
-    int path_size = static_cast<int>(path_list.size());
-    for (int path_pos=0;path_pos<path_size;++path_pos)
+    int32 path_size = static_cast<int>(path_list.size());
+    for (int32 path_pos=0;path_pos<path_size;++path_pos)
     {
         auto& cur_path_name = path_list[path_pos];
         child_node = cur_parent->findNodeByName(cur_path_name);

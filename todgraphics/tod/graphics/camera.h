@@ -1,6 +1,7 @@
 #pragma once
 #include "tod/rect.h"
 #include "tod/object.h"
+#include "tod/graphics/matrix44.h"
 namespace tod::graphics
 {
 
@@ -23,8 +24,8 @@ public:
     Camera():
       exposure(1)
     , gamma(2.2f)
-    , near(0.1f)
-    , far(10000)
+    , nearPlane(0.1f)
+    , farPlane(10000)
     , fov(45)
     , width(800)
     , height(600)
@@ -35,7 +36,7 @@ public:
         this->flags[DIRTY_PROJECTION] = true;
     }
     
-    virtual void clear()=0;
+    //virtual void clear()=0;
     
     inline void setHDR(bool value)
     {
@@ -89,21 +90,21 @@ public:
     
     inline void setNear(float value)
     {
-        this->near = value;
+        this->nearPlane = value;
         this->flags[DIRTY_PROJECTION] = true;
     }
     inline float getNear()
     {
-        return this->near;
+        return this->nearPlane;
     }
     inline void setFar(float value)
     {
-        this->far = value;
+        this->farPlane = value;
         this->flags[DIRTY_PROJECTION] = true;
     }
     inline float getFar()
     {
-        return this->far;
+        return this->farPlane;
     }
     inline void setFov(float value)
     {
@@ -141,8 +142,11 @@ public:
         if (this->flags[DIRTY_PROJECTION])
         {
             this->flags[DIRTY_PROJECTION] = false;
-            this->projMatrix.perspectiveRH(
-                this->fov, this->getAspectRatio(), this->near, this->far);
+            this->projMatrix.perspectiveLH(
+                  this->fov
+                , this->getAspectRatio()
+                , this->nearPlane
+                , this->farPlane);
         }
 
         return this->projMatrix;
@@ -152,8 +156,8 @@ protected:
     std::bitset<FLAG_MAX> flags;
     float exposure;
     float gamma;
-    float near;
-    float far;
+    float nearPlane;
+    float farPlane;
     float fov;
     float width;
     float height;

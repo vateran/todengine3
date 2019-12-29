@@ -14,11 +14,11 @@ public SingletonDerive<RenderTargetTexturePool, Object>
 public:
     RenderTargetTexturePool();
 
-    Texture* getTexture(int width, int height, PixelFormat format);
+    Texture* getTexture(int32 width, int32 height, Format format);
     void release(Texture* texture);
     
 private:
-    typedef std::tuple<int, int, PixelFormat> Key;
+    typedef std::tuple<int, int, Format> Key;
     typedef std::map<Key, ObjRef<Texture>> RTTextures;
     RTTextures rtTextures;
     ObjRef<Renderer> renderer;

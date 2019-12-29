@@ -22,7 +22,7 @@ void OceanComponent::updateShaderParams(Shader* shader)
 
 
 //-----------------------------------------------------------------------------
-void OceanComponent::render()
+void OceanComponent::render(Shader* shader, uint32 passes)
 {
     if (this->mesh.invalid()) return;
     

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "tod/singleton.h"
 namespace tod::graphics
 {

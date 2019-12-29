@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "tod/object.h"
 namespace tod
 {
@@ -44,13 +44,17 @@ public:
     ~ObjRef()
     {
         if (this->target)
+        {
             this->target->release();
+        }
     }
     
     void release()
     {
         if (this->target)
+        {
             this->target->release();
+        }
         this->target = nullptr;
     }
     
@@ -84,7 +88,9 @@ public:
         this->release();
         this->target = object;
         if (nullptr != this->target)
+        {
             this->target->retain();
+        }
     }
     
     void setByPath(const String& path)

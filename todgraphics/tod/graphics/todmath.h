@@ -20,6 +20,7 @@ public:
     static float tan(float rad);
     static float atan2(float x, float y);
     static float power(float x, float y);
+    static float fastInvSqrt(float x);
     static inline float deg2rad(float deg);
     static inline float rad2deg(float rad);
     

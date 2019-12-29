@@ -7,15 +7,20 @@ namespace tod::graphics
 class CameraComponent : public Derive<CameraComponent, Component>
 {
 public:
-    CameraComponent():
-    camera(nullptr)
-    , renderer("/sys/renderer")
+    CameraComponent()
+    : camera(nullptr)
+    , renderInterface(nullptr)
     , brightThreshold(2.0f)
     {
-        this->camera = this->renderer->createCamera();
+        this->camera = new Camera;
     }
     virtual~CameraComponent()
+    {   
+    }
+
+    void setCamera(Camera* camera)
     {
+        this->camera = camera;
     }
     
     inline void setHDR(bool value)
@@ -70,7 +75,7 @@ public:
     
     inline void clear()
     {
-        this->camera->clear();
+        //this->camera->clear();
     }
     
     inline void setNear(float value)
@@ -157,9 +162,9 @@ public:
 
 private:
     ObjRef<Camera> camera;
-    ObjRef<Renderer> renderer;
     float brightThreshold;
     Vector4 dof;
+    RenderInterface* renderInterface;
 };
 
 }

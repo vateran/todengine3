@@ -1,19 +1,32 @@
-#include "tod/serializer.h"
-#include "tod/node.h"
-#include "tod/kernel.h"
-#include "tod/filesystem.h"
+#include "tod/precompiled.h"
+#include <rapidjson/document.h>
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
 #include <rapidjson/error/en.h>
+#include "tod/any.h"
+#include "tod/node.h"
+#include "tod/kernel.h"
+#include "tod/buffer.h"
+#include "tod/filesystem.h"
+#include "tod/serializer.h"
 namespace tod
 {
+
+void write_node_to_json(Node* node, rapidjson::Value& json,
+    rapidjson::MemoryPoolAllocator<>& allocator);
+void write_object_to_json(Object* object, rapidjson::Value& json,
+    rapidjson::MemoryPoolAllocator<>& allocator);
+void write_prop_to_json(Object* object, rapidjson::Value& json,
+    rapidjson::MemoryPoolAllocator<>& allocator);
+Node* read_node_from_json(rapidjson::Value& jval);
+void read_prop_from_json(Object* object, rapidjson::Value& jval);
  
 //-----------------------------------------------------------------------------
 bool Serializer::serializeToJson(Node* node, String& json_str_out)
 {
     rapidjson::Document doc(rapidjson::kObjectType);
     
-    this->write_node_to_json(node, doc, doc.GetAllocator());
+    write_node_to_json(node, doc, doc.GetAllocator());
     
     rapidjson::StringBuffer buffer;
     rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
@@ -49,8 +62,7 @@ Node* Serializer::deserializeFromJson(const tod::String &json_str)
         TOD_RETURN_TRACE(nullptr);
     }
     
-    auto node = this->read_node_from_json(doc);
-    return node;
+    return read_node_from_json(doc);
 }
     
 
@@ -59,8 +71,8 @@ Node* Serializer::deserializeFromJsonFile(const String& uri)
 {
     Node* ret = nullptr;
     
-    if (!FileSystem::instance()->load(uri, [this, &ret](FileSystem::Data& data)
-    { ret = this->deserializeFromJson(std::move(&data[0])); return true; },
+    if (!FileSystem::instance()->load(uri, [this, &ret](Buffer* data)
+    { ret = this->deserializeFromJson(std::move(data->data())); return true; },
     FileSystem::LoadOption().string())) TOD_RETURN_TRACE(nullptr);
     
     return ret;
@@ -68,7 +80,7 @@ Node* Serializer::deserializeFromJsonFile(const String& uri)
 
 
 //-----------------------------------------------------------------------------
-void Serializer::write_object_to_json
+void write_object_to_json
 (Object* object, rapidjson::Value& json,
  rapidjson::MemoryPoolAllocator<>& allocator)
 {
@@ -77,12 +89,12 @@ void Serializer::write_object_to_json
         rapidjson::Value(object->getType()->getName().c_str(), allocator),
         allocator);
     
-    this->write_prop_to_json(object, json, allocator);
+    write_prop_to_json(object, json, allocator);
 }
     
 
 //-----------------------------------------------------------------------------
-void Serializer::write_node_to_json
+void write_node_to_json
 (Node* node, rapidjson::Value& json,
  rapidjson::MemoryPoolAllocator<>& allocator)
 {
@@ -95,7 +107,7 @@ void Serializer::write_node_to_json
         rapidjson::Value(node->getType()->getName().c_str(), allocator),
         allocator);
     
-    this->write_prop_to_json(node, json, allocator);
+    write_prop_to_json(node, json, allocator);
     
     auto& components = node->getComponents();
     if (!components.empty())
@@ -105,7 +117,7 @@ void Serializer::write_node_to_json
         for (auto i=components.begin();i!=components.end();++i, ++count)
         {
             rapidjson::Value json_comp(rapidjson::kObjectType);
-            this->write_object_to_json(*i, json_comp, allocator);
+            write_object_to_json(*i, json_comp, allocator);
             json_components.PushBack(json_comp, allocator);
         }
         json.AddMember("comp", json_components, allocator);
@@ -119,7 +131,7 @@ void Serializer::write_node_to_json
         for (auto i=children.begin();i!=children.end();++i, ++count)
         {
             rapidjson::Value json_child(rapidjson::kObjectType);
-            this->write_node_to_json(*i, json_child, allocator);
+            write_node_to_json(*i, json_child, allocator);
             json_children.PushBack(json_child, allocator);
         }
         json.AddMember("child", json_children, allocator);
@@ -128,7 +140,7 @@ void Serializer::write_node_to_json
 
     
 //-----------------------------------------------------------------------------
-void Serializer::write_prop_to_json
+void write_prop_to_json
 (Object* object, rapidjson::Value& json,
  rapidjson::MemoryPoolAllocator<>& allocator)
 {
@@ -162,7 +174,7 @@ void Serializer::write_prop_to_json
     
     
 //----------------------------------------------------------------------------
-Node* Serializer::read_node_from_json(rapidjson::Value& jval)
+Node* read_node_from_json(rapidjson::Value& jval)
 {
     if (jval.IsNull()) TOD_RETURN_TRACE(nullptr);
     
@@ -176,7 +188,7 @@ Node* Serializer::read_node_from_json(rapidjson::Value& jval)
     if (nullptr == node) TOD_RETURN_TRACE(nullptr);
     node->onBeginDeserialize();
     
-    this->read_prop_from_json(node, jval);
+    read_prop_from_json(node, jval);
     
     const auto& component_iter = jval.FindMember("comp");
     if (jval.MemberEnd() != component_iter)
@@ -193,7 +205,7 @@ Node* Serializer::read_node_from_json(rapidjson::Value& jval)
                     create(comp_type_iter->value.GetString()));
                 node->addComponent(comp);
                 
-                this->read_prop_from_json(comp, (*i));
+                read_prop_from_json(comp, (*i));
             }
         }
     }
@@ -206,7 +218,7 @@ Node* Serializer::read_node_from_json(rapidjson::Value& jval)
         {
             for (auto i=children.Begin();i!=children.End();++i)
             {
-                Node* child_node = this->read_node_from_json(*i);
+                Node* child_node = read_node_from_json(*i);
                 if (child_node == 0) continue;
                 child_node->retain();
                 node->addChild(child_node);
@@ -220,7 +232,7 @@ Node* Serializer::read_node_from_json(rapidjson::Value& jval)
     
     
 //----------------------------------------------------------------------------
-void Serializer::read_prop_from_json(Object* object, rapidjson::Value& jval)
+void read_prop_from_json(Object* object, rapidjson::Value& jval)
 {
     if (jval.IsNull()) return;
     

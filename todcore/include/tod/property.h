@@ -1,6 +1,5 @@
-#pragma once
+﻿#pragma once
 #include "tod/stringconv.h"
-#include "tod/exception.h"
 namespace tod
 {
     
@@ -36,8 +35,8 @@ public:
     };
     
 public:
-    Property(const String& name):name(name) {}
-    virtual~Property() {}
+    Property(const String& name);
+    virtual~Property();
     
     virtual void fromString(Object* object, const String& value)=0;
     virtual void toString(Object* object, String& out_value)=0;
@@ -45,23 +44,22 @@ public:
     virtual bool isDefaultValue(Object* object)=0;
     virtual bool isEnum() const = 0;
     virtual bool isReadOnly()=0;
-    virtual bool isEqualType(const std::type_info& type_info) const
-    { return this->getType().hash_code() == type_info.hash_code(); }
+    virtual bool isEqualType(const std::type_info& type_info) const;
     virtual bool isNumeric() const=0;
     virtual const std::type_info& getType() const=0;
     
-    void setFlags(int value);
-    bool isFlagOn(int flag) { return (this->flags & flag) > 0; }
-    const String& getName() { return this->name; }
-    void setDesc(const String& value) { this->desc = value; }
-    const String& getDesc() { return this->desc; }
-    void setEditorType(const EditorType& value) { this->editorType = value; }
-    const EditorType& getEditorType() { return this->editorType; }
+    inline void setFlags(int32 value);
+    inline bool isFlagOn(int32 flag) const;
+    inline const String& getName() const;
+    inline void setDesc(const String& value);
+    inline const String& getDesc() const;
+    inline void setEditorType(const EditorType& value);
+    inline const EditorType& getEditorType() const;
     
 private:
     String name;
     String desc;
-    int flags;
+    int32 flags;
     EditorType editorType;
 };
 
@@ -73,15 +71,14 @@ template <typename PROPERTY_TYPE>
 class SimpleProperty : public Property
 {
 public:
-    SimpleProperty(const String& name):Property(name) {}
+    SimpleProperty(const String& name);
     
     virtual void set(Object* object, const PROPERTY_TYPE& value)=0;
     virtual PROPERTY_TYPE get(Object* object)=0;
     
-    const std::type_info& getType() const override { return typeid(PROPERTY_TYPE); }
-    bool isEnum() const override { return false; }
-    bool isNumeric() const override
-    { return std::is_arithmetic<PROPERTY_TYPE>::value; }
+    const std::type_info& getType() const override;
+    bool isEnum() const override;
+    bool isNumeric() const override;
 };
     
 
@@ -96,59 +93,18 @@ public:
     typedef PROPERTY_TYPE (TYPE::*Getter)();
     
 public:
-    SimplePropertyBind(const String& name):
-    SimpleProperty<PROPERTY_TYPE>(name)
-    , setter(nullptr)
-    , getter(nullptr)
-    {
-    }
+    SimplePropertyBind(const String& name);
     
-    void bind(Setter setter, Getter getter)
-    {
-        this->setter = setter;
-        this->getter = getter;
-    }
-    void set(Object* object, const PROPERTY_TYPE& value) override
-    {
-        TYPE* self = static_cast<TYPE*>(object);
-        (self->*setter)(value);
-    }
-    PROPERTY_TYPE get(Object* object) override
-    {
-        TYPE* self = static_cast<TYPE*>(object);
-        return (self->*getter)();
-    }
-    void setDefaultValue(const PROPERTY_TYPE& value)
-    {
-        this->defaultValue = value;
-    }
-    const PROPERTY_TYPE& getDefaultValue() const
-    {
-        return this->defaultValue;
-    }
-    
-    void fromString(Object* object, const String& value) override
-    {
-        typedef StringConv<PROPERTY_TYPE> SC;
-        this->set(static_cast<TYPE*>(object), SC::fromString(value));
-    }
-    void toString(Object* object, String& out_value) override
-    {
-        typedef StringConv<PROPERTY_TYPE> SC;
-        SC::toString(this->get(static_cast<TYPE*>(object)), out_value);
-    }
-    void setDefaultValue(Object* object) override
-    {
-        this->set(object, this->defaultValue);
-    }
-    bool isDefaultValue(Object* object) override
-    {
-        return this->get(object) == this->defaultValue;
-    }
-    bool isReadOnly() override
-    {
-        return nullptr == this->setter;
-    }
+    void bind(Setter setter, Getter getter);
+    void set(Object* object, const PROPERTY_TYPE& value) override;
+    PROPERTY_TYPE get(Object* object) override;
+    void setDefaultValue(const PROPERTY_TYPE& value);
+    const PROPERTY_TYPE& getDefaultValue() const;
+    void fromString(Object* object, const String& value) override;
+    void toString(Object* object, String& out_value) override;
+    void setDefaultValue(Object* object) override;
+    bool isDefaultValue(Object* object) override;
+    bool isReadOnly() override;
     
 private:
     Setter setter;
@@ -172,59 +128,20 @@ public:
     
 public:
     template <typename ... ARGS>
-    EnumList(const ARGS& ... args)
-    {
-        this->add_tuple(args ...);
-    }
-    bool empty() const
-    {
-        return this->stringToValue.empty();
-    }
-    void add(const String& string, PROPERTY_TYPE value)
-    {
-        this->stringToValue.push_back(std::make_tuple(string.hash(), value));
-        this->valueToString.push_back(std::make_tuple(value, string));
-    }
-    PROPERTY_TYPE toValue(const String& string) const
-    {
-        auto hash = string.hash();
-        auto i = std::find_if(this->stringToValue.begin(),
-                              this->stringToValue.end(),
-                              [hash](const StringToValue& s)
-                              { return std::get<0>(s) == hash; });
-        if (this->stringToValue.end() == i)
-            i = this->stringToValue.begin();
-        return std::get<1>(*i);
-    }
-    bool toString(PROPERTY_TYPE value, String& out)
-    {
-        auto i = std::find_if(this->valueToString.begin(),
-                              this->valueToString.end(),
-                              [value](const ValueToString& s)
-                              { return std::get<0>(s) == value; });
-        if (this->valueToString.end() == i) TOD_RETURN_TRACE(false);
-        out = std::get<1>(*i);
-        return true;
-    }
-    void setInvalidValue(PROPERTY_TYPE value)
-    {
-        this->invalidValue = value;
-    }
-    PROPERTY_TYPE getInvalidValue()
-    {
-        return this->invalidValue;
-    }
-    iterator begin() { return this->valueToString.begin(); }
-    iterator end() { return this->valueToString.end(); }
+    EnumList(const ARGS& ... args);
+    bool empty() const;
+    void add(const String& string, PROPERTY_TYPE value);
+    PROPERTY_TYPE toValue(const String& string) const;
+    bool toString(PROPERTY_TYPE value, String& out);
+    void setInvalidValue(PROPERTY_TYPE value);
+    PROPERTY_TYPE getInvalidValue();
+    iterator begin();
+    iterator end();
     
 private:
     template <typename ARG, typename ... ARGS>
-    void add_tuple(const ARG& value, const ARGS& ... args)
-    {
-        this->add(std::get<0>(value), std::get<1>(value));
-        this->add_tuple(args ...);
-    }
-    void add_tuple() {}
+    void add_tuple(const ARG& value, const ARGS& ... args);
+    void add_tuple();
     
 private:
     StringToValueList stringToValue;
@@ -235,7 +152,7 @@ private:
     
 //-----------------------------------------------------------------------------
 //!@ingroup Reflection
-//!@brief Enum 을 나타내는 Property
+//!@brief enum 을 나타내는 Property
 template <typename PROPERTY_TYPE>
 class EnumProperty : public SimpleProperty<PROPERTY_TYPE>
 {
@@ -243,15 +160,14 @@ public:
     typedef EnumList<PROPERTY_TYPE> EnumListType;
     
 public:
-    EnumProperty(const String& name):
-    SimpleProperty<PROPERTY_TYPE>(name) {}
+    EnumProperty(const String& name);
     
     virtual EnumListType& getEnumList() = 0;
     
-    bool isEnum() const { return true; }
+    bool isEnum() const;
 };
-    
-    
+
+
 //-----------------------------------------------------------------------------
 //!@ingroup Reflection
 //!@brief Enum 타입을 Type에서 등록하기 위한 Holder 템플릿
@@ -265,65 +181,19 @@ public:
     typedef EnumListType&(*Enumerator)();
     
 public:
-    EnumPropertyBind(const String& name):
-    EnumProperty<PROPERTY_TYPE>(name)
-    , setter(nullptr)
-    , getter(nullptr)
-    , enumerator(nullptr)
-    {
-    }
+    EnumPropertyBind(const String& name);
     
-    void bind(Setter setter, Getter getter, Enumerator enumerator)
-    {
-        this->setter = setter;
-        this->getter = getter;
-        this->enumerator = enumerator;
-    }
-    void set(Object* object, const PROPERTY_TYPE& value) override
-    {
-        TYPE* self = static_cast<TYPE*>(object);
-        (self->*setter)(value);
-    }
-    PROPERTY_TYPE get(Object* object) override
-    {
-        TYPE* self = static_cast<TYPE*>(object);
-        return (self->*getter)();
-    }
-    void setDefaultValue(const PROPERTY_TYPE& value)
-    {
-        this->defaultValue = value;
-    }
-    const PROPERTY_TYPE& getDefaultValue() const
-    {
-        return this->defaultValue;
-    }
-    
-    void fromString(Object* object, const String& value) override
-    {
-        static auto& e = this->enumerator();
-        this->set(static_cast<TYPE*>(object), e.toValue(value));
-    }
-    void toString(Object* object, String& out_value) override
-    {
-        static auto& e = this->enumerator();
-        e.toString(this->get(object), out_value);
-    }
-    void setDefaultValue(Object* object) override
-    {
-        this->set(object, this->defaultValue);
-    }
-    bool isDefaultValue(Object* object) override
-    {
-        return this->get(object) == this->defaultValue;
-    }
-    bool isReadOnly() override
-    {
-        return nullptr == this->setter;
-    }
-    EnumListType& getEnumList() override
-    {
-        return this->enumerator();
-    }
+    void bind(Setter setter, Getter getter, Enumerator enumerator);
+    void set(Object* object, const PROPERTY_TYPE& value) override;
+    PROPERTY_TYPE get(Object* object) override;
+    void setDefaultValue(const PROPERTY_TYPE& value);
+    const PROPERTY_TYPE& getDefaultValue() const;
+    void fromString(Object* object, const String& value) override;
+    void toString(Object* object, String& out_value) override;
+    void setDefaultValue(Object* object) override;
+    bool isDefaultValue(Object* object) override;
+    bool isReadOnly() override;
+    EnumListType& getEnumList() override;
     
 private:
     Setter setter;
@@ -341,57 +211,23 @@ template <typename TYPE, typename PROPERTY_TYPE>
 class DynamicPropertyBind : public SimpleProperty<PROPERTY_TYPE>
 {   
 public:
-    DynamicPropertyBind(const String& name):
-    SimpleProperty<PROPERTY_TYPE>(name)
-    {
-    }
+    DynamicPropertyBind(const String& name);
     
-    void set(Object* object, const PROPERTY_TYPE& value) override
-    {
-        this->value = value;
-    }
-    PROPERTY_TYPE get(Object* object) override
-    {
-        return this->value;
-    }
-    void setDefaultValue(const PROPERTY_TYPE& value)
-    {
-        this->defaultValue = value;
-    }
-    const PROPERTY_TYPE& getDefaultValue() const
-    {
-        return this->defaultValue;
-    }
-    
-    void fromString(Object* object, const String& value) override
-    {
-        typedef StringConv<PROPERTY_TYPE> SC;
-        this->set(static_cast<TYPE*>(object), SC::fromString(value));
-    }
-    void toString(Object* object, String& out_value) override
-    {
-        typedef StringConv<PROPERTY_TYPE> SC;
-        SC::toString(this->get(static_cast<TYPE*>(object)), out_value);
-    }
-    void setDefaultValue(Object* object) override
-    {
-        this->set(object, this->defaultValue);
-    }
-    bool isDefaultValue(Object* object) override
-    {
-        return this->get(object) == this->defaultValue;
-    }
-    bool isReadOnly() override
-    {
-        return false;
-    }
+    void set(Object* object, const PROPERTY_TYPE& value) override;
+    PROPERTY_TYPE get(Object* object) override;
+    void setDefaultValue(const PROPERTY_TYPE& value);
+    const PROPERTY_TYPE& getDefaultValue() const;
+    void fromString(Object* object, const String& value) override;
+    void toString(Object* object, String& out_value) override;
+    void setDefaultValue(Object* object) override;
+    bool isDefaultValue(Object* object) override;
+    bool isReadOnly() override;
     
 private:
     typename std::decay<PROPERTY_TYPE>::type value;
     typename std::decay<PROPERTY_TYPE>::type defaultValue;
     
 };
-
 
 #define BIND_PROPERTY(type, name, desc, setter, getter, default_value, flags) \
 do { typedef tod::SimplePropertyBind<SelfType, type> PropType;\
@@ -412,6 +248,7 @@ prop->setFlags(static_cast<int>(flags));\
 prop->setDesc(desc);\
 SelfType::get_type()->addProperty(prop); } while(false)
 
+
 #define BIND_ENUM_PROPERTY(type, name, desc, setter, getter, enumerator, default_value, flags) \
 do { typedef tod::EnumPropertyBind<SelfType, type, 0> PropType;\
 auto prop = new PropType(name);\
@@ -422,3 +259,5 @@ prop->setDesc(desc);\
 SelfType::get_type()->addProperty(prop); } while(false)
     
 }
+
+#include "tod/property.inl"

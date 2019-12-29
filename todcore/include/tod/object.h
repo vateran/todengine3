@@ -1,9 +1,8 @@
 ﻿#pragma once
-#include "tod/string.h"
-#include "tod/uuid.h"
+#include "tod/any.h"
 #include "tod/derive.h"
 #include "tod/property.h"
-#include "tod/method.h"
+#include "tod/indexedpool.h"
 namespace tod
 {
 
@@ -15,15 +14,16 @@ namespace tod
 class Object : public Derive<Object, void>
 {
 public:
-    typedef std::unordered_map<int, Property*> DynamicProperties;
+    typedef int32 NameHash;
+    typedef std::unordered_map<NameHash, Property*> DynamicProperties;
 
 public:
     Object();
     virtual~Object();
     
     void retain();
-    virtual int release();
-    inline int getRefCount() { return this->refCount; }
+    virtual int32 release();
+    inline int32 getRefCount() { return this->refCount; }
     
     template <typename T>
     bool isKindOf() const;
@@ -37,13 +37,12 @@ public:
     Property* findDynamicProperty(const String& prop_name);
     void removeDynamicProperty(const String& prop_name);
     DynamicProperties* getDynamicProperties();
-    
-    
+        
     static void bindProperty();
     static void bindMethod() {}
     
 protected:
-    int refCount;
+    int32 refCount;
     DynamicProperties* dynamicProperties;
 };
 

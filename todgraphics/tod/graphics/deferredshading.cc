@@ -1,7 +1,8 @@
-#include "tod/random.h"
+﻿#include "tod/random.h"
 #include "tod/interpolation.h"
 #include "tod/graphics/deferredshading.h"
 #include "tod/graphics/renderer.h"
+#include "tod/graphics/renderinterface.h"
 #include "tod/graphics/shader.h"
 #include "tod/graphics/shadercache.h"
 #include "tod/graphics/rendertarget.h"
@@ -28,17 +29,16 @@ DeferredShading::DeferredShading()
 
 
 //-----------------------------------------------------------------------------
-void DeferredShading::init(Renderer* renderer, int width, int height)
+void DeferredShading::init(int32 width, int32 height)
 {
-    this->renderer = renderer;
     this->width = width;
     this->height = height;
     
 
     //Geometry pass shader
-    this->geometryPassShader = ShaderCache::instance()->
+    /*this->geometryPassShader = ShaderCache::instance()->
         getShader("EngineData/glsl/deferred_geometry_pass.glvs",
-                  "EngineData/glsl/deferred_geometry_pass.glfs");
+                  "EngineData/glsl/deferred_geometry_pass.glfs");*/
     this->geometryPassShader->begin();
     this->geometryPassShader->setParam("DiffuseTex", 0);
     this->geometryPassShader->setParam("SpecularTex", 1);
@@ -47,9 +47,9 @@ void DeferredShading::init(Renderer* renderer, int width, int height)
     
     
     //Light pass shader
-    this->lightPassShader = ShaderCache::instance()->
+    /*this->lightPassShader = ShaderCache::instance()->
         getShader("EngineData/glsl/deferred_light_pass.glvs",
-                  "EngineData/glsl/deferred_light_pass.glfs");
+                  "EngineData/glsl/deferred_light_pass.glfs");*/
     this->lightPassShader->begin();
     this->lightPassShader->setParam("NormalTex", 0);
     this->lightPassShader->setParam("AlbedoSpecularTex", 1);
@@ -60,36 +60,36 @@ void DeferredShading::init(Renderer* renderer, int width, int height)
 
 
     //G-Buffer
-    this->gBuffer = this->renderer->createRenderTarget(S("G-Buffer"));
+    this->gBuffer = Renderer::instance()->getRenderInterface()->createRenderTarget(S("G-Buffer"));
     this->gBuffer->create(width, height);
-    this->gBuffer->addColorTarget(PixelFormat::R16G16B16F);
-    this->gBuffer->addColorTarget(PixelFormat::R8G8B8A8);
-    this->gBuffer->makeDepthTarget(PixelFormat::DEPTH32F);
+    this->gBuffer->addColorTarget(Format::R16G16B16F);
+    this->gBuffer->addColorTarget(Format::R8G8B8A8);
+    this->gBuffer->makeDepthTarget(Format::DEPTH32F);
     
     
-    this->quadMesh = this->renderer->createMesh(S("quad"));
+    this->quadMesh = Renderer::instance()->getRenderInterface()->createMesh(S("quad"));
     
     
     //Blur pass shader
-    this->blurShader = ShaderCache::instance()->
+    /*this->blurShader = ShaderCache::instance()->
         getShader("EngineData/glsl/drawquad.glvs",
-                  "EngineData/glsl/blur.glfs");
+                  "EngineData/glsl/blur.glfs");*/
     
     
     //HDR buffer
-    this->hdrBuffer = this->renderer->createRenderTarget(S("HDR"));
+    this->hdrBuffer = Renderer::instance()->getRenderInterface()->createRenderTarget(S("HDR"));
     this->hdrBuffer->create(width, height);
-    this->hdrBuffer->addColorTarget(PixelFormat::R16G16B16F);
-    this->hdrBuffer->addColorTarget(PixelFormat::R8G8B8A8);
+    this->hdrBuffer->addColorTarget(Format::R16G16B16F);
+    this->hdrBuffer->addColorTarget(Format::R8G8B8A8);
     
     
     //SSAO pass shader
-    this->ssaoShader = ShaderCache::instance()->
+    /*this->ssaoShader = ShaderCache::instance()->
         getShader("EngineData/glsl/SSAO.glvs",
-                  "EngineData/glsl/SSAO.glfs");
+                  "EngineData/glsl/SSAO.glfs");*/
     this->ssaoShader->begin();
     Random r;
-    for (int i=0;i<64;++i)
+    for (int32 i=0;i<64;++i)
     {
         Vector3 sample(
             r.uniformFloat(0, 1) * 2 - 1,
@@ -115,39 +115,39 @@ void DeferredShading::init(Renderer* renderer, int width, int height)
     
     
     //SSAO blur pass shader
-    this->ssaoBlurShader = ShaderCache::instance()->
+    /*this->ssaoBlurShader = ShaderCache::instance()->
         getShader("EngineData/glsl/drawquad.glvs",
-                  "EngineData/glsl/SSAO_blur.glfs");
+                  "EngineData/glsl/SSAO_blur.glfs");*/
     this->ssaoBlurShader->begin();
     this->ssaoBlurShader->setParam("SSAOTex", 0);
     this->ssaoBlurShader->end();
     
     
     //SSAO buffer
-    this->ssaoBuffer = this->renderer->createRenderTarget(S("SSAO"));
+    this->ssaoBuffer = Renderer::instance()->getRenderInterface()->createRenderTarget(S("SSAO"));
     this->ssaoBuffer->create(width/4, height/4);
-    this->ssaoBuffer->addColorTarget(PixelFormat::L8F);
+    this->ssaoBuffer->addColorTarget(Format::L8F);
     
     
     //SSAO blur buffer
-    this->ssaoBlurBuffer = this->renderer->createRenderTarget(S("SSAO-Blur"));
+    this->ssaoBlurBuffer = Renderer::instance()->getRenderInterface()->createRenderTarget(S("SSAO-Blur"));
     this->ssaoBlurBuffer->create(width/8, height/8);
-    auto ssao_blur_buffer = this->ssaoBlurBuffer->addColorTarget(PixelFormat::L8F);
+    auto ssao_blur_buffer = this->ssaoBlurBuffer->addColorTarget(Format::L8F);
     ssao_blur_buffer->setMagFilter(TextureFilter::LINEAR);
     
     
     //make noise texture
     std::vector<Vector3> noise_data;
     noise_data.reserve(4 * 4);
-    for (int i=0;i<noise_data.capacity();++i)
+    for (int32 i=0;i<noise_data.capacity();++i)
     {
         noise_data.push_back(Vector3(
             r.uniformFloat(0, 1) * 2 - 1,
             r.uniformFloat(0, 1) * 2 - 1,
             0));
     }
-    this->noiseTexture = this->renderer->createTexture("Noise4x4");
-    this->noiseTexture->create(4, 4, PixelFormat::R16G16B16F, &noise_data[0]);
+    this->noiseTexture = Renderer::instance()->getRenderInterface()->createTexture("Noise4x4");
+    this->noiseTexture->create(4, 4, Format::R16G16B16F, &noise_data[0]);
     this->noiseTexture->setHorizontalWrap(TextureWrap::REPEAT);
     this->noiseTexture->setVerticalWrap(TextureWrap::REPEAT);
     this->noiseTexture->setMinFilter(TextureFilter::NEAREST);
@@ -156,12 +156,12 @@ void DeferredShading::init(Renderer* renderer, int width, int height)
     
     
     
-    for (int i=0;i<2;++i)
+    for (int32 i=0;i<2;++i)
     {
-        this->bloomBuffer[i] = this->renderer->
+        this->bloomBuffer[i] = Renderer::instance()->getRenderInterface()->
             createRenderTarget(String::fromFormat(S("%s%d"), S("Bloom"), i));
         this->bloomBuffer[i]->create(width / 4, height / 4);
-        auto colot_tex = this->bloomBuffer[i]->addColorTarget(PixelFormat::R8G8B8A8);
+        auto colot_tex = this->bloomBuffer[i]->addColorTarget(Format::R8G8B8A8);
         colot_tex->setMinFilter(TextureFilter::LINEAR);
         colot_tex->setMagFilter(TextureFilter::LINEAR);
         colot_tex->setHorizontalWrap(TextureWrap::CLAMP_TO_EDGE);
@@ -171,9 +171,9 @@ void DeferredShading::init(Renderer* renderer, int width, int height)
     
     
     //Compine pass shader
-    this->combineShader = ShaderCache::instance()->
+    /*this->combineShader = ShaderCache::instance()->
         getShader("EngineData/glsl/combine_pass.glvs",
-                  "EngineData/glsl/combine_pass.glfs");
+                  "EngineData/glsl/combine_pass.glfs");*/
     this->combineShader->begin();
     this->combineShader->setParam("Scene", 0);
     this->combineShader->setParam("Bloom", 1);
@@ -186,19 +186,19 @@ void DeferredShading::init(Renderer* renderer, int width, int height)
     
     
     //Combine Buffer
-    this->combineBuffer = this->renderer->
+    this->combineBuffer = Renderer::instance()->getRenderInterface()->
             createRenderTarget("Combine");
     this->combineBuffer->create(width, height);
-    this->combineBuffer->addColorTarget(PixelFormat::R8G8B8);
+    this->combineBuffer->addColorTarget(Format::R8G8B8);
 
     
     
-    for (int i=0;i<2;++i)
+    for (int32 i=0;i<2;++i)
     {
-        this->dofBlurBuffer[i] = this->renderer->
+        this->dofBlurBuffer[i] = Renderer::instance()->getRenderInterface()->
             createRenderTarget(String::fromFormat(S("%s%d"), S("DOFBlur"), i));
         this->dofBlurBuffer[i]->create(width/2, height/2);
-        auto colot_tex = this->dofBlurBuffer[i]->addColorTarget(PixelFormat::R8G8B8);
+        auto colot_tex = this->dofBlurBuffer[i]->addColorTarget(Format::R8G8B8);
         colot_tex->setMinFilter(TextureFilter::LINEAR);
         colot_tex->setMagFilter(TextureFilter::LINEAR);
         colot_tex->setHorizontalWrap(TextureWrap::CLAMP_TO_EDGE);
@@ -210,8 +210,8 @@ void DeferredShading::init(Renderer* renderer, int width, int height)
 //-----------------------------------------------------------------------------
 void DeferredShading::render()
 {
-    this->renderer->enableZTest(true);
-    this->renderer->enableAlphaTest(false);
+    Renderer::instance()->getRenderInterface()->enableZTest(true);
+    Renderer::instance()->getRenderInterface()->enableAlphaTest(false);
 
     //1.Geometry Pass
     //모든 Camera 를 렌더링
@@ -221,7 +221,7 @@ void DeferredShading::render()
     this->render_shadows();
     
     
-    this->renderer->enableZTest(false);
+    Renderer::instance()->getRenderInterface()->enableZTest(false);
 
     
     //2.Light Pass
@@ -231,8 +231,8 @@ void DeferredShading::render()
     
     uint32 light_idx = 0;
     this->lightPassShader->setParam("LightCount",
-        static_cast<int>(this->renderer->renderLights.size()));
-    for (auto& render_light : this->renderer->renderLights)
+        static_cast<int>(Renderer::instance()->getRenderInterface()->renderLights.size()));
+    for (auto& render_light : Renderer::instance()->getRenderInterface()->renderLights)
     {
         auto light = render_light.light;
         this->lightPassShader->setParam(
@@ -267,7 +267,7 @@ void DeferredShading::render()
     
     
     this->lightPassShader->setParam("LightSpaceMatrix", this->lightSpaceMatrix);
-    auto shadow_map_tex = this->renderer->createTexture("ShadowMap_Depth");
+    auto shadow_map_tex = Renderer::instance()->getRenderInterface()->createTexture("ShadowMap_Depth");
     shadow_map_tex->use(3);
     
     this->lightPassShader->commitParams();
@@ -284,10 +284,10 @@ void DeferredShading::render()
     this->bloomBuffer[1]->getColorTexture(0)->use(0);
     bool horizontal = true, first_iteration = true;
     this->blurShader->begin();
-    for (int i=0;i<2;++i)
+    for (int32 i=0;i<2;++i)
     {
         this->bloomBuffer[i % 2]->begin(false, false);
-        this->blurShader->setParam("horizontal", Vector2(horizontal?1:0, horizontal?0:1));
+        this->blurShader->setParam("horizontal", Vector2(horizontal ? 1.0f : 0.0f, horizontal ? 0.0f : 1.0f));
         this->blurShader->commitParams();
         if (first_iteration) first_iteration = false;
         else this->bloomBuffer[(i + 1) % 2]->getColorTexture(0)->use(0);
@@ -305,11 +305,11 @@ void DeferredShading::render()
     horizontal = true;
     first_iteration = true;
     this->blurShader->begin();
-    for (int i=0;i<10;++i)
+    for (int32 i=0;i<10;++i)
     {
         //이거 나중에 Blur Buffer 로 하는거 고민하자 (렌더타겟 재활용 해야함)
         this->dofBlurBuffer[i % 2]->begin(false, false);
-        this->blurShader->setParam("horizontal", Vector2(horizontal?1:0, horizontal?0:1));
+        this->blurShader->setParam("horizontal", Vector2(horizontal ? 1.0f : 0.0f, horizontal ? 0.0f : 1.0f));
         this->blurShader->commitParams();
         if (first_iteration) first_iteration = false;
         else this->dofBlurBuffer[(i + 1) % 2]->getColorTexture(0)->use(0);
@@ -322,7 +322,7 @@ void DeferredShading::render()
     
     
     //SSAO
-    this->renderer->setViewport(this->width, this->height);
+    Renderer::instance()->getRenderInterface()->setViewport(this->width, this->height);
     this->ssaoBuffer->begin(false, false);
     this->ssaoShader->begin();
     auto view = camera_t->getWorldTransformMatrix();
@@ -351,7 +351,7 @@ void DeferredShading::render()
     
     
     //Combine final scene
-    this->renderer->setViewport(width, height);
+    Renderer::instance()->getRenderInterface()->setViewport(width, height);
     //this->combineBuffer->begin(true, false);
     this->combineShader->begin();
     this->combineShader->setParam("Exposure", camera_c->getExposure());
@@ -374,7 +374,7 @@ void DeferredShading::render()
     
 
 
-    /*this->renderer->setViewport(width, height);
+    /*Renderer::instance()->getRenderInterface()->setViewport(width, height);
     this->dofShader->begin();
     this->dofShader->setParam("DOFParam", camera_c->getDOF());
     this->dofShader->setParam("AspectRatio", camera_c->getAspectRatio());
@@ -398,7 +398,7 @@ void DeferredShading::render_cameras()
     shader->begin();
 
     //모든 Camera view 로 렌더링
-    for (auto& camera : this->renderer->renderCameras)
+    for (auto& camera : Renderer::instance()->getRenderInterface()->renderCameras)
     {
         if (camera.shader)
         {
@@ -409,7 +409,7 @@ void DeferredShading::render_cameras()
         proj_view.inverse();
         proj_view *= camera.camera->getProjectionMatrix();
     
-        for (auto& rc : this->renderer->renderCommands)
+        for (auto& rc : Renderer::instance()->getRenderInterface()->renderCommands)
         {
             auto proj_view_world = rc.transform->getWorldTransformMatrix();
             shader->setParam("WorldMatrix", proj_view_world);
@@ -432,9 +432,9 @@ void DeferredShading::render_cameras()
 //-----------------------------------------------------------------------------
 void DeferredShading::render_shadows()
 {
-    this->renderer->cullFace(CullFace::FRONT);
+    Renderer::instance()->getRenderInterface()->cullFace(CullFace::FRONT);
 
-    for (auto& shadow : this->renderer->renderLights)
+    for (auto& shadow : Renderer::instance()->getRenderInterface()->renderLights)
     {
         auto shadow_caster = shadow.shadowCaster;
         if (nullptr == shadow_caster) continue;
@@ -449,7 +449,7 @@ void DeferredShading::render_shadows()
         
         auto shadow_shader = shadow_caster->getShader();
         
-        for (auto& rc : this->renderer->renderCommands)
+        for (auto& rc : Renderer::instance()->getRenderInterface()->renderCommands)
         {
             auto obj_world_m = rc.transform->getWorldTransformMatrix();
             shadow_shader->setParam("WorldMatrix", obj_world_m);
@@ -462,7 +462,7 @@ void DeferredShading::render_shadows()
         shadow_caster->end();
     }
     
-    this->renderer->cullFace(CullFace::BACK);
+    Renderer::instance()->getRenderInterface()->cullFace(CullFace::BACK);
 }
 
 

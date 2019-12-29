@@ -3,6 +3,7 @@
 namespace tod::graphics
 {
 
+class Mesh;
 class FbxLoaderPrivate;
 class FbxLoader : public SingletonDerive<FbxLoader, Object>
 {
@@ -10,7 +11,7 @@ public:
     FbxLoader();
     virtual~FbxLoader();
     
-    Node* load(const String& uri);
+    bool importMesh(const String& uri, Mesh** mesh);
 
 private:
     FbxLoaderPrivate* inner;

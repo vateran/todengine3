@@ -1,11 +1,14 @@
-﻿#include "tod/object.h"
+﻿#include "tod/precompiled.h"
+#include "tod/uuid.h"
+#include "tod/method.h"
+#include "tod/object.h"
 namespace tod
 {
     
 //-----------------------------------------------------------------------------
-Object::Object():
-refCount(0),
-dynamicProperties(nullptr)
+Object::Object()
+: refCount(0)
+, dynamicProperties(nullptr)
 {
 }
 
@@ -13,7 +16,7 @@ dynamicProperties(nullptr)
 //-----------------------------------------------------------------------------
 Object::~Object()
 {
-    SAFE_DELETE(this->dynamicProperties);
+    TOD_SAFE_DELETE(this->dynamicProperties);
 }
     
 
@@ -25,9 +28,9 @@ void Object::retain()
     
 
 //-----------------------------------------------------------------------------
-int Object::release()
+int32 Object::release()
 {
-    TOD_ASSERT(this->refCount >= 0);
+    TOD_ASSERT(0 <= this->refCount, "이미 refCount <= 0 입니다");
     if (--this->refCount <= 0)
     {
         delete this;
@@ -81,7 +84,7 @@ void Object::removeDynamicProperty(const String& prop_name)
     
     this->dynamicProperties->erase(prop_name.hash());
     if (this->dynamicProperties->empty())
-        SAFE_DELETE(this->dynamicProperties);
+        TOD_SAFE_DELETE(this->dynamicProperties);
 }
 
 

@@ -1,9 +1,8 @@
 ﻿#pragma once
-#include <vector>
 #include <bitset>
 #include "tod/object.h"
-#include "tod/component.h"
 #include "tod/objref.h"
+#include "tod/component.h"
 #include "tod/eventdispatcher.h"
 namespace tod
 {
@@ -39,7 +38,7 @@ public:
     Node();
     virtual~Node();
     
-    int release() override;
+    int32 release() override;
     
     //!@brief Node Hierarchy
     //@{
@@ -51,20 +50,20 @@ public:
     //!@brief 지정된 이름의 Node 를 찾는다
     //!@param name 찾을 이름
     //!@param depth 지정된 depth 이상 tree 탐색을 하지 않는다
-    Node* findNodeByName(const String& name, int depth=-1);
+    Node* findNodeByName(const String& name, int32 depth=-1);
     //!@brief 지정된 상대경로의 Node를 반환
     Node* getRelativeNode(const String& path);
     //!@brief 자식 노드의 갯수를 반환
-    int getChildCount() const
+    int32 getChildCount() const
     { return static_cast<int>(this->children.size()); }
     //!@brief 자식 노드 전체를 반환
     Nodes& getChildren() { return this->children; }
-    Node* getChildAt(int index);
+    Node* getChildAt(int32 index);
     //!@brief root Node 로 부터 절대 경로를 반환
     String getAbsolutePath() const;
     Node* getParent() { return this->parent; }
-    int indexOf(Node* child_node);
-    int getSelfIndex();
+    int32 indexOf(Node* child_node);
+    int32 getSelfIndex();
     //@}
     
     //!@brief Component System
@@ -72,9 +71,11 @@ public:
     void addComponent(Component* component);
     void removeComponentByName(const String& name);
     void resetComponentByName(const String& name);
-    void moveComponent(int index);
+    void moveComponent(int32 index);
     template <typename T>
     T* findComponent();
+    template <typename T>
+    bool hasComponent();
     Component* findComponentByName(const String& name);
     Components& getComponents() { return this->components; }
     //@}
@@ -102,14 +103,14 @@ public:
 private:
     Node* parent;
     String name;
-    int nameHash;
     Nodes children;
     Components components;
+    int32 nameHash;
     std::bitset<FLAG_MAX> flags;
     
 private:
-    static Node* find_node_by_name(Node* parent, int name_hash,
-                                   int depth, int limit_depth);
+    static Node* find_node_by_name(Node* parent, int32 name_hash,
+                                   int32 depth, int32 limit_depth);
 };
     
     
@@ -122,6 +123,13 @@ T* Node::findComponent()
         if (nullptr != component) return component;
     }
     return nullptr;
+}
+
+template <typename T>
+bool Node::hasComponent()
+{
+    //일단은 임시로 findComponent 로 구현
+    return (this->findComponent<T>() != nullptr);
 }
     
 }

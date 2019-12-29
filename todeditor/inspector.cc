@@ -1,6 +1,8 @@
 #include <QBoxLayout>
 #include <QPushButton>
 #include <QLineEdit>
+#include <QScrollArea>
+#include <QLabel>
 #include "todeditor/inspector.h"
 #include "todeditor/propertyset.h"
 #include "todeditor/addobjectdialog.h"
@@ -11,18 +13,21 @@ namespace tod::editor
 //-----------------------------------------------------------------------------
 void Inspector::clear_object_info()
 {
-    while (auto item = this->objectInfo->layout()->takeAt(0))
-    {
-        delete item->widget();
-        delete item;
-    }
+    auto item = this->objectInfo->takeWidget();
+    delete item;
 }
 
 
 //-----------------------------------------------------------------------------
 void Inspector::build_object_info(Node* node)
 {
-    auto main_layout = static_cast<QBoxLayout*>(this->objectInfo->layout());
+    //Object Info
+    auto main_layout = new QVBoxLayout();
+    main_layout->setContentsMargins(1, 1, 1, 1);
+    main_layout->setAlignment(Qt::AlignTop);
+    main_layout->setSpacing(1);
+    auto object_info = new QWidget();
+    object_info->setLayout(main_layout);
 
     //Inherit Type list
     auto cur_type = node->getType();
@@ -55,8 +60,11 @@ void Inspector::build_object_info(Node* node)
             this->clear_object_info();
             this->build_object_info(node);
         });
+
+    main_layout->addStretch(1);
     
     this->objectInfo->show();
+    this->objectInfo->setWidget(object_info);
 }
 
 
@@ -72,11 +80,10 @@ void Inspector::setSelections(const NodeSelections& selections)
 
 
 //-----------------------------------------------------------------------------
-Inspector::Inspector():
-DockWidget<Inspector>
-(DockWidgetOption()
+Inspector::Inspector()
+: DockWidget<Inspector>(DockWidgetOption()
  .setName("Inspector")
- .setMinSize(QSize(250, 100))
+ .setMinSize(QSize(300, 100))
  .setDockArea(Qt::RightDockWidgetArea))
 {
     this->setStyleSheet(".QWidget { background-color:#232629; }");
@@ -91,18 +98,22 @@ DockWidget<Inspector>
     filter_edit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     filter_edit->setClearButtonEnabled(true);
     main_layout->addWidget(filter_edit);
-    
-    //Object Info
-    auto object_info_layout = new QVBoxLayout();
-    object_info_layout->setContentsMargins(1, 1, 1, 1);
-    object_info_layout->setAlignment(Qt::AlignTop);
-    object_info_layout->setSpacing(1);
-    this->objectInfo = new QWidget();
-    this->objectInfo->setLayout(object_info_layout);
-    main_layout->addWidget(this->objectInfo);
-    
-    main_layout->addStretch(1);
-    
+
+    class TTT : public QScrollArea
+    {
+    public:
+        void wheelEvent(QWheelEvent* event) override
+        {   
+            if (false == this->hasFocus()) return;
+            QScrollArea::wheelEvent(event);
+        }
+    };
+
+    //Scroll Object Info
+    this->objectInfo = new TTT();
+    this->objectInfo->setFocusPolicy(Qt::FocusPolicy::NoFocus);
+    this->objectInfo->setWidgetResizable(true);
+    main_layout->addWidget(this->objectInfo, 1);    
     
     ObjectSelectMgr::instance()->addEventHandler(
     ObjectSelectMgr::EVENT_SELECTION_CHANGED, this, [this](Params*)

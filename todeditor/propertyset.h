@@ -10,6 +10,7 @@ class PropertySet : public FoldWidget
 {
 public:
     PropertySet(Object* object, Type* cur_type);
+
     void updateValues();
     void updateValue(Property* prop);
     

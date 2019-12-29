@@ -23,7 +23,7 @@ void HeightFieldTerrainComponent::updateShaderParams(Shader* shader)
 
 
 //-----------------------------------------------------------------------------
-void HeightFieldTerrainComponent::render()
+void HeightFieldTerrainComponent::render(Shader* shader)
 {
     if (this->mesh.invalid()) return;
     

@@ -2,33 +2,36 @@
 #include "tod/component.h"
 namespace tod::graphics
 {
+
 class Shader;
-class Renderer;
+class InputLayout;
+
 class ShaderComponent : public Derive<ShaderComponent, Component>
 {
 public:
     ShaderComponent();
     virtual~ShaderComponent();
     
-    void begin();
-    void end();
-    void setVShaderFileName(const String& fname);
-    const String& getVShaderFileName();
-    void setPShaderFileName(const String& fname);
-    const String& getPShaderFileName();
+    void begin(uint32& passes);
+    void end();    
     bool setParam(const String& name, const std::any& value);
     bool commitParams();
+
+    void setUri(const String& uri);
+    const String& getUri();
+    void setTechnique(const String& name);
+    const String& getTechnique();
+
+    Shader* getShader();
     
     static void bindProperty();
     
 private:
-    bool load();
-    
-private:
-    String vshaderFileName;
-    String pshaderFileName;
     ObjRef<Shader> shader;
-    ObjRef<Renderer> renderer;
+    String uri;
+    String techniqueName;
+    int32 techniqueIndex;
+    InputLayout* inputLayout;
 };
 
 }

@@ -1,5 +1,6 @@
+#include "tod/precompiled.h"
 #include "tod/uuid.h"
-#ifdef PLATFORM_WINDOWS
+#ifdef TOD_PLATFORM_WINDOWS
 #include <Rpc.h>
 #pragma comment(lib, "Rpcrt4.lib")
 #else
@@ -18,7 +19,7 @@ Uuid::Uuid()
 //-----------------------------------------------------------------------------
 Uuid::Uuid(const char* uuid_str)
 {
-    #ifdef PLATFORM_WINDOWS
+    #ifdef TOD_PLATFORM_WINDOWS
     UuidFromStringA((RPC_CSTR)(uuid_str), (UUID*)this->array);
     #else
     uuid_parse(uuid_str, this->array);
@@ -29,7 +30,7 @@ Uuid::Uuid(const char* uuid_str)
 //-----------------------------------------------------------------------------
 void Uuid::generate()
 {
-    #ifdef PLATFORM_WINDOWS
+    #ifdef TOD_PLATFORM_WINDOWS
     UuidCreate((UUID*)this->array);
     #else
     uuid_generate_random(this->array);
@@ -42,7 +43,7 @@ String Uuid::toString()
 {
     String ret;
     
-    #ifdef PLATFORM_WINDOWS
+    #ifdef TOD_PLATFORM_WINDOWS
     unsigned char* str;
     UuidToStringA((UUID*)this->array, &str);
     ret.assign(reinterpret_cast<char*>(str));

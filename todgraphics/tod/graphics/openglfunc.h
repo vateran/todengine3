@@ -1,4 +1,5 @@
-#pragma once
+﻿#pragma once
+#if defined (PLATFORM_MAC)
 #include <QOpenGLExtraFunctions>
 namespace tod::graphics
 {
@@ -14,4 +15,4 @@ public:
 #define TOD_OPENGL_CHECKERROR() OpenGl::checkError()
 
 }
-
+#endif

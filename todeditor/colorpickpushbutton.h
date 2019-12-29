@@ -2,7 +2,6 @@
 #include <QPushButton>
 #include <QColorDialog>
 #include "tod/object.h"
-#include "tod/property.h"
 #include "tod/graphics/color.h"
 namespace tod::editor
 {

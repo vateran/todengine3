@@ -14,23 +14,23 @@ public:
         
     }
     
-    virtual bool create(int width, int height)
+    virtual bool create(int32 width, int32 height)
     {
         TOD_RETURN_TRACE(false);
     }
     
-    virtual Texture* addColorTarget(PixelFormat format)
+    virtual Texture* addColorTarget(Format format)
     {
         return nullptr;
     }
-    virtual Texture* makeDepthTarget(PixelFormat format)
+    virtual Texture* makeDepthTarget(Format format)
     {
         return nullptr;
     }
-    virtual void blitColorTarget(RenderTarget* to_rt, int from_index, int to_index)
+    virtual void blitColorTarget(RenderTarget* to_rt, int32 from_index, int32 to_index)
     {
     }
-    virtual Texture* getColorTexture(int index)
+    virtual Texture* getColorTexture(int32 index)
     {
         return nullptr;
     }

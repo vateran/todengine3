@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <algorithm>
 #include <list>
+#include <functional>
 #include "tod/params.h"
 namespace tod
 {
@@ -44,8 +45,8 @@ private:
     {
         HandlerInfo(const char* event_name,
                     void* target,
-                    const EventCallback& callback):
-        eventName(event_name)
+                    const EventCallback& callback)
+        : eventName(event_name)
         , target(target)
         , callback(callback) {}
         
@@ -92,8 +93,8 @@ void EventDispatcher<T>::removeEventHandler
 {
     for (auto i=this->handlers.begin();i!=this->handlers.end();++i)
     {
-        if ((*i)->eventName == event_name
-            && (*i)->target == target)
+        if (((*i)->eventName == event_name)
+         && ((*i)->target == target))
         {
             this->handlers.erase(i);
             break;

@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QClipboard>
+#include <QFontDatabase>
 #include "tod/kernel.h"
 #include "tod/serializer.h"
 #include "todeditor/common.h"
@@ -15,8 +16,8 @@ namespace tod::editor
 
 
 //-----------------------------------------------------------------------------
-NodeHierarchy::NodeHierarchy():
-DockWidget<NodeHierarchy>
+NodeHierarchy::NodeHierarchy()
+: DockWidget<NodeHierarchy>
 (DockWidgetOption()
  .setName("Node Hierarchy")
  .setMinSize(QSize(100, 100))
@@ -25,6 +26,10 @@ DockWidget<NodeHierarchy>
     auto main_layout = new QVBoxLayout(this);
     main_layout->setContentsMargins(0, 0, 0, 0);
     main_layout->setSpacing(1);
+
+    //Font
+    QFontDatabase::addApplicationFont(":/Resources/Poppins-Light.ttf");
+    QFont editorFont("Poppins Light", 10);
     
     
     //Filter
@@ -36,8 +41,9 @@ DockWidget<NodeHierarchy>
     
     
     //Node Tree
-    auto model = new TreeModel(Kernel::instance()->lookup("/"));
+    auto model = new TreeModel(Kernel::instance()->lookup("/"));    
     this->nodeTree = new QTreeView();
+    this->nodeTree->setFont(editorFont);
     this->nodeTree->setHeaderHidden(true);
     this->nodeTree->setRootIsDecorated(true);
     this->nodeTree->setIndentation(10);
@@ -204,7 +210,7 @@ DockWidget<NodeHierarchy>
 //-----------------------------------------------------------------------------
 NodeHierarchy::~NodeHierarchy()
 {
-    SAFE_DELETE(this->contextMenu);
+    TOD_SAFE_DELETE(this->contextMenu);
 }
 
 
@@ -223,7 +229,7 @@ NodeHierarchy::TreeModel::~TreeModel()
 
 //-----------------------------------------------------------------------------
 QModelIndex NodeHierarchy::TreeModel::index
-(int row, int column, const QModelIndex& parent) const
+(int32 row, int32 column, const QModelIndex& parent) const
 {
     if (parent.isValid() && parent.column() != 0)
         return QModelIndex();
@@ -256,7 +262,7 @@ QModelIndex NodeHierarchy::TreeModel::parent(const QModelIndex& index) const
 
 
 //-----------------------------------------------------------------------------
-int NodeHierarchy::TreeModel::rowCount(const QModelIndex& parent) const
+int32 NodeHierarchy::TreeModel::rowCount(const QModelIndex& parent) const
 {
     if (parent.column() > 0) return 0;
     Node* parent_node = nullptr;
@@ -270,7 +276,7 @@ int NodeHierarchy::TreeModel::rowCount(const QModelIndex& parent) const
 
 
 //-----------------------------------------------------------------------------
-int NodeHierarchy::TreeModel::columnCount(const QModelIndex&) const
+int32 NodeHierarchy::TreeModel::columnCount(const QModelIndex&) const
 {
     return 1;
 }
@@ -278,26 +284,45 @@ int NodeHierarchy::TreeModel::columnCount(const QModelIndex&) const
 
 //-----------------------------------------------------------------------------
 QVariant NodeHierarchy::TreeModel::data
-(const QModelIndex& index, int role) const
+(const QModelIndex& index, int32 role) const
 {
-    if (!index.isValid())
-        return QVariant();
-    if (role != Qt::DisplayRole && role != Qt::EditRole)
-        return QVariant();
+    if (false == index.isValid()) return QVariant();
+
     auto node = this->getNode(index);
-    return QVariant(node->getName().c_str());
+
+    switch (role)
+    {
+    case Qt::DecorationRole:
+        if (false == node->getType()->getEditorIcon().empty())
+        {   
+            return QPixmap(node->getType()->getEditorIcon().c_str());
+        }
+        else
+        {
+            return QVariant();
+        }
+            
+    case Qt::TextColorRole:
+        if (true == node->isVisible()) return QColor(255, 255, 255);
+        else return QColor(128, 128, 128);
+    case Qt::EditRole:
+    case Qt::DisplayRole:
+        return QVariant(node->getName().c_str());
+    default:
+        return QVariant();
+    }
 }
 
 
 //-----------------------------------------------------------------------------
 bool NodeHierarchy::TreeModel::insertRows
-(int row, int count, const QModelIndex& parent)
+(int32 row, int32 count, const QModelIndex& parent)
 {
     auto parent_node = this->getNode(parent);
     if (nullptr == parent_node) return false;
     
-    int begin = row;
-    int end = row + count - 1;
+    int32 begin = row;
+    int32 end = row + count - 1;
     this->beginInsertRows(parent, begin, end);
     this->endInsertRows();
     
@@ -307,15 +332,15 @@ bool NodeHierarchy::TreeModel::insertRows
 
 //-----------------------------------------------------------------------------
 bool NodeHierarchy::TreeModel::removeRows
-(int row, int count, const QModelIndex& parent)
+(int32 row, int32 count, const QModelIndex& parent)
 {
     auto parent_node = this->getNode(parent);
     if (nullptr == parent_node) return false;
     
     Node::Nodes holder;
-    int begin = row;
-    int end = row + count - 1;
-    for (int i=begin;i<=end;++i)
+    int32 begin = row;
+    int32 end = row + count - 1;
+    for (int32 i=begin;i<=end;++i)
     {
         auto node = parent_node->getChildAt(i);
         if (nullptr == node) continue;
@@ -333,15 +358,15 @@ bool NodeHierarchy::TreeModel::removeRows
 
 //-----------------------------------------------------------------------------
 bool NodeHierarchy::TreeModel::moveRows
-(const QModelIndex &sourceParent, int sourceRow,
- int count, const QModelIndex &destinationParent, int destinationChild)
+(const QModelIndex &sourceParent, int32 sourceRow,
+ int32 count, const QModelIndex &destinationParent, int32 destinationChild)
 {
     auto src_parent_node = static_cast<Node*>(sourceParent.internalPointer());
     auto dst_parent_node = static_cast<Node*>(destinationParent.internalPointer());
     if (src_parent_node == dst_parent_node) return false;
     
     Node::Nodes holder;
-    for (int row=sourceRow;row<=sourceRow+count-1;++row)
+    for (int32 row=sourceRow;row<=sourceRow+count-1;++row)
     {
         auto node = src_parent_node->getChildAt(row);
         holder.push_back(node);
@@ -418,7 +443,7 @@ QMimeData* NodeHierarchy::TreeModel::mimeData
 //-----------------------------------------------------------------------------
 bool NodeHierarchy::TreeModel::dropMimeData
 (const QMimeData* data, Qt::DropAction action,
- int row, int, const QModelIndex& parent)
+ int32 row, int, const QModelIndex& parent)
 {
     if (action != Qt::MoveAction) return false;
     if (!data->hasFormat("application/vnd.text.list")) return false;
@@ -430,7 +455,7 @@ bool NodeHierarchy::TreeModel::dropMimeData
     QByteArray encoded_data = data->data("application/vnd.text.list");
     QDataStream stream(&encoded_data, QIODevice::ReadOnly);
     
-    int rows = 0;
+    int32 rows = 0;
     while (!stream.atEnd())
     {
         QString text;

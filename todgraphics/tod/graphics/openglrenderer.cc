@@ -1,17 +1,14 @@
-﻿#ifdef PLATFORM_WINDOWS
-#ifndef WIN32_LEAN_AND_MEAN
+﻿#include "tod/platformdef.h"
+#ifdef PLATFORM_WINDOWS
 #define WIN32_LEAN_AND_MEAN
-#endif
 #include <Windows.h>
-#endif
+#else
 #include "tod/graphics/openglrenderer.h"
 #include "tod/graphics/openglshader.h"
 #include "tod/graphics/openglmesh.h"
 #include "tod/graphics/opengltexture.h"
 #include "tod/graphics/openglrendertarget.h"
 #include "tod/graphics/openglcamera.h"
-
-
 #include "tod/graphics/modelcomponent.h"
 
 namespace tod::graphics
@@ -181,3 +178,4 @@ Camera* OpenGlRenderer::createCamera()
 }
 
 }
+#endif

@@ -1,15 +1,37 @@
+#include "tod/precompiled.h"
 #include "tod/string.h"
+#include "tod/staticstring.h"
+#if defined(TOD_PLATFORM_WINDOWS)
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#else
+#endif
 namespace tod
 {
 
 //-----------------------------------------------------------------------------
-int String::hash() const
+String::String(const StaticString& str)
+:BaseString(str.c_str())
 {
-    unsigned int hash = 5381;
-    auto str = this->c_str();
-    for(auto i = 0u; i < this->size(); ++str, ++i)
-        hash = ((hash << 5) + hash) + (*str);
-    return hash;
+}
+
+//-----------------------------------------------------------------------------
+void String::replace(const String& from, const String& to)
+{
+    size_t index = 0;
+    while ((index = this->find(from, index)) != String::npos)
+    {
+        this->BaseString::replace(index, from.size(), to);
+        index += from.size();
+    }
+}
+
+
+//-----------------------------------------------------------------------------
+int32 String::hash() const
+{
+    return String::hash(this->c_str(), this->size());
 }
     
 
@@ -28,6 +50,34 @@ String String::extractPath() const
     auto p = this->rfind(S("/"));
     if (String::npos == p) return S("");
     return String(*this, 0, p);
+}
+
+
+//-----------------------------------------------------------------------------
+String String::extractFileName() const
+{
+    auto p = this->rfind(S("/"));
+    return String(*this, p + 1, String::npos);
+}
+
+
+//-----------------------------------------------------------------------------
+String String::normalizePath() const
+{
+    String ret;
+    ret.resize(this->size());
+    for (size_t i = 0; i < this->size(); ++i)
+    {
+        if (this->at(i) == S('\\'))
+        {
+            ret.at(i) = S('/');
+        }
+        else
+        {
+            ret.at(i) = this->at(i);
+        }
+    }
+    return ret;
 }
     
 
@@ -48,9 +98,9 @@ String& String::upper()
     
     
 //-----------------------------------------------------------------------------
-int String::atoi(const char* str)
+int32 String::atoi(const char* str)
 {
-    int val = 0;
+    int32 val = 0;
     bool neg = false;
     if (*str == '-')
     {
@@ -69,7 +119,7 @@ int String::atoi(const char* str)
 template <>
 double String::atof(const char* str)
 {
-    int frac;
+    int32 frac;
     double sign, value, scale;
 
     // Skip leading white space, if any.
@@ -87,7 +137,7 @@ double String::atof(const char* str)
         ++str;
     }
 
-    // Get digits before decimal point or exponent, if any.
+    // Get digits before decimal point32 or exponent, if any.
     for (value = 0.0; std::isdigit(*str); ++str)
     {
         value = value * 10.0 + (*str - S('0'));
@@ -111,7 +161,7 @@ double String::atof(const char* str)
     scale = 1.0;
     if ((*str == S('e')) || (*str == S('E')))
     {
-        unsigned int expon;
+        uint32 expon;
 
         // Get sign of exponent, if any.
         ++str;
@@ -138,7 +188,7 @@ double String::atof(const char* str)
         while (expon >   0) { scale *= 10.0; expon -= 1; }
     }
 
-    // Return signed and scaled floating point result.    
+    // Return signed and scaled floating point32 result.    
     return sign * (frac ? (value / scale) : (value * scale));
 }
 
@@ -146,7 +196,7 @@ double String::atof(const char* str)
 template <>
 float String::atof<float>(const char* str)
 {
-    int frac;
+    int32 frac;
     float sign, value, scale;
 
     // Skip leading white space, if any.
@@ -164,7 +214,7 @@ float String::atof<float>(const char* str)
         ++str;
     }
 
-    // Get digits before decimal point or exponent, if any.
+    // Get digits before decimal point32 or exponent, if any.
     for (value = 0.0; std::isdigit(*str); ++str)
     {
         value = value * 10.0f + (*str - S('0'));
@@ -188,7 +238,7 @@ float String::atof<float>(const char* str)
     scale = 1.0;
     if ((*str == S('e')) || (*str == S('E')))
     {
-        unsigned int expon;
+        uint32 expon;
 
         // Get sign of exponent, if any.
         ++str;
@@ -214,8 +264,63 @@ float String::atof<float>(const char* str)
         while (expon >  0) { scale *= 10.0; expon -= 1; }
     }
 
-    // Return signed and scaled floating point result.    
+    // Return signed and scaled floating point32 result.    
     return sign * (frac ? (value / scale) : (value * scale));
 }
+
+
+//-----------------------------------------------------------------------------
+int32 String::hash(const char* str, size_t len)
+{
+    uint32 hash = 5381;
+
+    if (len > 0)
+    {   
+        for (auto i = 0u; i < len; ++str, ++i)
+        {
+            hash = ((hash << 5) + hash) + (*str);
+        }
+    }
+    else
+    {
+        while (*str != 0)
+        {
+            hash = ((hash << 5) + hash) + (*str);
+            ++str;
+        }
+    }
+
+    return hash;
+}
+
+
+//-----------------------------------------------------------------------------
+size_t String::findString(const char* str, const char* find_str)
+{
+    const char* p = strstr(str, find_str);
+    if (nullptr == p)
+    {
+        return String::npos;
+    }
+
+    return static_cast<size_t>(p - str);
+}
+
+
+//-----------------------------------------------------------------------------
+WString String::toUTF8() const
+{
+#if defined (TOD_PLATFORM_WINDOWS)
+    WString ret;
+    ret.resize(this->size());
+    MultiByteToWideChar(
+          CP_ACP, 0
+        , this->data(), static_cast<int32>(this->size())
+        , &ret[0], static_cast<int32>(ret.size()));
+    return ret;
+#else
+#endif
+}
+
 
 }

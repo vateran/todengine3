@@ -4,11 +4,13 @@
 namespace tod::graphics
 {
 
+class RenderInterface;
+
 class LightComponent : public Derive<LightComponent, Component>
 {
 public:
     LightComponent()
-    : renderer("/sys/renderer")
+    : renderInterface(nullptr)
     {
     }
     virtual~LightComponent()
@@ -61,8 +63,8 @@ public:
     }
     
 private:
-    ObjRef<Renderer> renderer;
     Light light;
+    RenderInterface* renderInterface;
 };
 
 }

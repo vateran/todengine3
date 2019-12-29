@@ -12,16 +12,16 @@ class HeightFieldTerrainComponent
 public:
     HeightFieldTerrainComponent();
     
-    void updateShaderParams(Shader* shader) override;
-    void render() override;
+    void updateShaderParams(Shader* shader);
+    void render(Shader* shader, uint32 passes) override;
     
     void setHeightFieldFileName(const char* fname);
     const char* getHeightFieldFileName()
     { return this->heightFieldFName.c_str(); }
-    void setWidth(int value) { this->width = value; this->rebuild(); }
-    int getWidth() { return this->width; }
-    void setHeight(int value) { this->height = value; this->rebuild(); }
-    int getHeight() { return this->height; }
+    void setWidth(int32 value) { this->width = value; this->rebuild(); }
+    int32 getWidth() { return this->width; }
+    void setHeight(int32 value) { this->height = value; this->rebuild(); }
+    int32 getHeight() { return this->height; }
     
     static void bindProperty();
     
@@ -33,8 +33,8 @@ private:
     ObjRef<Mesh> mesh;
     
     String heightFieldFName;
-    int width;
-    int height;
+    int32 width;
+    int32 height;
 };
 
 }

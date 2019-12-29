@@ -1,10 +1,7 @@
 ﻿#pragma once
-#include <bitset>
-#include <list>
 #include <unordered_map>
-#include "tod/platformdef.h"
-#include "tod/string.h"
 #include "tod/exception.h"
+#include "tod/staticstring.h"
 namespace tod
 {
     
@@ -20,12 +17,12 @@ class TypeNameDemangler
 {
 public:
     template <typename T>
-    static String getFullName()
+    static const String& getFullName()
     {
-        String name;
+        static String name;
         
         #ifdef __GNUC__
-        int status;
+        int32 status;
         name = abi::__cxa_demangle(typeid(T).name(), 0, 0, &status);
         #else
         name = typeid(T).name();
@@ -36,10 +33,18 @@ public:
     
     
     template <typename T>
-    static String getName()
+    static const String& getName()
     {
-        String name { getFullName<T>() };
-        return name.substr(name.rfind(":")+1, -1);
+        static String name;
+        if (name.empty())
+        {
+            name = getFullName<T>();
+            name = name.substr(name.rfind(S(":")) + 1, -1);
+            #if defined(TOD_PLATFORM_WINDOWS)
+            name = name.substr(name.find(S(" ")) +1, -1);
+            #endif
+        }
+        return name;
     }
 };
 
@@ -55,7 +60,7 @@ public:
     typedef std::list<Type*> DerivedTypes;
     
 public:
-    Type(Type* base, const String& name);
+    Type(Type* base, const StaticString& name);
     virtual~Type();
     
     void init();
@@ -76,15 +81,19 @@ public:
     bool isAbstract() { return this->abstract; }
     Type* getBase() { return this->base; }
     DerivedTypes& getDerivedTypes() { return this->derivedTypes; }
-    const String& getName() const { return this->name; }
-    int getNameHash() const { return this->nameHash; }
+    const StaticString& getName() const { return this->name; }
+    int32 getNameHash() const { return this->nameHash; }
     template <typename T>
     bool isKindOf() const;
+
+    void setEditorIcon(const StaticString& icon_name) { this->editorIcon = icon_name; }
+    const StaticString& getEditorIcon() const { return this->editorIcon; }
     
 private:
     bool abstract;
-    String name;
-    int nameHash;
+    StaticString name;
+    int32 nameHash;
+    StaticString editorIcon;
     Type* base;
     DerivedTypes derivedTypes;
     Properties properties;
@@ -228,11 +237,38 @@ TYPE* newInstance()
 {
     auto new_obj = static_cast<TYPE*>(TYPE::get_type()->createObject());
     if (nullptr == new_obj)
-        TOD_THROW_EXCEPTION("newInstance(%s)",
+    {
+        TOD_THROW_EXCEPTION(
+            "newInstance(%s)",
             TYPE::get_type()->getName().c_str());
+    }
+
     return new_obj;
 }
     
 #define REGISTER_TYPE(type) do { type :: get_type(); } while (false)
+
+
+//-----------------------------------------------------------------------------
+//!@brief 특정 타입의 typeid(int64) 를 알아낸다.
+//C++ 의 RTTI 가 disable 되었을때도 사용가능
+//!@ingroup Core
+template <typename T>
+class TypeId
+{
+public:
+    typedef TypeId<T> type;
+    static int64 getId()
+    {
+        static std::decay<T> s_instance;
+        return (int64)&s_instance;
+    }
+    template <typename S>
+    static bool equal()
+    {
+        return type::getId() == TypeId<S>::getId();
+    }
+};
+
 
 }

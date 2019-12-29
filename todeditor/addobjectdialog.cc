@@ -38,8 +38,8 @@ createdObject(nullptr)
         [filter, obj_list](const QString& text)
         {
             String filter_text(text.toLower().toLocal8Bit().data());
-            int first_row = -1;
-            for (int i=0;i<obj_list->rowCount();++i)
+            int32 first_row = -1;
+            for (int32 i=0;i<obj_list->rowCount();++i)
             {
                 auto item = obj_list->item(i, 0);
                 String node_name = (item->text().toLower().toLocal8Bit().data());

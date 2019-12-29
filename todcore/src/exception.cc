@@ -1,12 +1,13 @@
-﻿#include "tod/exception.h"
+﻿#include "tod/precompiled.h"
+#include "tod/exception.h"
 namespace tod
 {
 
 //-----------------------------------------------------------------------------
 Exception::Exception
-(const char* msg, int line,
+(const char* msg, int32 line,
  const char* file_name, const char* func_name):
- std::runtime_error(msg)
+ std::exception(msg)
 {
     String extracted_file_name(file_name);
     extracted_file_name =
@@ -17,12 +18,12 @@ Exception::Exception
         extracted_file_name.c_str(),
         func_name,
         this->line,
-        this->std::runtime_error::what());
+        this->std::exception::what());
 }
 
     
 //-----------------------------------------------------------------------------
-const char* Exception::what() const _NOEXCEPT
+const char* Exception::what() const noexcept
 {
     return this->desc.c_str();
 }

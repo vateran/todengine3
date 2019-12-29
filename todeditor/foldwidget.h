@@ -6,7 +6,7 @@ namespace tod::editor
 class FoldWidget : public QWidget
 {
 public:
-    FoldWidget(const QString& name);
+    FoldWidget(const QString& name, const QString& icon_name="");
     
     void setContent(QWidget* widget);
     

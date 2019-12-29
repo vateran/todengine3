@@ -1,11 +1,18 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <cassert>
 #include <vector>
 #include <iostream>
-#include <concurrentqueue/concurrentqueue.h>
-#include <unistd.h>
 #include <thread>
 #include <chrono>
+#include <mutex>
+#include <unordered_map>
+#include <set>
+#include <atomic>
+#include <limits>
+#include <curl/curl.h>
+#include "tod/promise.h"
+#include "tod/promise.inl"
+#include "tod/http.h"
 #include "tod/kernel.h"
 #include "tod/uuid.h"
 #include "tod/type.h"
@@ -20,6 +27,11 @@
 #include "tod/timemgr.h"
 #include "tod/random.h"
 #include "tod/interpolation.h"
+#include "tod/argparser.h"
+#include "tod/staticstring.h"
+#include "tod/binarystreamwriter.h"
+#include "tod/log.h"
+#include "tod/graphics/compactfloat.h"
 
 using namespace tod;
 
@@ -170,6 +182,16 @@ void test_Utilites()
     assert(splited_strings[0] == "usr");
     assert(splited_strings[1] == "");
     assert(splited_strings[2] == "test");
+
+    //빈 token 을 drop함
+    split_test = "/usr//test";
+    splited_strings.clear();
+    split_test.split("/", splited_strings, true);
+                                        //~~~~~
+    assert(splited_strings.size() == 2);
+    assert(splited_strings[0] == "usr");
+    assert(splited_strings[1] == "test");
+
     
     String trim_test = "   trim test   \t ";
     trim_test.trim();
@@ -289,9 +311,9 @@ public:
     static void bindProperty()
     {
         BIND_PROPERTY(bool, "bool", "bool", setBool, isBool, false, PropertyAttr::DEFAULT);
-        BIND_PROPERTY(int, "hp", "Fighter의 HP", setHp, getHp, 0, PropertyAttr::DEFAULT);
-        BIND_PROPERTY(int, "mp", "Fighter의 MP", setMp, getMp, 0, PropertyAttr::DEFAULT);
-        BIND_ENUM_PROPERTY(int, "enum", "Enum테스트", setEnum, getEnum, getEnumEnumerator, 0, PropertyAttr::DEFAULT);
+        BIND_PROPERTY(int32, "hp", "Fighter의 HP", setHp, getHp, 0, PropertyAttr::DEFAULT);
+        BIND_PROPERTY(int32, "mp", "Fighter의 MP", setMp, getMp, 0, PropertyAttr::DEFAULT);
+        BIND_ENUM_PROPERTY(int32, "enum", "Enum테스트", setEnum, getEnum, getEnumEnumerator, 0, PropertyAttr::DEFAULT);
         BIND_PROPERTY(const String&, "string", "string", setString, getString, "", PropertyAttr::DEFAULT);
     }
     
@@ -302,9 +324,9 @@ public:
     
 private:
     bool boolValue;
-    int hp;
-    int mp;
-    int enumValue;
+    int32 hp;
+    int32 mp;
+    int32 enumValue;
     String string;
 };
 
@@ -408,20 +430,16 @@ void test_Serializer()
     
     auto deserialized_node = s.deserializeFromJson(json_str);
     assert(deserialized_node != nullptr);
-    
-    auto deserialized_from_file = s.deserializeFromJsonFile("file://test_node.json");
-    assert(deserialized_from_file);
-    assert(deserialized_from_file->getName() == "test");
+
+
+    {
+        FileSystem::instance()->save("file://test_node.json", json_str.data(), json_str.size());
+        auto deserialized_from_file = s.deserializeFromJsonFile("file://test_node.json");
+        assert(deserialized_from_file);
+        auto fighter = Kernel::instance()->lookup<Fighter>("/node1/node2/fighter");
+        assert(fighter->getHp() == 22);
+    }
 }
-
-
-
-class Task
-{
-public:
-};
-
-
 
 
 
@@ -471,10 +489,14 @@ void test_ThreadQueue()
 //-----------------------------------------------------------------------------
 void test_FileSystem()
 {
+    //MemMappedBuffer 읽기
+    MemMappedBuffer buffer;
+    FileSystem::instance()->load("file://test.txt", &buffer);    
+
     //비동기 방식 파일 읽기
-    FileSystem::instance()->load("file://test.txt", [](FileSystem::Data& data)
+    FileSystem::instance()->load("file://test.txt", [](Buffer* data)
     {
-        printf("[%s]\n", &data[0]);
+        printf("[%s]\n", data->data());
         return true;
     }, FileSystem::LoadOption().aync().string());
     printf("바로 떨어짐\n");
@@ -492,17 +514,637 @@ void test_FileSystem()
     printf("바로 떨어짐\n");
     
     //쫌 기다려준다(비동기 Http 요청이 끝나기 전에 프로그램 종료됨)
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+}
+
+
+//-----------------------------------------------------------------------------
+void test_StaticString()
+{
+    std::mutex lock;
+    std::set<StaticString> test_set;
+
+    std::thread([&lock, &test_set]()
+    {
+        for (int32 i = 0; i < 1000; ++i)
+        {
+            char buf[1024];
+            TOD_SNPRINTF(buf, sizeof(buf), "Thread%d", i);
+            {
+                std::lock_guard<std::mutex> guard(lock);
+                test_set.insert(buf);
+            }
+        }
+    }).detach();
+
+    std::thread([&lock, &test_set]()
+    {
+        for (int32 i = 1000; i < 2000; ++i)
+        {
+            char buf[1024];
+            TOD_SNPRINTF(buf, sizeof(buf), "Thread%d", i);
+            {
+                std::lock_guard<std::mutex> guard(lock);
+                test_set.insert(buf);
+            }
+        }
+    }).detach();
+
+    std::thread([&lock, &test_set]()
+    {
+        for (int32 i = 0; i < 1000; ++i)
+        {
+            char buf[1024];
+            TOD_SNPRINTF(buf, sizeof(buf), "Thread%d", i);
+            {
+                std::lock_guard<std::mutex> guard(lock);
+                test_set.insert(buf);
+            }
+        }
+    }).detach();
+
+    TimeMgr::instance()->sleep(2000);
+
+    assert(test_set.size() == 2000);
+
+    for (int32 i = 0; i < 2000; ++i)
+    {
+        char buf[1024];
+        TOD_SNPRINTF(buf, sizeof(buf), "Thread%d", i);
+        assert(test_set.find(buf) != test_set.end());
+    }
+
+    StaticString s("Thread1");
+    assert(s == "Thread1");
+}
+
+
+//-----------------------------------------------------------------------------
+void test_ArgParser(int argc, char* argv[])
+{   
+    ArgParser arg_parser("executer.exe --cmd --bool true --bool2 --int32 3 --string test");
+    arg_parser.addOption<bool>("bool", "desc", false);
+    arg_parser.addOption<bool>("bool2", "desc", false);
+    arg_parser.addOption<int32>("int32", "desc", 0);
+    arg_parser.addOption<String>("string", "desc", "default");
+    arg_parser.addCommand("cmd", "desc", [&arg_parser]()
+    {
+        bool out_bool = false;
+        assert(arg_parser.getOption("bool", out_bool));
+        assert(out_bool == true);
+
+        bool out_bool2 = false;
+        assert(arg_parser.getOption("bool2", out_bool2));
+        assert(out_bool2 == true);
+
+        int32 out_int32 = 0;
+        assert(arg_parser.getOption("int32", out_int32));
+        assert(out_int32 == 3);
+
+        String out_string;
+        assert(arg_parser.getOption("string", out_string));
+        assert(out_string == "test");
+
+        return true;
+    });
+    assert(arg_parser.parse() == true);
+    assert(arg_parser.execute() == true);
+}
+
+
+//-----------------------------------------------------------------------------
+void test_BinaryStreamWriter()
+{
+    BinaryStreamWriter writer;
+    writer.write(10);
+    writer.write(String("test"));
+    assert(writer.size() == 12);
+    assert(writer.remain() == 16);
+    assert(writer.capacity() == 28);
+}
+
+
+//-----------------------------------------------------------------------------
+void test_Http()
+{
+    {
+        //Sync
+        tod::Http r;
+        const tod::Http::Response& response = r.request("https://curl.haxx.se").await();
+        assert(response.getStatusCode() == 200);
+    }
+
+    {
+        //Async
+        tod::Http r;
+        r.request("https://curl.haxx.se").then([](const tod::Http::Response & response)
+        {
+            assert(response.getStatusCode() == 200);
+        });
+    }
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+}
+
+
+//-----------------------------------------------------------------------------
+void test_Log()
+{
+    Logger::instance()->setStandardLog(Logger::StandardLog().console());
+
+    std::thread([]()
+    {
+        while (true)
+        {
+            TOD_LOG("ERROR", "test %d", 10);
+            Sleep(1);
+        }
+    }).detach();
+
+    std::thread([]()
+    {
+        while (true)
+        {
+            TOD_LOG("INFO", "test");
+            Sleep(1);
+        }
+    }).detach();
+
+    while (1)
+    {
+        Sleep(1);
+    }
+}
+
+#include <regex>
+
+
+namespace tod::graphics
+{
+    template<class Facet>
+    struct deletable_facet : Facet
+    {
+        template<class ...Args>
+        deletable_facet(Args&& ...args): Facet(std::forward<Args>(args)...) {}
+        ~deletable_facet() {}
+    };
+
+    class ShaderParser
+    {
+    public:
+        /*
+            주석 : 여러줄, 한줄
+            cbuffer
+            struct
+            #define
+            #if defined
+            #else
+            #endif
+            VertexShader
+            FragmentShader            
+        */
+
+        struct CodeBuilder
+        {
+            virtual~CodeBuilder() {}
+            virtual void beginStruct(const std::wstring& name) = 0;
+            virtual void endStruct() = 0;
+            virtual void beginCBuffer(const std::wstring& name) = 0;
+            virtual void endCBuffer() = 0;
+            virtual void beginInputLayout(const std::wstring& name) = 0;
+            virtual void endInputLayout() = 0;
+            virtual void writeVariable(const std::wstring& type, const std::wstring& name) = 0;
+            virtual void writeInputLayoutVariable(const std::wstring& type, const std::wstring& name, const std::wstring& semantic) = 0;
+        };
+
+        struct HeaderCodeBuilder : public CodeBuilder
+        {
+            HeaderCodeBuilder(std::wstring* output)
+                : output(output)
+            {
+                if (nullptr != output)
+                {
+                    output->append(L"#pragma once\n");
+                    output->append(L"#include \"tod/graphics/vector2.h\"\n");
+                    output->append(L"#include \"tod/graphics/vector3.h\"\n");
+                    output->append(L"#include \"tod/graphics/vector4.h\"\n");
+                    output->append(L"#include \"tod/graphics/matrix44.h\"\n");
+                    output->append(L"#include \"tod/graphics/compactfloat.h\"\n");
+                    output->append(L"namespace tod::graphics\n");
+                    output->append(L"{\n\n");
+                }
+            }
+            virtual~HeaderCodeBuilder()
+            {
+                if (nullptr != output)
+                {
+                    output->append(L"\n}\n");
+                }
+            }
+
+            void beginStruct(const std::wstring& name) override
+            {
+                output->append(L"struct ");
+                output->append(name);
+                output->append(L"\n");
+                output->append(L"{\n");
+            }
+
+            void endStruct() override
+            {
+                output->append(L"};\n\n");
+            }
+
+            void beginCBuffer(const std::wstring& name) override
+            {
+                output->append(L"struct ");
+                output->append(name);
+                output->append(L"\n");
+                output->append(L"{\n");
+            }
+
+            void endCBuffer() override
+            {
+                output->append(L"};\n\n");
+            }
+
+            void writeVariable(const std::wstring& type, const std::wstring& name) override
+            {
+                //Indent
+                output->append(L"    ");
+
+                if (L"float4x4" == type)
+                {
+                    output->append(L"Matrix44 " + name);
+                }
+                else if (L"float" == type)
+                {
+                    output->append(L"float " + name);
+                }
+                else if (L"float2" == type)
+                {
+                    output->append(L"Vector2 " + name);
+                }
+                else if (L"float3" == type)
+                {
+                    output->append(L"Vector3 " + name);
+                }
+                else if (L"float4" == type)
+                {
+                    output->append(L"Vector4 " + name);
+                }
+                else if (L"int32" == type)
+                {
+                    output->append(L"int32 " + name);
+                }
+                else if (L"uint32" == type)
+                {
+                    output->append(L"uint32 " + name);
+                }
+                else if (L"R32G32B32A32F" == type)
+                {
+                    output->append(L"Vector4 " + name);
+                }
+                else if (L"R32G32B32F" == type)
+                {
+                    output->append(L"Vector3 " + name);
+                }
+                else if (L"R32G32F" == type)
+                {
+                    output->append(L"Vector2 " + name);
+                }
+                else if (L"R8G8B8A8U" == type)
+                {
+                    output->append(L"std::array<uint8, 4> " + name);
+                }
+                else if (L"R8G8B8A8UN" == type)
+                {
+                    output->append(L"std::array<CompactFloat<uint8>, 4> " + name);
+                }
+                else
+                {
+                    //배열
+                    std::wregex array_re(L"([[:alpha:]]+\\w*)\\[([[:digit:]]+)\\]");
+                    const auto b = std::wsregex_iterator(type.begin(), type.end(), array_re);
+                    const auto e = std::wsregex_iterator();
+                    if (0 < std::distance(b, e))
+                    {
+                        for (std::wsregex_iterator i = b; i != e; ++i)
+                        {
+                            const std::wsmatch& match = *i;
+                            const auto& array_type = match[1].str();
+                            output->append(L"std::array<" + array_type + L", " + match[2].str() + L"> " + name);
+                        }
+                    }
+                    else
+                    {
+                        output->append(type + L" " + name);
+                    }
+                }
+
+                output->append(L";\n");
+            }
+
+            void beginInputLayout(const std::wstring& name) override
+            {
+                output->append(L"struct ");
+                output->append(name);
+                output->append(L"\n");
+                output->append(L"{\n");
+            }
+
+            void endInputLayout() override
+            {
+                output->append(L"};\n\n");
+            }
+
+            void writeInputLayoutVariable(const std::wstring& type, const std::wstring& name, const std::wstring& semantic) override
+            {
+                this->writeVariable(type, name);
+            }
+
+            std::wstring* output;
+        };
+
+        struct HLSLCodeBuilder : public CodeBuilder
+        {
+            HLSLCodeBuilder(std::wstring* output)
+                : output(output)
+            {
+            }
+            virtual~HLSLCodeBuilder()
+            {
+            }
+
+            void beginStruct(const std::wstring& name) override
+            {
+                output->append(L"struct ");
+                output->append(name);
+                output->append(L"\n");
+                output->append(L"{\n");
+            }
+
+            void endStruct() override
+            {
+                output->append(L"};\n\n");
+            }
+
+            void beginCBuffer(const std::wstring& name) override
+            {
+                output->append(L"cbuffer ");
+                output->append(name);
+                output->append(L"\n");
+                output->append(L"{\n");
+            }
+
+            void endCBuffer() override
+            {
+                output->append(L"};\n\n");
+            }
+
+            void writeVariable(const std::wstring& type, const std::wstring& name) override
+            {
+                //Indent
+                output->append(L"    ");
+
+                if (L"int32" == type)
+                {
+                    output->append(L"int" + name);
+                }
+                if (L"uint32" == type)
+                {
+                    output->append(L"uint" + name);
+                }
+                else
+                {
+                    output->append(type + L" " + name);
+                }
+
+                output->append(L";\n");
+            }
+
+            void beginInputLayout(const std::wstring& name) override
+            {
+                output->append(L"struct ");
+                output->append(name);
+                output->append(L"\n");
+                output->append(L"{\n");
+            }
+
+            void endInputLayout() override
+            {
+                output->append(L"};\n\n");
+            }
+
+            void writeInputLayoutVariable(const std::wstring& type, const std::wstring& name, const std::wstring& semantic) override
+            {
+                //Indent
+                output->append(L"    ");
+
+                output->append(type + L" " + name + L" : " + semantic);
+
+                output->append(L";\n");
+            }
+            
+            std::wstring* output;
+        };
+
+#define CODEBUILD(func, ...) for (auto& cb = code_builders.begin(); cb != code_builders.end(); ++cb) { (*cb)-> func (__VA_ARGS__); }
+        typedef std::vector<CodeBuilder*> CodeBuilders;
+
+        bool convert(
+              const std::wstring& code
+            , OUT std::wstring* header_code = nullptr
+            , OUT std::wstring* hlsl_code = nullptr
+            , OUT std::wstring* glsl_code = nullptr)
+        {
+            CodeBuilders code_builders;
+            HeaderCodeBuilder header_code_builder(header_code);
+            HLSLCodeBuilder hlsl_code_builder(hlsl_code);
+            if (nullptr != header_code)
+            {
+                code_builders.push_back(&header_code_builder);
+            }
+            if (nullptr != hlsl_code)
+            {
+                code_builders.push_back(&hlsl_code_builder);
+            }
+
+            std::wstring pure_code;
+
+            //주석제거
+            {
+                {
+                    //한줄 주석
+                    std::wstring eleminate_comments;
+                    std::wregex commnect_re(L"//.*");
+                    pure_code = std::regex_replace(code, commnect_re, L"");
+                }
+
+                {
+                    //여러줄 주석
+                    std::wstring eleminate_comments;
+                    std::wregex commnect_re(L"/\\*[[:s:][:print:]]*?\\*/");
+                    pure_code = std::regex_replace(pure_code, commnect_re, L"");
+                }
+            }
+
+
+            //struct
+            {
+                std::wregex cbuffer_re(L"\\s+struct\\s+(\\w+)\\s+\\{\\s+([\\w\\s;\\[\\]]*)\\}\\s*;");
+                const auto b = std::wsregex_iterator(pure_code.begin(), pure_code.end(), cbuffer_re);
+                const auto e = std::wsregex_iterator();
+                for (std::wsregex_iterator i = b; i != e; ++i)
+                {
+                    const std::wsmatch& match = *i;
+                    CODEBUILD(beginStruct, match[1].str());
+                    this->convertMemberVariables(match[2].str(), code_builders);
+                    CODEBUILD(endStruct);
+                }
+            }
+            
+
+            //cbuffer
+            {
+                std::wregex cbuffer_re(L"\\s+cbuffer\\s+(\\w+)\\s+\\{\\s+([\\w\\s;\\[\\]]*)\\}\\s*;");
+                const auto b = std::wsregex_iterator(pure_code.begin(), pure_code.end(), cbuffer_re);
+                const auto e = std::wsregex_iterator();
+                for (std::wsregex_iterator i = b; i != e; ++i)
+                {
+                    const std::wsmatch& match = *i;
+                    CODEBUILD(beginCBuffer, match[1].str());
+                    this->convertMemberVariables(match[2].str(), code_builders);
+                    CODEBUILD(endCBuffer);
+                }
+            }
+
+
+            //inputlayout
+            {
+                std::wregex cbuffer_re(L"\\s+inputlayout\\s+(\\w+)\\s+\\{\\s+([\\w\\s;\\[\\]:]*)\\}\\s*;");
+                const auto b = std::wsregex_iterator(pure_code.begin(), pure_code.end(), cbuffer_re);
+                const auto e = std::wsregex_iterator();
+                for (std::wsregex_iterator i = b; i != e; ++i)
+                {
+                    const std::wsmatch& match = *i;
+                    CODEBUILD(beginInputLayout, match[1].str());
+                    this->convertInputLayoutVariables(match[2].str(), code_builders);
+                    CODEBUILD(endInputLayout);
+                }
+            }
+
+            return true;
+        }
+
+        void convertMemberVariables(const std::wstring& code, CodeBuilders& code_builders) const
+        {
+            const std::wregex re(L"\\s*([[:alpha:]]+[\\w\\[\\]]*)\\s+([[:alpha:]]+[\\[\\]\\w]*)\\s*;");
+            const auto b = std::wsregex_iterator(code.begin(), code.end(), re);
+            const auto e = std::wsregex_iterator();
+            for (std::wsregex_iterator i = b; i != e; ++i)
+            {
+                const std::wsmatch& match = *i;                
+                CODEBUILD(writeVariable, match[1].str(), match[2].str());
+            }
+        }
+
+        void convertInputLayoutVariables(const std::wstring& code, CodeBuilders& code_builders) const
+        {
+            const std::wregex re(L"\\s*([[:alpha:]]+[\\w\\[\\]]*)\\s+([[:alpha:]]+[\\[\\]\\w]*)[ \t]*:[ \t]*([[:upper:][:digit:]]*)\\s*;");
+            const auto b = std::wsregex_iterator(code.begin(), code.end(), re);
+            const auto e = std::wsregex_iterator();
+            for (std::wsregex_iterator i = b; i != e; ++i)
+            {
+                const std::wsmatch& match = *i;
+                CODEBUILD(writeInputLayoutVariable, match[1].str(), match[2].str(), match[3].str());
+            }
+        }
+    };
+};
+
+void test_ParseTodShader()
+{
+    const wchar_t* shader_code = L"\
+ /*test안녕하세요1234567890!@#$%^&*()_+`~:;\"'<>,.?/|\\=-asdkjfhkljsdaf\n\
+        asdasd*/ \
+    cbuffer TodBaseFrameCBuffer //하하하\n\
+    {\n\
+        float4x4 matWVP;\n\
+        float4x4 matWorld; //주석\n\
+        float4x4 matInvWorld;\n\
+        float4x4 matView;\n\
+        float4x4 matInvView; /*이것은 주석입니다.*/\n\
+        float4x4 matProj;\n\
+        float3 vecViewPos;\n\
+        //float fTime;\n\
+        uint32 iLightCount;\n\
+        float padding[3];\n\
+    };\n\
+\n\
+    struct Light\n\
+    {\n\
+        float intensity;\n\
+    };\n\
+\n\
+    cbuffer TodBaseLightCBuffer\n\
+    {\n\
+        Light lights[8];\n\
+    };\n\
+\n\
+    inputlayout NormalVSInput\n\
+    {\n\
+        R32G32B32F vecPosition  : POSITION;\n\
+        R32G32B32F vecNormal    : NORMAL;\n\
+        R32G32F    vecUV        : TEXCOORD;\n\
+    };\n\
+\n\
+    inputlayout SkinnedVSInput\n\
+    {\n\
+        R32G32B32F  vecPosition  : POSITION;\n\
+        R32G32B32F  vecNormal    : NORMAL;\n\
+        R32G32F     vecUV        : TEXCOORD;\n\
+        R8G8B8A8U   boneIndex     : BLENDINDICES;\n\
+        R8G8B8A8UN  weight       : BLENDWEIGHTS;\n\
+    };\n\
+    ";
+
+    tod::graphics::ShaderParser shader_parser;
+    std::wstring hlsl, header;
+    shader_parser.convert(shader_code, &header, &hlsl);
+}
+
+
+void test_CompactFloat()
+{
+    tod::graphics::CompactFloat<uint8> f = 0.5f;
+    assert(0.501960814f == f);
+    assert(f * 10 == 5.01960814f);
+    f = 0;
+    assert(0 == f);
+    f = 0.1f;
+    assert(0.101960786f == f);
 }
 
 
 //-----------------------------------------------------------------------------
 int main(int argc, char* argv[])
 {
-    test_Interpolation();
-    return 0;
-    
+    Logger::instance()->setStandardLog(tod::Logger::StandardLog().console());
 
+
+    test_ParseTodShader();
+
+
+    /*
+
+    test_CompactFloat();
+    test_Log();
+    test_FileSystem();
+
+    REGISTER_TYPE(Fighter);
+
+    test_Interpolation();    
     test_Random();
     test_TimeMgr();
     test_NodeRelease();
@@ -516,40 +1158,10 @@ int main(int argc, char* argv[])
     test_Serializer();
     test_ThreadQueue();
     test_FileSystem();
+    test_StaticString();
+    test_ArgParser(argc, argv);
+    test_BinaryStreamWriter();
+    test_Http();*/
 
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

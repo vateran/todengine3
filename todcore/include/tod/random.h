@@ -7,7 +7,7 @@ class Random
 {
 public:
     ///@return min <= value <= max
-    int uniformInt(int min, int max);
+    int32 uniformInt(int32 min, int32 max);
     ///@return min <= value <= max
     float uniformFloat(float min, float max);
     

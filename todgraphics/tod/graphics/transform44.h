@@ -8,6 +8,8 @@ class Transform44
 public:
     Transform44();
     
+    void clear();
+    void identity();
     void setX(float value);
     float getX() const;
     void setY(float value);

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "tod/node.h"
 namespace tod::graphics
 {
@@ -18,8 +18,8 @@ public:
     
     static void bindProperty()
     {
-        BIND_PROPERTY(bool, "shader_debug", "Shader µπˆ±Î »∞º∫»≠", setShaderDebug, isShaderDebug, false, PropertyAttr::DEFAULT);
-        BIND_PROPERTY(bool, "shader_optimization", "Shader √÷¿˚»≠ »∞º∫»≠", setShaderOptimization, isShaderOptimization, false, PropertyAttr::DEFAULT);
+        BIND_PROPERTY(bool, "shader_debug", "Shader Debug", setShaderDebug, isShaderDebug, false, PropertyAttr::DEFAULT);
+        BIND_PROPERTY(bool, "shader_optimization", "Shader Optimization", setShaderOptimization, isShaderOptimization, false, PropertyAttr::DEFAULT);
     }
     
 private:

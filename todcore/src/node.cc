@@ -1,4 +1,5 @@
-﻿#include "tod/node.h"
+﻿#include "tod/precompiled.h"
+#include "tod/node.h"
 namespace tod
 {
 
@@ -20,14 +21,13 @@ nameHash(0)
 //-----------------------------------------------------------------------------
 Node::~Node()
 {
-    printf("%p\n", this);
 }
 
 
 //-----------------------------------------------------------------------------
-int Node::release()
+int32 Node::release()
 {
-    TOD_ASSERT(this->refCount >= 0);
+    TOD_ASSERT(0 <= this->refCount, "이미 refCount <= 0 입니다");
 
     if (this->refCount <= 1)
     {
@@ -109,7 +109,7 @@ void Node::removeFromParent()
 
 //-----------------------------------------------------------------------------
 Node* Node::find_node_by_name
-(Node* parent, int name_hash, int depth, int limit_depth)
+(Node* parent, int32 name_hash, int32 depth, int32 limit_depth)
 {
     if (parent->nameHash == name_hash) return const_cast<Node*>(parent);
     if (depth == limit_depth) return nullptr;
@@ -126,7 +126,7 @@ Node* Node::find_node_by_name
 
 
 //-----------------------------------------------------------------------------
-Node* Node::findNodeByName(const String& name, int depth)
+Node* Node::findNodeByName(const String& name, int32 depth)
 {
     auto name_hash = name.hash();
     for (auto& child : this->children)
@@ -140,7 +140,7 @@ Node* Node::findNodeByName(const String& name, int depth)
 
 
 //-----------------------------------------------------------------------------
-Node* Node::getChildAt(int index)
+Node* Node::getChildAt(int32 index)
 {
     if (index < 0 || index >= this->children.size())
         TOD_RETURN_TRACE(nullptr);
@@ -165,8 +165,8 @@ String Node::getAbsolutePath() const
     }
     
     path.reserve(len);
-    int s = static_cast<int>(upward.size()-1);
-    for (int i=s;i>=0;--i)
+    int32 s = static_cast<int>(upward.size()-1);
+    for (int32 i=s;i>=0;--i)
     {
         if (i < s) path += S("/");
         path += upward[i]->name;
@@ -177,10 +177,10 @@ String Node::getAbsolutePath() const
 
 
 //-----------------------------------------------------------------------------
-int Node::indexOf(Node* child_node)
+int32 Node::indexOf(Node* child_node)
 {
-    int count = static_cast<int>(this->children.size());
-    for (int i=0;i<count;++i)
+    int32 count = static_cast<int>(this->children.size());
+    for (int32 i=0;i<count;++i)
     {
         if (this->children.at(i).equal(child_node))
             return i;
@@ -190,7 +190,7 @@ int Node::indexOf(Node* child_node)
 
 
 //-----------------------------------------------------------------------------
-int Node::getSelfIndex()
+int32 Node::getSelfIndex()
 {
     if (nullptr == this->parent) return -1;
     return this->parent->indexOf(this);
@@ -230,7 +230,7 @@ void Node::resetComponentByName(const tod::String &name)
 
 
 //-----------------------------------------------------------------------------
-void Node::moveComponent(int index)
+void Node::moveComponent(int32 index)
 {
 
 }

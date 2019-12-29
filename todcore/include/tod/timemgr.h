@@ -1,5 +1,6 @@
 #pragma once
 #include <chrono>
+#include <thread>
 #include "tod/object.h"
 namespace tod
 {
@@ -7,8 +8,8 @@ namespace tod
 class TimeMgr : public SingletonDerive<TimeMgr, Object>
 {
 public:
-    using clock = std::chrono::system_clock;
-    using time_unit = std::chrono::milliseconds;
+    using clock = std::chrono::high_resolution_clock;
+    using time_unit = std::chrono::microseconds;
     typedef clock::time_point TimePoint;
 
 public:
@@ -18,34 +19,43 @@ public:
         this->prevNow = this->systemStart;
     }
     
-    void update()
+    void update() noexcept
     {
         auto cur = clock::now();
         
         auto now = (cur - this->systemStart);
         this->nowT = std::chrono::duration_cast<time_unit>
-            (now).count() / 1000.0f;
+            (now).count() / 1000000.0f;
         
         auto delta = std::chrono::duration_cast<time_unit>
-            (cur - this->prevNow) / 1000.0f;
+            (cur - this->prevNow) / 1000000.0f;
         this->deltaT = delta.count();
         this->prevNow = cur;
     }
-    
-    double now()
+
+    void sleep(int32 duration_msec) const noexcept
     {
-        return this->nowT;
+        std::this_thread::sleep_for(time_unit(duration_msec));
     }
-    float delta() const
+    
+    inline double now() const noexcept { return this->nowT; }
+    inline double delta() const noexcept { return this->deltaT; }
+
+    static inline uint64 cpuCounter()
     {
-        return deltaT;
+#if defined (TOD_PLATFORM_WINDOWS)
+        return __rdtsc();
+#else
+        TOD_ASSERT(false, "no implementation");
+        return 0;
+#endif
     }
 
 private:
     TimePoint systemStart;
     TimePoint prevNow;
     double nowT;
-    float deltaT;
+	double deltaT;
     
 };
 

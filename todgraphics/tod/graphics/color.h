@@ -1,6 +1,6 @@
-#pragma once
+﻿#pragma once
 #include <vector>
-#include "tod/platformdef.h"
+#include "tod/basetype.h"
 #include "tod/stringconv.h"
 namespace tod::graphics
 {
@@ -61,7 +61,7 @@ template <>
 class StringConv<const graphics::Color&>
 {
 public:
-    static graphics::Color& fromString(const String& value)
+    static graphics::Color fromString(const String& value)
     {
         graphics::Color ret;
         std::vector<String> sl;

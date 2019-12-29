@@ -1,9 +1,10 @@
+#include "tod/precompiled.h"
 #include "tod/random.h"
 namespace tod
 {
 
 //-----------------------------------------------------------------------------
-int Random::uniformInt(int min, int max)
+int32 Random::uniformInt(int32 min, int32 max)
 {
     return this->gen() % (max - min + 1) + min;
 }

@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include <string>
-#include "tod/platformdef.h"
+#include "tod/basetype.h"
 #include "tod/type.h"
 #include "tod/singletonmgr.h"
 namespace tod

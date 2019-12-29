@@ -17,6 +17,10 @@ public:
     ~TodEditor();
     
     void addToolMenu(QAction* menu_action);
+
+private:
+    void closeEvent(QCloseEvent* event) override;
+    void readSettings();
     
 public:
     static TodEditor* instance()

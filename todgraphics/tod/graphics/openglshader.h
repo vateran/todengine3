@@ -1,4 +1,5 @@
 #pragma once
+#if defined(PLATFORM_MAC)
 #include "tod/filesystem.h"
 #include "tod/graphics/shader.h"
 namespace tod::graphics
@@ -45,3 +46,4 @@ private:
 };
 
 }
+#endif

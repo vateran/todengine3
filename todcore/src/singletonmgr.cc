@@ -1,3 +1,4 @@
+#include "tod/precompiled.h"
 #include "tod/singletonmgr.h"
 #include "tod/singleton.h"
 namespace tod

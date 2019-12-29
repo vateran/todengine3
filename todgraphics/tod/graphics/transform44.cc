@@ -3,11 +3,28 @@ namespace tod::graphics
 {
 
 //-----------------------------------------------------------------------------
-Transform44::Transform44():
-dirty(false)
+Transform44::Transform44()
+: dirty(false)
+{
+    this->identity();
+}
+
+
+//-----------------------------------------------------------------------------
+void Transform44::clear()
+{
+    this->m.clear();
+}
+
+
+//-----------------------------------------------------------------------------
+void Transform44::identity()
 {
     this->m.identity();
+    this->t = { 0, 0, 0 };
+    this->r = { 0, 0, 0 };
     this->s = { 1, 1, 1 };
+    this->dirty = true;
 }
 
 

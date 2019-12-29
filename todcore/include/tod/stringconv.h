@@ -1,5 +1,6 @@
-#pragma once
+﻿#pragma once
 #include "tod/string.h"
+#include "tod/staticstring.h"
 namespace tod
 {
 
@@ -34,16 +35,16 @@ public:
 
 //-----------------------------------------------------------------------------
 //!@ingroup Reflection
-//!@brief int 타입에 대한 String 변환
+//!@brief int32 타입에 대한 String 변환
 template <>
 class StringConv<int>
 {
 public:
-    static int fromString(const String& value)
+    static int32 fromString(const String& value)
     {
         return String::atoi(value.c_str());
     }
-    static void toString(int value, String& s)
+    static void toString(int32 value, String& s)
     {
         s.format("%d", value);
     }
@@ -124,6 +125,42 @@ public:
 
 //-----------------------------------------------------------------------------
 //!@ingroup Reflection
+//!@brief const String& 타입에 대한 String 변환
+template <>
+class StringConv<StaticString>
+{
+public:
+    static StaticString fromString(const String& value)
+    {
+        return value;
+    }
+    static void toString(StaticString value, String& s)
+    {
+        s = value;
+    }
+};
+
+
+//-----------------------------------------------------------------------------
+//!@ingroup Reflection
+//!@brief const String& 타입에 대한 String 변환
+template <>
+class StringConv<const StaticString&>
+{
+public:
+    static StaticString fromString(const String& value)
+    {
+        return value;
+    }
+    static void toString(const StaticString& value, String& s)
+    {
+        s = value;
+    }
+};
+
+
+//-----------------------------------------------------------------------------
+//!@ingroup Reflection
 //!@brief char* 타입에 대한 String 변환
 template <>
 class StringConv<char*>
@@ -167,9 +204,9 @@ public:
     {
         Color c;
         Tokenizer tok;
-        int n=tok.Extract(value, "", ",[]");
+        int32 n=tok.Extract(value, "", ",[]");
         if(n!=4) return c;
-        for(int i=0;i<n;++i)
+        for(int32 i=0;i<n;++i)
         {
             c.c[i] = Util::fast_atoi(tok.GetToken(i));
         }
@@ -193,9 +230,9 @@ public:
     {
         Color c;
         Tokenizer tok;
-        int n=tok.Extract(value, "", ",[]");
+        int32 n=tok.Extract(value, "", ",[]");
         if(n!=4) return c;
-        for(int i=0;i<n;++i)
+        for(int32 i=0;i<n;++i)
         {
             c.c[i] = Util::fast_atoi(tok.GetToken(i));
         }
@@ -219,9 +256,9 @@ public:
     {
         Rect r;
         Tokenizer tok;
-        int n=tok.Extract(value, "", ",[]");
+        int32 n=tok.Extract(value, "", ",[]");
         if(n!=4) return r;
-        for(int i=0;i<n;++i)
+        for(int32 i=0;i<n;++i)
         {
             r.r[i] = static_cast<float>(Util::fast_atof<double>(tok.GetToken(i)));
         }
@@ -245,9 +282,9 @@ public:
     {
         Rect r;
         Tokenizer tok;
-        int n=tok.Extract(value, "", ",[]");
+        int32 n=tok.Extract(value, "", ",[]");
         if(n!=4) return r;
-        for(int i=0;i<n;++i)
+        for(int32 i=0;i<n;++i)
         {
             r.r[i] = static_cast<float>(Util::fast_atof<double>(tok.GetToken(i)));
         }

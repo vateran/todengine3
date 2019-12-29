@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <type_traits>
 #include "tod/stringconv.h"
 #include "tod/graphics/todmath.h"
@@ -15,12 +15,14 @@ public:
     
 public:
     Vector2Base();
+    Vector2Base(const T& x);
     Vector2Base(const T& x, const T& y);
     Vector2Base(const type& other);
     
     void clear();
     float length() const;
     void normalize();
+    void set(const T& x, const T& y);
     float dot(const type& other) const;
     float cross(const type& other) const;
     float angle(const type& other) const;
@@ -52,12 +54,20 @@ Vector2Base<T>::Vector2Base()
 
 //-----------------------------------------------------------------------------
 template <typename T>
-Vector2Base<T>::Vector2Base(const T& x, const T& y):x(x), y(y) {}
+Vector2Base<T>::Vector2Base(const T& x)
+: x(x), y(x) {}
+
+
+//-----------------------------------------------------------------------------
+template <typename T>
+Vector2Base<T>::Vector2Base(const T& x, const T& y)
+: x(x), y(y) {}
     
     
 //-----------------------------------------------------------------------------
 template <typename T>
-Vector2Base<T>::Vector2Base(const type& other):x(other.x), y(other.y) {}
+Vector2Base<T>::Vector2Base(const type& other)
+: x(other.x), y(other.y) {}
 
 
 //-----------------------------------------------------------------------------
@@ -82,6 +92,15 @@ void Vector2Base<T>::normalize()
 {
     auto len = this->length();
     (*this) /= len;
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename T>
+void Vector2Base<T>::set(const T& x, const T& y)
+{
+    this->x = x;
+    this->y = y;
 }
 
 
@@ -191,7 +210,7 @@ public:
         std::vector<String> sl;
         value.split(",", sl);
         for (auto i=0u;i<sl.size();++i)
-            ret.array[i] = String::atoi(sl[i].c_str());
+            ret.array[i] = String::atof<float>(sl[i].c_str());
         return ret;
     }
     static void toString(const graphics::Vector2& value, String& s)

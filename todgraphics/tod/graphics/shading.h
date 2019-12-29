@@ -5,7 +5,7 @@ class Renderer;
 class Shading
 {
 public:
-    virtual void init(Renderer* renderer, int width, int height)=0;
+    virtual void init(int32 width, int32 height)=0;
     virtual void render()=0;
 };
 

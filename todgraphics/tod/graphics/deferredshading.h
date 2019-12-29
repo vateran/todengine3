@@ -15,14 +15,14 @@ public:
     DeferredShading();
     friend class Renderer;
     
-    void init(Renderer* renderer, int width, int height) override;
+    void init(int32 width, int32 height) override;
     void render() override;
     void render_cameras();
     void render_shadows();
 
 private:
-    int width;
-    int height;
+    int32 width;
+    int32 height;
     Renderer* renderer;
     ObjRef<Shader> geometryPassShader;
     ObjRef<Shader> lightPassShader;
@@ -46,7 +46,7 @@ private:
     Matrix44 lightSpaceMatrix;
     
     
-    int ssaoKernelSize;
+    int32 ssaoKernelSize;
     float ssaoSampleRadius;
     float ssaoBias;
     float ssaoPower;

@@ -1,37 +1,29 @@
 #pragma once
-#include <map>
 #include "tod/graphics/rendercomponent.h"
 namespace tod::graphics
 {
 
 class Mesh;
-class Renderer;
 class Texture;
+class RenderInterface;
+
 class MeshComponent : public Derive<MeshComponent, RenderComponent>
 {
 public:
     MeshComponent();
     virtual~MeshComponent();
-    
-    void updateShaderParams(Shader* shader) override;
-    void render() override;
-    void setTexture(const String& type, const String& uri);
+
+    void render(Shader* shader, uint32 passes) override;
     inline Mesh* getMesh() { return this->mesh; }
-    
-private:
-    void set_texture(Shader* shader, const char* map, int sampler_index, Texture* empty);
+
+    void setUri(const String& uri);
+    const String& getUri();
+
+    static void bindProperty();
     
 private:
     ObjRef<Mesh> mesh;
-    ObjRef<Renderer> renderer;
-    
-    struct TextureInfo
-    {
-        String type;
-        String uri;
-        ObjRef<Texture> texture;
-    };
-    std::map<String, TextureInfo> textures;
+    String uri;
 };
 
 }

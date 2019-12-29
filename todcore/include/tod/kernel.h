@@ -1,8 +1,6 @@
 ﻿#pragma once
 #include <unordered_map>
 #include "tod/singleton.h"
-#include "tod/string.h"
-#include "tod/exception.h"
 #include "tod/node.h"
 namespace tod
 {

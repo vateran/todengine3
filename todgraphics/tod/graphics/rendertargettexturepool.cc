@@ -1,18 +1,18 @@
-#include "tod/graphics/rendertargettexturepool.h"
+﻿#include "tod/graphics/rendertargettexturepool.h"
 #include "tod/graphics/renderer.h"
+#include "tod/graphics/renderinterface.h"
 namespace tod::graphics
 {
 
 //-----------------------------------------------------------------------------
-RenderTargetTexturePool::RenderTargetTexturePool():
-renderer("/sys/renderer")
+RenderTargetTexturePool::RenderTargetTexturePool()
 {
 }
 
 
 //-----------------------------------------------------------------------------
 Texture* RenderTargetTexturePool::getTexture
-(int width, int height, PixelFormat format)
+(int32 width, int32 height, Format format)
 {
     auto key = std::make_tuple(width, height, format);
     
@@ -22,7 +22,9 @@ Texture* RenderTargetTexturePool::getTexture
     //없으면 만들어서 줌
     if (this->rtTextures.end() == i)
     {
-        auto texture = this->renderer->createTexture();
+        auto texture = Renderer::instance()
+            ->getRenderInterface()
+            ->createTexture();
         if (nullptr == texture) TOD_RETURN_TRACE(nullptr);
         
         texture->create(width, height, format);

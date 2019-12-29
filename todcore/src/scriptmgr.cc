@@ -1,3 +1,6 @@
+#include "tod/precompiled.h"
+#include "tod/object.h"
+#include "tod/singleton.h"
 #include "tod/scriptmgr.h"
 namespace tod
 {

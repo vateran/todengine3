@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "tod/component.h"
 #include "tod/graphics/matrix44.h"
 #include "tod/graphics/transform44.h"
@@ -20,11 +20,28 @@ public:
     {
         this->flags[TRANSFORM_DIRTY] = true;
     }
-    void updateWorldTransform(const Matrix44& parent_transform)
+
+    void reset()
     {
+        this->flags[TRANSFORM_DIRTY] = true;
+        this->localTransform.identity();
+    }
+
+    bool updateWorldTransform(
+          const Matrix44& parent_transform
+        , bool parent_transform_dirty)
+    {
+        if ((false == this->flags[TRANSFORM_DIRTY])
+         && (false == parent_transform_dirty))
+        {
+            return false;
+        }
+
         this->worldTransform = this->localTransform.getMatrix();
         this->worldTransform *= parent_transform;
         this->flags[TRANSFORM_DIRTY] = false;
+
+        return true;
     }
     inline void setTranslation(const Vector3& t)
     {

@@ -8,133 +8,49 @@ namespace tod::graphics
 class Texture : public Derive<Texture, Object>
 {
 public:
-    Texture():
-      width(0)
-    , height(0)
-    , format(PixelFormat::NONE)
-    , hWrap(TextureWrap::REPEAT)
-    , vWrap(TextureWrap::REPEAT)
-    , minFilter(TextureFilter::NEAREST)
-    , magFilter(TextureFilter::NEAREST)
-    {
-    }
+    Texture();
     
-    virtual bool create(int width, int height, PixelFormat format, void* data=nullptr)
-    {
-        TOD_RETURN_TRACE(false);
-    }
+    virtual bool create(int32 width, int32 height, Format format, void* data = nullptr);    
+    virtual void destroy();
     
-    virtual void destroy()
-    {
-    }
-    
-    virtual bool load(const String& uri)
-    {
-        TOD_RETURN_TRACE(false);
-    }
-    
-    virtual void use(int sampler_index=0)
-    {
-        
-    }
+    virtual bool load(const String& uri, uint8 mipmap_level = 0);
+    virtual void use(int32 sampler_index = 0);
 
-    const String& getName() const { return this->name; }
+    const String& getName() const;
     
-    uint32 getWidth() const { return this->width; }
-    uint32 getHeight() const { return this->height; }
-    PixelFormat getFormat() const { return this->format; }
+    uint32 getWidth() const;
+    uint32 getHeight() const;
+    Format getFormat() const;
     
-    virtual void setHorizontalWrap(TextureWrap value)
-    {
-        this->hWrap = value;
-    }
-    void setHorizontalWrap(int value)
-    {
-        this->setHorizontalWrap(static_cast<TextureWrap>(value));
-    }
-    int getHorizontalWrap()
-    {
-        return static_cast<int>(this->hWrap);
-    }
-    virtual void setVerticalWrap(TextureWrap value)
-    {
-        this->vWrap = value;
-    }
-    virtual void setVerticalWrap(int value)
-    {
-        this->setVerticalWrap(static_cast<TextureWrap>(value));
-    }
-    int getVerticalWrap()
-    {
-        return static_cast<int>(this->vWrap);
-    }
-    virtual void setMinFilter(TextureFilter value)
-    {
-        this->minFilter = value;
-    }
-    void setMinFilter(int value)
-    {
-        this->setMinFilter(static_cast<TextureFilter>(value));
-    }
-    int getMinFilter()
-    {
-        return static_cast<int>(this->minFilter);
-    }
-    virtual void setMagFilter(TextureFilter value)
-    {
-        this->magFilter = value;
-    }
-    void setMagFilter(int value)
-    {
-        this->setMagFilter(static_cast<TextureFilter>(value));
-    }
-    int getMagFilter()
-    {
-        return static_cast<int>(this->magFilter);
-    }
-    virtual void setBorderColor(const ColorF& color)
-    {
-        this->borderColor = color;
-    }
-    const ColorF& getBorderColor()
-    {
-        return this->borderColor;
-    }
-    static EnumList<int>& getWrapEnumerator()
-    {
-        static EnumList<int> s_enum
-        {
-            std::make_tuple("Repeat", static_cast<int>(TextureWrap::REPEAT)),
-            std::make_tuple("MirroredRepeat", static_cast<int>(TextureWrap::MIRRORED_REPEAT)),
-            std::make_tuple("ClampToEdge", static_cast<int>(TextureWrap::CLAMP_TO_EDGE)),
-            std::make_tuple("ClampToBorder", static_cast<int>(TextureWrap::CLAMP_TO_BORDER)),
-        };
-        return s_enum;
-    }
+    virtual void setHorizontalWrap(TextureWrap value);
+    virtual void setVerticalWrap(TextureWrap value);    
+    virtual void setMinFilter(TextureFilter value);
+    virtual void setMagFilter(TextureFilter value);
+    virtual void setBorderColor(const ColorF& color);
+
+    const ColorF& getBorderColor();
+    static EnumList<int>& getWrapEnumerator();
+
+    void setHorizontalWrap(int32 value);
+    int32 getHorizontalWrap();
+    void setVerticalWrap(int32 value);
+    int32 getVerticalWrap();
+    void setMinFilter(int32 value);
+    int32 getMinFilter();    
+    void setMagFilter(int32 value);
+    int32 getMagFilter();
     
-    static void bindProperty()
-    {
-        BIND_ENUM_PROPERTY(int, "horizontal_wrap", "horizontal_wrap",
-                           setHorizontalWrap, getHorizontalWrap,
-                           getWrapEnumerator,
-                           static_cast<int>(TextureWrap::REPEAT),
-                           PropertyAttr::DEFAULT);
-        BIND_ENUM_PROPERTY(int, "vertical_wrap", "vertical_wrap",
-                           setVerticalWrap, getVerticalWrap,
-                           getWrapEnumerator,
-                           static_cast<int>(TextureWrap::REPEAT),
-                           PropertyAttr::DEFAULT);
-    }
+    static void bindProperty();
     
 protected:
-    void setName(const String& name) { this->name = name; }
+    void setName(const String& name);
     friend class Renderer;
     
 protected:
     String name;
     uint32 width;
     uint32 height;
-    PixelFormat format;
+    Format format;
     TextureWrap hWrap;
     TextureWrap vWrap;
     TextureFilter minFilter;

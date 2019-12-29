@@ -9,5 +9,4 @@ void TransformComponent::bindProperty()
     BIND_PROPERTY(const Vector3&, "rotation", "Rotation", setRotation, getRotation, Vector3(), PropertyAttr::DEFAULT);
 }
 
-
 }

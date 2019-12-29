@@ -1,5 +1,5 @@
 #pragma once
-#include <QWidget>
+#include <QScrollArea>
 #include "tod/node.h"
 #include "todeditor/common.h"
 #include "todeditor/dockwidget.h"
@@ -21,7 +21,7 @@ private:
     friend class DockWidget<Inspector>;
     
 private:
-    QWidget* objectInfo;
+    QScrollArea* objectInfo;
 };
 
 }
