@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29424.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "todcore", "todcore.vcxproj", "{7334CC41-79FC-4849-8C2F-DE0C3DD08945}"
 EndProject
@@ -13,14 +13,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "todeditor", "todeditor.vcxp
 		{4C2AD1FE-CB6B-414A-AE96-F9D219FD6E11} = {4C2AD1FE-CB6B-414A-AE96-F9D219FD6E11}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "toddx11renderer", "toddx11renderer\toddx11renderer.vcxproj", "{072E4514-18BC-4D73-B6ED-03A96AA790AD}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7334CC41-79FC-4849-8C2F-DE0C3DD08945} = {7334CC41-79FC-4849-8C2F-DE0C3DD08945}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "todfileconverter", "todfileconverter.vcxproj", "{5E7C48CC-096D-4F05-A4D5-33680EE580E0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "todunittest", "todunittest\todunittest.vcxproj", "{3232712B-723E-4DBA-BB8A-BEBACA98F118}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "todunittest", "todunittest.vcxproj", "{3232712B-723E-4DBA-BB8A-BEBACA98F118}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,14 +43,6 @@ Global
 		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x64.ActiveCfg = Release|x64
 		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x64.Build.0 = Release|x64
 		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x86.ActiveCfg = Release|x64
-		{072E4514-18BC-4D73-B6ED-03A96AA790AD}.Debug|x64.ActiveCfg = Debug|x64
-		{072E4514-18BC-4D73-B6ED-03A96AA790AD}.Debug|x64.Build.0 = Debug|x64
-		{072E4514-18BC-4D73-B6ED-03A96AA790AD}.Debug|x86.ActiveCfg = Debug|Win32
-		{072E4514-18BC-4D73-B6ED-03A96AA790AD}.Debug|x86.Build.0 = Debug|Win32
-		{072E4514-18BC-4D73-B6ED-03A96AA790AD}.Release|x64.ActiveCfg = Release|x64
-		{072E4514-18BC-4D73-B6ED-03A96AA790AD}.Release|x64.Build.0 = Release|x64
-		{072E4514-18BC-4D73-B6ED-03A96AA790AD}.Release|x86.ActiveCfg = Release|Win32
-		{072E4514-18BC-4D73-B6ED-03A96AA790AD}.Release|x86.Build.0 = Release|Win32
 		{5E7C48CC-096D-4F05-A4D5-33680EE580E0}.Debug|x64.ActiveCfg = Debug|x64
 		{5E7C48CC-096D-4F05-A4D5-33680EE580E0}.Debug|x64.Build.0 = Debug|x64
 		{5E7C48CC-096D-4F05-A4D5-33680EE580E0}.Debug|x86.ActiveCfg = Debug|Win32

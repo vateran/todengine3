@@ -50,8 +50,8 @@ TodEditor::TodEditor(QWidget *parent)
     
 
 
-    Node::get_type()->setEditorIcon(S(":/Resources/icons/file/drawable-mdpi/ic_folder_open_white_18dp.png"));
-    tod::graphics::TransformComponent::get_type()->setEditorIcon(S(":/Resources/icons/action/drawable-mdpi/ic_all_out_white_18dp.png"));    
+    Node::get_type()->setEditorIcon(S(":/Resources/icons/ic_folder_open_white_18dp.png"));
+    tod::graphics::TransformComponent::get_type()->setEditorIcon(S(":/Resources/icons/ic_all_out_white_18dp.png"));    
     
 
     auto tab_scene_view = new QTabWidget();

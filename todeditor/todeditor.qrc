@@ -2,8 +2,8 @@
     <qresource prefix="/Resources">
         <file>darkstyle.qss</file>
         <file>Poppins-Light.ttf</file>
-        <file>icons/file/drawable-mdpi/ic_folder_open_white_18dp.png</file>
-        <file>icons/action/drawable-mdpi/ic_all_out_white_18dp.png</file>
+        <file>icons/ic_all_out_white_18dp.png</file>
+        <file>icons/ic_folder_open_white_18dp.png</file>
     </qresource>
     <qresource prefix="/">
         <file>qss_icons/rc/arrow_down.png</file>
