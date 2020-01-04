@@ -66,10 +66,18 @@
     <ClCompile Include="..\..\todcore\src\binarystreamwriter.cc">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\todcore\src\buffer.cc" />
-    <ClCompile Include="..\..\todcore\src\http.cc" />
-    <ClCompile Include="..\..\todcore\src\win32window.cc" />
-    <ClCompile Include="..\..\todcore\src\log.cc" />
+    <ClCompile Include="..\..\todcore\src\buffer.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todcore\src\http.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todcore\src\log.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\todcore\src\win32window.cc">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\todcore\include\tod\kernel.h">
@@ -177,12 +185,24 @@
     <ClInclude Include="..\..\todcore\include\tod\timemgr.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\todcore\include\tod\promise.h" />
-    <ClInclude Include="..\..\todcore\include\tod\http.h" />
-    <ClInclude Include="..\..\todcore\include\tod\window.h" />
-    <ClInclude Include="..\..\todcore\include\tod\win32window.h" />
-    <ClInclude Include="..\..\todcore\include\tod\log.h" />
-    <ClInclude Include="..\..\todcore\include\tod\indexedpool.h" />
+    <ClInclude Include="..\..\todcore\include\tod\http.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\indexedpool.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\log.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\promise.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\win32window.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\todcore\include\tod\window.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\todcore\include\tod\file.inl">
@@ -194,6 +214,8 @@
     <None Include="..\..\todcore\include\tod\property.inl">
       <Filter>src</Filter>
     </None>
-    <None Include="..\..\todcore\include\tod\promise.inl" />
+    <None Include="..\..\todcore\include\tod\promise.inl">
+      <Filter>src</Filter>
+    </None>
   </ItemGroup>
 </Project>
