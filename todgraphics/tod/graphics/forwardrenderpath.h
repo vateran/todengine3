@@ -73,43 +73,43 @@ namespace tod::graphics
             SceneNode* scene_node = nullptr;
 
             auto transform_compo = node->findComponent<TransformComponent>();
-            if (node->hasComponent<CameraComponent>())
-            {
-                this->cameraNodes.push_back(CameraNode());
-                CameraNode* camera_node = &this->cameraNodes.back();
-                scene_node = camera_node;
-                camera_node->camera = node->findComponent<CameraComponent>();
-            }
-            else if (node->hasComponent<LightComponent>())
-            {
-                this->lightNodes.push_back(LightNode());
-                LightNode* light_node = &this->lightNodes.back();
-                scene_node = light_node;
-                light_node->light = node->findComponent<LightComponent>();
-            }
-            else if (node->hasComponent<RenderComponent>())
-            {   
-                this->sceneNodes.push_back(SceneNode());
-                scene_node = &this->sceneNodes.back();
-                scene_node->render = node->findComponent<RenderComponent>();
-            }
-
-            if (nullptr != scene_node)
-            {
-                scene_node->transform = transform_compo;
-                scene_node->shader = node->findComponent<ShaderComponent>();
-                for (auto compo : node->getComponents())
-                {
-                    if (false == compo->getType()->isKindOf<BehaviorComponent>())
-                    {
-                        continue;
-                    }
-                    this->behaviors.push_back(compo);
-                }
-            }
-
             if (nullptr != transform_compo)
-            {   
+            {
+                if (node->hasComponent<CameraComponent>())
+                {
+                    this->cameraNodes.push_back(CameraNode());
+                    CameraNode* camera_node = &this->cameraNodes.back();
+                    scene_node = camera_node;
+                    camera_node->camera = node->findComponent<CameraComponent>();
+                }
+                else if (node->hasComponent<LightComponent>())
+                {
+                    this->lightNodes.push_back(LightNode());
+                    LightNode* light_node = &this->lightNodes.back();
+                    scene_node = light_node;
+                    light_node->light = node->findComponent<LightComponent>();
+                }
+                else if (node->hasComponent<RenderComponent>())
+                {   
+                    this->sceneNodes.push_back(SceneNode());
+                    scene_node = &this->sceneNodes.back();
+                    scene_node->render = node->findComponent<RenderComponent>();
+                }
+
+                if (nullptr != scene_node)
+                {
+                    scene_node->transform = transform_compo;
+                    scene_node->shader = node->findComponent<ShaderComponent>();
+                    for (auto compo : node->getComponents())
+                    {
+                        if (false == compo->getType()->isKindOf<BehaviorComponent>())
+                        {
+                            continue;
+                        }
+                        this->behaviors.push_back(compo);
+                    }
+                }
+               
                 parent_transform_dirty
                     = transform_compo->updateWorldTransform(parent_transform, parent_transform_dirty)
                    || parent_transform_dirty;
@@ -138,6 +138,8 @@ namespace tod::graphics
             //render CameraNodes
             for (auto& camera_node : this->cameraNodes)
             {
+                if (nullptr == camera_node.shader) continue;
+
                 camera_node.camera->setWidth(static_cast<float>(viewport->getWidth()));
                 camera_node.camera->setHeight(static_cast<float>(viewport->getHeight()));
 
