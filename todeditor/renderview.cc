@@ -40,10 +40,6 @@ RenderView::RenderView(QWidget *parent)
     this->shader = tod::graphics::ShaderCache::instance()->getShader("EngineData/hlsl/BasicForward.fx");
 
     this->renderPath.create(&this->renderInterface);
-
-    #ifdef TOD_PLATFORM_WINDOWS
-    initializeDirectX11();
-    #endif
 }
 
 
@@ -85,15 +81,11 @@ void RenderView::paintGL()
     this->renderer->render(tod::Kernel::instance()->lookup("/scene"));
 }
 #else
-void RenderView::initializeDirectX11()
-{
-    //this->renderer = static_cast<tod::graphics::Renderer*>
-    //  (tod::Kernel::instance()->create("Dx11Renderer", "/sys/renderer"));
-    //this->renderer->initialize((void*)(this->winId()), 1540, 1316, true);
-}
 
 void RenderView::paintEvent(QPaintEvent* event)
 {
+    TimeMgr::instance()->update();
+
     if (this->mainCamera.invalid())
     {
         this->mainCamera = Kernel::instance()->lookup("/scene/camera");
@@ -106,25 +98,27 @@ void RenderView::paintEvent(QPaintEvent* event)
         this->cameraCompo = this->mainCamera->findComponent<tod::graphics::CameraComponent>();
     }
 
-    TimeMgr::instance()->update();
-
-    float step = 200 * TimeMgr::instance()->delta();
-    if (this->keyPressed.contains(Qt::Key_Shift))
-        step *= 20;
-    if (this->keyPressed.contains(Qt::Key_W))
-        this->cameraTransformCompo->moveForward(step);
-    if (this->keyPressed.contains(Qt::Key_S))
-        this->cameraTransformCompo->moveForward(-step);
-    if (this->keyPressed.contains(Qt::Key_A))
-        this->cameraTransformCompo->moveSideward(-step);
-    if (this->keyPressed.contains(Qt::Key_D))
-        this->cameraTransformCompo->moveSideward(step);
-    if (this->keyPressed.contains(Qt::Key_Q))
-        this->cameraTransformCompo->moveUpward(step);
-    if (this->keyPressed.contains(Qt::Key_E))
-        this->cameraTransformCompo->moveUpward(-step);
-    if (this->keyPressed.contains(Qt::Key_Space))
-        this->cameraTransformCompo->reset();
+    if ((nullptr != this->cameraTransformCompo)
+     || (nullptr != this->cameraCompo))
+    {
+        float step = 200 * TimeMgr::instance()->delta();
+        if (this->keyPressed.contains(Qt::Key_Shift))
+            step *= 20;
+        if (this->keyPressed.contains(Qt::Key_W))
+            this->cameraTransformCompo->moveForward(step);
+        if (this->keyPressed.contains(Qt::Key_S))
+            this->cameraTransformCompo->moveForward(-step);
+        if (this->keyPressed.contains(Qt::Key_A))
+            this->cameraTransformCompo->moveSideward(-step);
+        if (this->keyPressed.contains(Qt::Key_D))
+            this->cameraTransformCompo->moveSideward(step);
+        if (this->keyPressed.contains(Qt::Key_Q))
+            this->cameraTransformCompo->moveUpward(step);
+        if (this->keyPressed.contains(Qt::Key_E))
+            this->cameraTransformCompo->moveUpward(-step);
+        if (this->keyPressed.contains(Qt::Key_Space))
+            this->cameraTransformCompo->reset();
+    }
     
     this->viewport->use();
     this->viewport->clear(tod::graphics::ColorF(0, 0, 1, 1));

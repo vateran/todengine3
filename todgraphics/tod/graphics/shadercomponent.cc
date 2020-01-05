@@ -110,6 +110,7 @@ Shader* ShaderComponent::getShader()
 void ShaderComponent::bindProperty()
 {
     BIND_PROPERTY(const String&, "uri", "", setUri, getUri, "", PropertyAttr::DEFAULT);
+    get_type()->findProperty("uri")->setEditorType(Property::EDITORTYPE_FILEDIALOG);
     BIND_PROPERTY(const String&, "technique", "", setTechnique, getTechnique, "", PropertyAttr::DEFAULT);
 }
 

@@ -215,9 +215,7 @@ private:
 
     Mesh* load_skinned_mesh(LoadInfo& load_info)
     {
-        return nullptr;
-
-        /*auto mesh = new Mesh();
+        auto mesh = new Mesh();
         auto ai_scene = load_info.aiScene;
 
         for (uint32 i = 0; i < ai_scene->mNumMeshes; ++i)
@@ -319,7 +317,7 @@ private:
             }
         }
 
-        return mesh;*/
+        return mesh;
     }
 
     void load_bone(LoadInfo& load_info, aiNode* cur_node, Bone* cur_bone)

@@ -18,6 +18,15 @@ void EditLineWithSpin::focusInEvent(QFocusEvent* event)
 
 
 //-----------------------------------------------------------------------------
+void EditLineWithSpin::focusOutEvent(QFocusEvent* event)
+{
+    QLineEdit::focusOutEvent(event);
+
+    emit cancelEditing();
+}
+
+
+//-----------------------------------------------------------------------------
 void EditLineWithSpin::wheelEvent(QWheelEvent* event)
 {
     if (false == this->isNumeric) return;

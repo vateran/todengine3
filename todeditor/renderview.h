@@ -34,7 +34,6 @@ protected:
     void resizeGL(int32 w, int32 h) override;
     void paintGL() override;
     #else
-    void initializeDirectX11();
     void paintEvent(QPaintEvent* event) override;
     QPaintEngine* paintEngine() const override { return nullptr; }
     #endif

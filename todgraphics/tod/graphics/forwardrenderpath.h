@@ -198,7 +198,7 @@ namespace tod::graphics
                 {
                     if (true == scene_node.culled)
                     {
-                        continue;
+                    //    continue;
                     }
                     
                     scene_node.shader->begin(passes);
