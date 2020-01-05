@@ -1,8 +1,17 @@
 # todengine3
 
-# Installation
- * Visual Studio 2019 설치
- * 
+# Installation (Visual Studio 2019)
+ * Visual Studio 2019 설치 (Comminity 버전 기준)
+ * Qt 설치 (Open Source 버전)
+ * Visual Studio > 메뉴 > 확장 > 확장관리 에서 Qt Visual Studio Tools 를 검색하여 설치 
+ * Visual Studio > 메뉴 > 확장 > Qt VS Tools > Qt Option 창에서 Add 를 누르고 (QTDIR)/msvc2017_64 폴더를 지정 (2019 는 현재 없음)
+ * 동일한 창에서 Default Qt/Win version 을 방금 추가한 항목으로 지정
+ * todengine.sln 솔루션 파일 열기
+ * todeditor 를 시작 프로젝트로 설정
+ * todeditor 프로젝트 설정 > 작업 디렉토리를 bin 디렉토리로 설정 (../../bin)
+ * todeditor 의 Qt Project Settings > Qt Modules탭 에서 Core, GUI, Widgets 를 선택후 OK
+ 
+# Installation (XCode)
 
 # Core
  * Object Management
