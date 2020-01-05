@@ -38,7 +38,7 @@ void MeshComponent::setUri(const String& uri)
     if (this->uri.empty()) return;
 
     Mesh* loaded_mesh = nullptr;
-    if (!MeshLoader::instance()->load(uri, &loaded_mesh))
+    if (false == MeshLoader::instance()->load(uri, &loaded_mesh))
     {
         TOD_RETURN_TRACE();
     }

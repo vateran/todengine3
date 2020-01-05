@@ -65,7 +65,7 @@ public:
         Buffer raw_data;
         if (false == FileSystem::instance()->load(uri, &raw_data))
         {
-            TOD_RETURN_TRACE(nullptr);
+            TOD_RETURN_TRACE(false);
         }
 
         auto ai_scene = importer.ReadFileFromMemory(
@@ -80,7 +80,7 @@ public:
         {
             TOD_LOG("error", "MeshLoader::load(%s):\n    %s\n",
                 uri.c_str(), importer.GetErrorString());
-            TOD_RETURN_TRACE(nullptr);
+            TOD_RETURN_TRACE(false);
         }
 
         LoadInfo load_info;
@@ -89,6 +89,10 @@ public:
         if (true == load_info.uriPath.empty()) load_info.uriPath = ".";
 
         *mesh = this->load_skinned_mesh(load_info);
+        if (nullptr == *mesh)
+        {
+            TOD_RETURN_TRACE(false);
+        }
 
         return true;
     }
