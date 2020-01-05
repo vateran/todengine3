@@ -20,6 +20,7 @@ RenderView::RenderView(QWidget *parent)
     #else
     : QOpenGLWidget(parent)
     #endif
+    , viewport(nullptr)
     , cameraTransformCompo(nullptr)
     , cameraCompo(nullptr)
 {
@@ -211,6 +212,8 @@ void RenderView::moveCamera(QEvent* event)
 //-----------------------------------------------------------------------------
 void RenderView::onResize(QEvent* event)
 {
+    if (nullptr == this->viewport) return;
+
     QResizeEvent* resize_event = static_cast<QResizeEvent*>(event);
     this->viewport->resize(
           resize_event->size().width()
