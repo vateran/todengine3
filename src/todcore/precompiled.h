@@ -1,0 +1,31 @@
+#pragma once
+
+#include <map>
+#include <unordered_map>
+#include <set>
+#include <array>
+#include <vector>
+#include <list>
+#include <stack>
+#include <algorithm>
+#include <cctype>
+#include <bitset>
+#include <functional>
+#include <iostream>
+#include <memory>
+#include <thread>
+#include <mutex>
+#include <string>
+#include <stdlib.h>
+#include <fstream>
+#include <random>
+#include <stdexcept>
+#include <cassert>
+#include <utility>
+#include <locale>
+#include <string.h>
+
+#include "tod/platformdef.h"
+#include "tod/basetype.h"
+#include "tod/string.h"
+#include "tod/exception.h"
